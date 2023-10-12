@@ -1,0 +1,13 @@
+Item
+description
+cost
+number
+
+User
+code
+name
+
+Transaction
+user_id
+item_id
+amount
