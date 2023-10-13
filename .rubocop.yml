@@ -6,3 +6,9 @@ AllCops:
     - "bin/**/*"
     - "db/**/*"
     - "log/**/*"
+
+Style/Documentation:
+  # We often ignore this and bare-bones comments add nothing useful.
+  # And see Martin, Clean Code, ch. 4
+  #   (Redundant Comments and Mandated Comments are Bad Comments)
+  Enabled: false

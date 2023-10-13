@@ -22,7 +22,7 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
   test 'create' do
     before = Item.count
     post(items_path,
-         params: { item: { description: "can create" } })
+         params: { item: { description: 'can create' } })
     assert_response :redirect
     follow_redirect!
     assert_equal(before + 1, Item.count)
@@ -31,7 +31,7 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
   test 'create fail' do
     before = Item.count
     post(items_path,
-         params: { item: { description: "" } })
+         params: { item: { description: '' } })
     assert_response :unprocessable_entity
     assert_equal(before, Item.count)
   end
@@ -40,5 +40,26 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
     item = items(:one)
     get(edit_item_path(id: item.id))
     assert_equal(200, @response.status)
+  end
+
+  test 'update' do
+    item = items(:one)
+    after = "#{item.description} with a change"
+    patch(item_path(id: item.id),
+          params: { item: { description: after } })
+    assert_response :redirect
+    follow_redirect!
+    item.reload
+    assert_equal(after, item.description)
+  end
+
+  test 'update fail' do
+    item = items(:one)
+    before = item.description
+    patch(item_path(id: item.id),
+          params: { item: { description: '' } })
+    assert_response :unprocessable_entity
+    item.reload
+    assert_equal(before, item.description)
   end
 end

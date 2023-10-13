@@ -9,7 +9,8 @@ class BidsController < ApplicationController
   end
 
   private
-    def bid_params
-      params.require(:bid).permit(:code, :amount)
-    end
+
+  def bid_params
+    params.require(:bid).permit(:code, :amount)
+  end
 end
