@@ -1,0 +1,17 @@
+<h1><%= @item.description %></h1>
+
+<p>
+  <%= "#{@item.number} #{@item.description}" %>
+  <% if @item.cost %>
+     <br/>Buy in for <%= @item.cost %> SBB
+  <% end %>
+</p>
+
+<ul>
+  <li><%= link_to "Edit Item", edit_item_path(@item) %></li>
+  <li><%= link_to "Destroy", item_path(@item), data: {
+                    turbo_method: :delete,
+                    turbo_confirm: "Are you sure?"
+                  } %></li>
+  <li><%= link_to "All Items", items_path %></li>
+</ul>

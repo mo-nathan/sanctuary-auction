@@ -1,0 +1,23 @@
+<%= form_with model: item do |form| %>
+  <div>
+    <%= form.label :description %><br>
+    <%= form.text_area :description %>
+    <% item.errors.full_messages_for(:description).each do |message| %>
+      <div><%= message %></div>
+    <% end %>
+  </div>
+
+  <div>
+    <%= form.label :cost %><br>
+    <%= form.text_field :cost %>
+  </div>
+
+  <div>
+    <%= form.label :number %><br>
+    <%= form.text_field :number %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
