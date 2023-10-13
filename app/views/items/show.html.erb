@@ -18,15 +18,14 @@
 
 <h2>Bids</h2>
 <% @item.bids.each do |bid| %>
-  <p>
-    <strong>Who:</strong>
-    <%= bid.user.name %>
-  </p>
-
-  <p>
-    <strong>Amount:</strong>
-    <%= bid.amount %>
-  </p>
+  <ul>
+    <li>
+      <strong>Who:</strong>
+      <%= bid.user.name %>,
+      <strong>Amount:</strong>
+      <%= bid.amount %>
+    </li>
+  </ul>
 <% end %>
 
 <h2>Add a bid:</h2>
@@ -43,4 +42,3 @@
     <%= form.submit %>
   </p>
 <% end %>
-  
