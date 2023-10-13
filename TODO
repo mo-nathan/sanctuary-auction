@@ -1,13 +1,13 @@
 Item
-description
-cost
-number
+description:text cost:integer number:integer
 
 User
-code
-name
+code:string name:string balance:integer
+CRUD
 
-Transaction
-user_id
-item_id
-amount
+Bid
+bin/rails generate model Bid user:references item:references amount:integer
+CRUD
+
+Auction Page
+Raffle Page

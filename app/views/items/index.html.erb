@@ -1,2 +1,13 @@
-<h1>Items#index</h1>
-<p>Find me in app/views/items/index.html.erb</p>
+<h1>Items</h1>
+
+<ul>
+  <% @items.each do |item| %>
+    <li>
+      <a href="<%= item_path(item) %>">
+        <%= item.description %>
+      </a>
+    </li>
+  <% end %>
+</ul>
+
+<%= link_to "New Item", new_item_path %>
