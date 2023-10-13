@@ -3,9 +3,14 @@
 one:
   code: MyString
   name: MyString
-  balance: 1
+  balance: 500
 
 two:
   code: MyString
   name: MyString
-  balance: 1
+  balance: 500
+
+no_bids:
+  code: MyString
+  name: MyString
+  balance: 500

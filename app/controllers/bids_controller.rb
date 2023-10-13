@@ -7,10 +7,4 @@ class BidsController < ApplicationController
     @bid = @item.bids.create(user: @user, amount: params[:bid][:amount])
     redirect_to item_path(@item)
   end
-
-  private
-
-  def bid_params
-    params.require(:bid).permit(:code, :amount)
-  end
 end
