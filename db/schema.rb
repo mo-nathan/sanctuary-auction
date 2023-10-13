@@ -22,7 +22,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_10_13_003111) do
   create_table "users", force: :cascade do |t|
     t.string "code"
     t.string "name"
-    t.integer "balance"
+    t.integer "balance", default: 500
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
