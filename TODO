@@ -6,9 +6,15 @@
 - code:string name:string balance:integer
 - CRUD
 
-Bid
-bin/rails generate model Bid user:references item:references amount:integer
-CRUD
+- Bid
+- bin/rails generate model Bid user:references item:references amount:integer
+? CRUD
+
+Tests
+Rubocop
 
 Auction Page
 Raffle Page
+
+Auth
+CSS
