@@ -1,9 +1,10 @@
-Item
-description:text cost:integer number:integer
+- Item
+- description:text cost:integer number:integer
+- CRUD
 
-User
-code:string name:string balance:integer
-CRUD
+- User
+- code:string name:string balance:integer
+- CRUD
 
 Bid
 bin/rails generate model Bid user:references item:references amount:integer
