@@ -62,4 +62,14 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
     item.reload
     assert_equal(before, item.description)
   end
+
+  test 'destroy' do
+    item = items(:no_bids)
+    delete(item_path(id: item.id))
+    assert_response :redirect
+    follow_redirect!
+    assert_raises(ActiveRecord::RecordNotFound) do
+      item.reload
+    end
+  end
 end
