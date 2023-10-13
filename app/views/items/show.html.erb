@@ -15,3 +15,32 @@
                   } %></li>
   <li><%= link_to "All Items", items_path %></li>
 </ul>
+
+<h2>Bids</h2>
+<% @item.bids.each do |bid| %>
+  <p>
+    <strong>Who:</strong>
+    <%= bid.user.name %>
+  </p>
+
+  <p>
+    <strong>Amount:</strong>
+    <%= bid.amount %>
+  </p>
+<% end %>
+
+<h2>Add a bid:</h2>
+<%= form_with model: [ @item, @item.bids.build ] do |form| %>
+  <p>
+    <%= form.label :code %><br>
+    <%= form.text_field :code %>
+  </p>
+  <p>
+    <%= form.label :amount %><br>
+    <%= form.text_area :amount %>
+  </p>
+  <p>
+    <%= form.submit %>
+  </p>
+<% end %>
+  
