@@ -1,17 +1,19 @@
 - Item
-- description:text cost:integer number:integer
-- CRUD
+-- description:text cost:integer number:integer
+-- CRUD
 
 - User
-- code:string name:string balance:integer
-- CRUD
+-- code:string name:string balance:integer
+-- CRUD
 
 - Bid
 - bin/rails generate model Bid user:references item:references amount:integer
-? CRUD
+- create
+- Tests
+- Rubocop
 
-Tests
-Rubocop
+Bid accounting
+Bid: Update, Delete
 
 Auction Page
 Raffle Page
