@@ -1,0 +1,8 @@
+AllCops:
+  NewCops: enable
+  ########################### Excluded files ###################################
+  # Completely ignore the following
+  Exclude:
+    - "bin/**/*"
+    - "db/**/*"
+    - "log/**/*"
