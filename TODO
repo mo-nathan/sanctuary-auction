@@ -12,7 +12,8 @@
 - Tests
 - Rubocop
 
-Bid accounting
+- Bid accounting
+- Show bids on Users#show
 Bid: Update, Delete
 
 Auction Page
