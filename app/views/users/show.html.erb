@@ -4,6 +4,18 @@
   <%= "Balance: #{@user.balance}" %>
 </p>
 
+<h2>Bids</h2>
+<% @user.bids.each do |bid| %>
+  <ul>
+    <li>
+      <strong>What:</strong>
+      <%= bid.item.description %>,
+      <strong>Amount:</strong>
+      <%= bid.amount %>
+    </li>
+  </ul>
+<% end %>
+
 <ul>
   <li><%= link_to "Edit User", edit_user_path(@user) %></li>
   <li><%= link_to "Destroy", user_path(@user), data: {
