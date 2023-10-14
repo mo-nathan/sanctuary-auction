@@ -8,7 +8,7 @@ class User < ApplicationRecord
   def deduct(amount)
     safe_amount = amount.to_i
     return false if balance < safe_amount
-    return false if safe_amount <= 0
+    return false if safe_amount.negative?
 
     self.balance -= amount.to_i
     save
