@@ -1,6 +1,6 @@
 - Items should have an image URL.
 
-ItemsController#index should have cards rather than list items.
+- ItemsController#index should have cards rather than list items.
 
 Items with no number should round down the bid to an integer multiple
 of cost and list the number.
@@ -8,6 +8,6 @@ of cost and list the number.
 Add live auction items.  Needs a parameter to index to show auction items or not.
   Admin user for creating, editing, and deleting users and items.
 
-Make things prettier.
+- Make things prettier.
 
 QA

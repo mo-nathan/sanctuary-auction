@@ -2,15 +2,13 @@
 
 item_one:
   description: Item One
-  cost: 1
-  number: 1
+  cost: 10
 
 item_two:
   description: Item Two
-  cost: 1
   number: 1
 
 item_no_bids:
   description: No Bid Item
-  cost: 1
+  cost: 30
   number: 1

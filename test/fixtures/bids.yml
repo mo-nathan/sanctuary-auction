@@ -3,9 +3,9 @@
 bid_one:
   user: user_one
   item: item_one
-  amount: 1
+  amount: 10
 
 bid_two:
   user: user_two
   item: item_two
-  amount: 1
+  amount: 20

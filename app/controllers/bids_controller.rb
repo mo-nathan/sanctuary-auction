@@ -13,7 +13,7 @@ class BidsController < ApplicationController
   def update_user(item, user)
     if user
       delete_old_bid(item, user)
-      deduct(item, user, params[:bid][:amount].to_i)
+      deduct(item, user, calc_amount(item))
     else
       flash.alert = "Unable to find a user with the code #{params[:bid][:code]}"
     end
@@ -33,5 +33,12 @@ class BidsController < ApplicationController
     else
       flash.alert = "#{user.name} only has #{user.balance} Sanctuary Boston Bucks"
     end
+  end
+
+  def calc_amount(item)
+    amount = params[:bid][:amount].to_i
+    return amount unless item.cost
+
+    item.cost * (amount / item.cost) # Integer division
   end
 end
