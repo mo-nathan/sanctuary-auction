@@ -1,5 +1,5 @@
 <%= form_with model: user do |form| %>
-  <div>
+  <div class="mt-3">
     <%= form.label :code %><br>
     <%= form.text_field :code %>
     <% user.errors.full_messages_for(:code).each do |message| %>
@@ -7,7 +7,7 @@
     <% end %>
   </div>
 
-  <div>
+  <div class="mt-3">
     <%= form.label :name %><br>
     <%= form.text_field :name %>
     <% user.errors.full_messages_for(:name).each do |message| %>
@@ -15,7 +15,7 @@
     <% end %>
   </div>
 
-  <div>
+  <div class="mt-3">
     <%= form.submit %>
   </div>
 <% end %>

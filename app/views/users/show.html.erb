@@ -4,23 +4,23 @@
   <%= "Balance: #{@user.balance}" %>
 </p>
 
-<h2>Bids</h2>
-<% @user.bids.each do |bid| %>
-  <ul>
-    <li>
-      <strong>What:</strong>
-      <%= link_to bid.item.description, item_path(bid.item) %>,
-      <strong>Amount:</strong>
-      <%= bid.amount %>
-    </li>
-  </ul>
-<% end %>
+<div class="container p-2">
+  <%= link_to "Edit User", edit_user_path(@user),
+      { class: "btn btn-default bg-secondary-subtle" } %>
+  <%= link_to "Destroy", user_path(@user),
+      class: "btn btn-default bg-danger-subtle m-3" ,
+      data: {
+              turbo_method: :delete,
+              turbo_confirm: "Are you sure?"
+            } %>
+  <%= link_to "All Users", users_path,
+      class: "btn btn-default bg-secondary-subtle" %>
+</div>
 
-<ul>
-  <li><%= link_to "Edit User", edit_user_path(@user) %></li>
-  <li><%= link_to "Destroy", user_path(@user), data: {
-                    turbo_method: :delete,
-                    turbo_confirm: "Are you sure?"
-                  } %></li>
-  <li><%= link_to "All Users", users_path %></li>
-</ul>
+<h2>Ticket Entries</h2>
+<% @user.bids.each do |bid| %>
+  <hr>
+  <%= link_to(bid.item.description, item_path(bid.item),
+              { class: "btn btn-default btn-lg bg-info-subtle" }) %>
+  Tickets: <%= bid.amount %>
+<% end %>

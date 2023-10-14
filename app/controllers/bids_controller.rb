@@ -4,8 +4,12 @@ class BidsController < ApplicationController
   def create
     @item = Item.find(params[:item_id])
     @user = User.find_by(code: params[:bid][:code])
-    delete_old_bid(@item, @user)
-    deduct(params[:bid][:amount].to_i)
+    if @user
+      delete_old_bid(@item, @user)
+      deduct(params[:bid][:amount].to_i)
+    else
+      flash.alert = "Unable to find a user with the code #{params[:bid][:code]}"
+    end
     redirect_to item_path(@item)
   end
 
