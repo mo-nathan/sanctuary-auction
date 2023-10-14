@@ -21,6 +21,14 @@ class BidsControllerTest < ActionDispatch::IntegrationTest
     assert_equal(before, Bid.count)
   end
 
+  test 'create bad code' do
+    before = Bid.count
+    post(item_bids_path(item_id: items(:item_one).id),
+         params: { bid: { code: 'BAD', amount: '100' } })
+    assert_response :redirect
+    assert_equal(before, Bid.count)
+  end
+
   test 'replace bid' do
     bid = bids(:bid_one)
     amount = bid.amount
