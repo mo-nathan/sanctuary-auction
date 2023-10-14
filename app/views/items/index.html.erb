@@ -1,16 +1,20 @@
 <h1>Items</h1>
 <%= link_to "New Item", new_item_path %>
-
-<ul>
-  <% @items.each do |item| %>
-    <li>
-      <a href="<%= item_path(item) %>">
-        <%= item.description %>
-      </a>
-    </li>
-  <% end %>
-</ul>
-
+<p>
+  <ul>
+    <% @items.each do |item| %>
+      <li>
+        <% if item.number %>
+          <%= item.number %>
+        <% end %>
+        <a href="<%= item_path(item) %>">
+          <%= item.description %>
+        </a>
+        <%= item.bids.count %> bid(s) for a total of <%= item.total %>
+      </li>
+    <% end %>
+  </ul>
+</p>
 <p>
   <%= link_to "Users", users_path %></li>
 </p>
