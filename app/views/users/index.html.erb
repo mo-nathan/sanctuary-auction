@@ -1,16 +1,16 @@
 <h1>Users</h1>
-<%= link_to "New User", new_user_path %>
-
 <p>
-  <ul>
-    <% @users.each do |user| %>
-      <li>
-        <a href="<%= user_path(user) %>">
-          <%= user.name %>
-        </a>
-	Balance: <%= user.balance %>
-      </li>
-    <% end %>
-  </ul>
+<%= link_to "Items", items_path,
+    { class: "btn btn-default bg-secondary-subtle" } %>
+<%= link_to "New User", new_user_path,
+    { class: "btn btn-default bg-secondary-subtle" } %>
 </p>
-<%= link_to "Items", items_path %>
+
+<% @users.each do |user| %>
+  <hr>
+  <div class="panel panel-default p-1 mt-4">
+      <%= link_to(user.name, user_path(user),
+                { class: "btn btn-default btn-lg bg-info-subtle" }) %>
+      Balance: <%= user.balance %>
+  </div>
+<% end %>

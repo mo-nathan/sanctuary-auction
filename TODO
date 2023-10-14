@@ -1,23 +1,13 @@
-- Item
--- description:text cost:integer number:integer
--- CRUD
+- Items should have an image URL.
 
-- User
--- code:string name:string balance:integer
--- CRUD
+ItemsController#index should have cards rather than list items.
 
-- Bid
-- bin/rails generate model Bid user:references item:references amount:integer
-- create
-- Tests
-- Rubocop
+Items with no number should round down the bid to an integer multiple
+of cost and list the number.
 
-- Bid accounting
-- Show bids on Users#show
-- Bid: Delete
+Add live auction items.  Needs a parameter to index to show auction items or not.
+  Admin user for creating, editing, and deleting users and items.
 
-Auction Page
-Raffle Page
+Make things prettier.
 
-Auth
-CSS
+QA
