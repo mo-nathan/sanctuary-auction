@@ -9,7 +9,7 @@
   <ul>
     <li>
       <strong>What:</strong>
-      <%= bid.item.description %>,
+      <%= link_to bid.item.description, item_path(bid.item) %>,
       <strong>Amount:</strong>
       <%= bid.amount %>
     </li>
