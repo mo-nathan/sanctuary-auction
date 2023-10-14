@@ -1,9 +1,10 @@
 <h1><%= @item.description %></h1>
 
 <p>
-  <%= "#{@item.number} #{@item.description}" %>
-  <% if @item.cost %>
-     <br/>Buy in for <%= @item.cost %> SBB
+  <% if @item.number %>
+    Quantity: <%= @item.number %>
+  <% else %>
+     Buy in for <%= @item.cost %> SBB
   <% end %>
 </p>
 
@@ -21,7 +22,7 @@
   <ul>
     <li>
       <strong>Who:</strong>
-      <%= bid.user.name %>,
+      <%= link_to bid.user.name, user_path(bid.user.id) %>,
       <strong>Amount:</strong>
       <%= bid.amount %>
     </li>
@@ -36,7 +37,7 @@
   </p>
   <p>
     <%= form.label :amount %><br>
-    <%= form.text_area :amount %>
+    <%= form.text_field :amount %>
   </p>
   <p>
     <%= form.submit %>
