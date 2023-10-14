@@ -1,11 +1,11 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  user: one
-  item: one
+bid_one:
+  user: user_one
+  item: item_one
   amount: 1
 
-two:
-  user: two
-  item: two
+bid_two:
+  user: user_two
+  item: item_two
   amount: 1

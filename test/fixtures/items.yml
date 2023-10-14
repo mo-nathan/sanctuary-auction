@@ -1,16 +1,16 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  description: MyText
+item_one:
+  description: Item One
   cost: 1
   number: 1
 
-two:
-  description: MyText
+item_two:
+  description: Item Two
   cost: 1
   number: 1
 
-no_bids:
-  description: No Bids
+item_no_bids:
+  description: No Bid Item
   cost: 1
   number: 1
