@@ -1,20 +1,34 @@
 <h1>Items</h1>
-<%= link_to "New Item", new_item_path %>
 <p>
-  <ul>
-    <% @items.each do |item| %>
-      <li>
-        <% if item.number %>
-          <%= item.number %>
+<%= link_to "Users", users_path,
+    { class: "btn btn-default bg-secondary-subtle" } %>
+<%= link_to "New Item", new_item_path,
+    { class: "btn btn-default bg-secondary-subtle" } %>
+</p>
+
+<% @items.each do |item| %>
+  <hr>
+  <div class="panel panel-default p-1 mt-4">
+    <div class="row align-items-center">
+      <div class="col-lg-1 col-sm-2">
+        <%= link_to("Bid", item_path(item),
+                  { class: "btn btn-default btn-lg bg-info-subtle" }) %>
+      </div>
+      <div class="col-2">
+        <% if item.image_url %>
+          <%= link_to(image_tag(item.image_url, width: "100%"), item_path(item)) %>
         <% end %>
-        <a href="<%= item_path(item) %>">
-          <%= item.description %>
-        </a>
-        <%= item.bids.count %> bid(s) for a total of <%= item.total %>
-      </li>
-    <% end %>
-  </ul>
-</p>
-<p>
-  <%= link_to "Users", users_path %></li>
-</p>
+      </div>
+      <div class="col">
+        <%= item.description %>
+      </div>
+      <div class="col-2">
+        <% if item.number %>
+          <%= item.number %> items<br/>
+        <% end %>
+        <%= item.bids.count %> bid(s)<br/>
+        <%= item.total %> total entries
+      </div>
+    </div>
+  </div>
+<% end %>

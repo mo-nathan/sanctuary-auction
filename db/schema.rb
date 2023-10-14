@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_10_13_010450) do
+ActiveRecord::Schema[7.1].define(version: 2023_10_14_005604) do
   create_table "bids", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "item_id", null: false
@@ -27,6 +27,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_10_13_010450) do
     t.integer "number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "image_url"
   end
 
   create_table "users", force: :cascade do |t|

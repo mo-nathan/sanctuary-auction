@@ -1,45 +1,52 @@
-<h1><%= @item.description %></h1>
-
-<p>
-  <% if @item.number %>
-    Quantity: <%= @item.number %>
-  <% else %>
-     Buy in for <%= @item.cost %> SBB
+<div class="row align-items-center mt-4">
+  <% if @item.image_url %>
+    <div class="col-5">
+      <%= image_tag(@item.image_url, width: "100%") %>
+    </div>
   <% end %>
-</p>
+  <div class="col">
+    <p class="fs-3"><%= @item.description %></p>
+    <p>
+      <% if @item.number %>
+        Quantity: <%= @item.number %>
+      <% else %>
+         Buy in for <%= @item.cost %> SBB
+      <% end %>
+    </p>
+  </div>
+</div>
 
-<ul>
-  <li><%= link_to "Edit Item", edit_item_path(@item) %></li>
-  <li><%= link_to "Destroy", item_path(@item), data: {
-                    turbo_method: :delete,
-                    turbo_confirm: "Are you sure?"
-                  } %></li>
-  <li><%= link_to "All Items", items_path %></li>
-</ul>
+<div class="container p-2">
+  <%= link_to "Edit Item", edit_item_path(@item),
+      { class: "btn btn-default bg-secondary-subtle" } %>
+  <%= link_to "Destroy", item_path(@item),
+      class: "btn btn-default bg-danger-subtle m-3" ,
+      data: {
+        turbo_method: :delete,
+        turbo_confirm: "Are you sure?"
+      } %>
+  <%= link_to "All Items", items_path,
+      class: "btn btn-default bg-secondary-subtle" %>
+</div>
 
-<h2>Bids</h2>
-<% @item.bids.each do |bid| %>
-  <ul>
-    <li>
-      <strong>Who:</strong>
-      <%= link_to bid.user.name, user_path(bid.user.id) %>,
-      <strong>Amount:</strong>
-      <%= bid.amount %>
-    </li>
-  </ul>
-<% end %>
-
-<h2>Add a bid:</h2>
+<div class="container p-2 mb-2">
 <%= form_with model: [ @item, @item.bids.build ] do |form| %>
-  <p>
-    <%= form.label :code %><br>
-    <%= form.text_field :code %>
-  </p>
-  <p>
-    <%= form.label :amount %><br>
-    <%= form.text_field :amount %>
-  </p>
-  <p>
-    <%= form.submit %>
-  </p>
+  <span class="m-3"><%= form.submit %></span>
+  <span class="m-3"> <%= form.label :code, "Your Code" %> <%= form.text_field :code %> </span>
+  <span class="m-3"> <%= form.label :amount %> <%= form.text_field :amount %> </span>
 <% end %>
+</div>
+
+<h3>Bids</h3>
+<ul>
+  <% @item.bids.each do |bid| %>
+    <% if bid.user %>
+      <li>
+        <strong>Who:</strong>
+        <%= link_to bid.user.name, user_path(bid.user.id) %>,
+        <strong>Amount:</strong>
+        <%= bid.amount %>
+      </li>
+    <% end %>
+  <% end %>
+</ul>
