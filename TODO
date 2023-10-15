@@ -8,10 +8,13 @@
 
 - Item and User creation and editing only if authenticated
 
-Fix tests
+- Fix tests
 
-Move Destroy buttons to Edit pages
-Move Edit button after All buttons
+- Move Destroy buttons to Edit pages
+
+- Move Edit button after All buttons
+
+Only admins can create new admins
 
 Can see user codes if authenticated
 

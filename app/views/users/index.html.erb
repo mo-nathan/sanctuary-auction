@@ -1,9 +1,11 @@
 <h1>Users</h1>
 <p>
-<%= link_to "Items", items_path,
-    { class: "btn btn-default bg-secondary-subtle" } %>
-<%= link_to "New User", new_user_path,
-    { class: "btn btn-default bg-secondary-subtle" } %>
+  <%= link_to "Items", items_path,
+      { class: "btn btn-default bg-secondary-subtle" } %>
+  <% if admin_signed_in? %>
+    <%= link_to "New User", new_user_path,
+        { class: "btn btn-default bg-secondary-subtle" } %>
+  <% end %>
 </p>
 
 <% @users.each do |user| %>

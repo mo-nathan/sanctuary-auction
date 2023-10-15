@@ -1,9 +1,11 @@
 <h1>Items</h1>
 <p>
-<%= link_to "Users", users_path,
-    { class: "btn btn-default bg-secondary-subtle" } %>
-<%= link_to "New Item", new_item_path,
-    { class: "btn btn-default bg-secondary-subtle" } %>
+  <%= link_to "Users", users_path,
+      { class: "btn btn-default bg-secondary-subtle" } %>
+  <% if admin_signed_in? %>
+    <%= link_to "New Item", new_item_path,
+        { class: "btn btn-default bg-secondary-subtle" } %>
+  <% end %>
 </p>
 
 <% @items.each do |item| %>

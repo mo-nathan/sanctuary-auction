@@ -1,3 +1,10 @@
 <h1 class="mt-4">Edit Item</h1>
 
 <%= render "form", item: @item %>
+
+<%= link_to "Destroy", item_path(@item),
+    class: "btn btn-default bg-danger-subtle mt-3" ,
+    data: {
+      turbo_method: :delete,
+      turbo_confirm: "Are you sure?"
+    } %>
