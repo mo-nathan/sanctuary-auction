@@ -32,20 +32,42 @@
   <% end %>
 </div>
 
-<div class="container p-2 mb-2">
-<%= form_with model: [ @item, @item.bids.build ] do |form| %>
-  <span class="m-2"> <%= form.label :code, "Your Code" %> <%= form.text_field :code, size: 6 %> </span>
-  <span class="m-2"> <%= form.label :amount %> <%= form.text_field :amount, size: 4 %> </span>
-  <span class="m-2"><%= form.submit %></span>
-<% end %>
-</div>
+<% if @item.auction %>
+  <% if admin_signed_in? %>
+    <div class="container p-2 mb-2">
+      <%= form_with model: [ @item, @item.bids.build ] do |form| %>
+        <span class="m-2"> <%= form.label :code, "Winner Code" %> <%= form.text_field :code, size: 6 %> </span>
+        <span class="m-2"> <%= form.label :amount %> <%= form.text_field :amount, size: 4 %> </span>
+        <span class="m-2"><%= form.submit %></span>
+      <% end %>
+    </div>
 
-<h3>Ticket Entries</h3>
-<% @item.bids.each do |bid| %>
-  <% if bid.user %>
-    <hr>
-    <%= link_to(bid.user.name, user_path(bid.user),
-                { class: "btn btn-default btn-lg bg-info-subtle" }) %>
-    Tickets: <%= bid.amount %>
+    <h3>Bids</h3>
+    <% @item.bids.each do |bid| %>
+      <% if bid.user %>
+        <hr>
+        <%= link_to("#{bid.user.name}: #{bid.user.code}", user_path(bid.user),
+                    { class: "btn btn-default btn-lg bg-info-subtle" }) %>
+        Tickets: <%= bid.amount %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% else %>
+  <div class="container p-2 mb-2">
+    <%= form_with model: [ @item, @item.bids.build ] do |form| %>
+      <span class="m-2"> <%= form.label :code, "Your Code" %> <%= form.text_field :code, size: 6 %> </span>
+      <span class="m-2"> <%= form.label :amount %> <%= form.text_field :amount, size: 4 %> </span>
+      <span class="m-2"><%= form.submit %></span>
+    <% end %>
+  </div>
+
+  <h3>Ticket Entries</h3>
+  <% @item.bids.each do |bid| %>
+    <% if bid.user %>
+      <hr>
+      <%= link_to(bid.user.name, user_path(bid.user),
+                  { class: "btn btn-default btn-lg bg-info-subtle" }) %>
+      Tickets: <%= bid.amount %>
+    <% end %>
   <% end %>
 <% end %>
