@@ -2,11 +2,20 @@
 
 - ItemsController#index should have cards rather than list items.
 
-Items with no number should round down the bid to an integer multiple
-of cost and list the number.
+- Items with no number should round down the bid to an integer multiple of cost and list the number.
+
+Add auth
+
+Item and User creation and editing only if authenticated
+
+Can see user codes if authenticated
 
 Add live auction items.  Needs a parameter to index to show auction items or not.
-  Admin user for creating, editing, and deleting users and items.
+  Add auction boolean to items.
+  ItemsController#index can show either auction items or raffle items.
+  Auction items can only have tickets added if authenticated
+
+Admin user for creating, editing, and deleting users and items.
 
 - Make things prettier.
 
