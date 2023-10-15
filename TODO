@@ -1,30 +1,14 @@
-- Items should have an image URL.
+- Figure out https vs. http
 
-- ItemsController#index should have cards rather than list items.
+Switch to PostgreSQL locally
+Use environment variables for passwords
+Switch to using production database on server
+Upgrade Ruby locally to at least 3.2.0
 
-- Items with no number should round down the bid to an integer multiple of cost and list the number.
+Figure out how to deploy better
 
-- Add auth
+Ideally get on the lateset version of Ruby and PostgreSQL
 
-- Item and User creation and editing only if authenticated
-
-- Fix tests
-
-- Move Destroy buttons to Edit pages
-
-- Move Edit button after All buttons
-
-- Only allow one admin account
-
-- Can see user codes if authenticated
-
-- Add live auction items.  Needs a parameter to index to show auction items or not.
--   Add auction boolean to items.
--   ItemsController#index can show either auction items or raffle items.
--   Auction items can only have tickets added by admins
-
-- Admin user for creating, editing, and deleting users and items.
-
-- Make things prettier.
+Sorting items and users
 
 QA
