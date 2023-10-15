@@ -8,6 +8,11 @@
   </div>
 
   <div class="mt-3">
+    <%= form.check_box :auction %>
+    <%= form.label :auction, "Auction Item" %>
+  </div>
+
+  <div class="mt-3">
     <%= form.label :image_url, "Image URL:" %>
     <%= form.text_field :image_url, size: 80 %>
   </div>
