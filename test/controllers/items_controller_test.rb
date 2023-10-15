@@ -3,6 +3,8 @@
 require 'test_helper'
 
 class ItemsControllerTest < ActionDispatch::IntegrationTest
+  include Devise::Test::IntegrationHelpers
+
   test 'show' do
     item = items(:item_one)
     get(item_path(id: item.id))
@@ -15,11 +17,13 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'new' do
+    sign_in(admins(:admin_one))
     get(new_item_path)
     assert_equal(200, @response.status)
   end
 
   test 'create' do
+    sign_in(admins(:admin_one))
     before = Item.count
     post(items_path,
          params: { item: { description: 'can create' } })
@@ -29,6 +33,7 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'create fail' do
+    sign_in(admins(:admin_one))
     before = Item.count
     post(items_path,
          params: { item: { description: '' } })
@@ -37,12 +42,14 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'edit' do
+    sign_in(admins(:admin_one))
     item = items(:item_one)
     get(edit_item_path(id: item.id))
     assert_equal(200, @response.status)
   end
 
   test 'update' do
+    sign_in(admins(:admin_one))
     item = items(:item_one)
     after = "#{item.description} with a change"
     patch(item_path(id: item.id),
@@ -54,6 +61,7 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'update fail' do
+    sign_in(admins(:admin_one))
     item = items(:item_one)
     before = item.description
     patch(item_path(id: item.id),
@@ -64,6 +72,7 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'destroy' do
+    sign_in(admins(:admin_one))
     item = items(:item_no_bids)
     delete(item_path(id: item.id))
     assert_response :redirect

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class UsersController < ApplicationController
+  before_action :authenticate_admin!, except: %i[index show]
+
   def index
     @users = User.all
   end

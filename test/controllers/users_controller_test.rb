@@ -3,6 +3,8 @@
 require 'test_helper'
 
 class UserControllerTest < ActionDispatch::IntegrationTest
+  include Devise::Test::IntegrationHelpers
+
   test 'show' do
     user = users(:user_one)
     get(user_path(id: user.id))
@@ -15,11 +17,13 @@ class UserControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'new' do
+    sign_in(admins(:admin_one))
     get(new_user_path)
     assert_equal(200, @response.status)
   end
 
   test 'create' do
+    sign_in(admins(:admin_one))
     before = User.count
     post(users_path,
          params: { user: { code: 'xyz', name: 'Rainey' } })
@@ -29,6 +33,7 @@ class UserControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'create fail' do
+    sign_in(admins(:admin_one))
     before = User.count
     post(users_path,
          params: { user: { name: '' } })
@@ -37,12 +42,14 @@ class UserControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'edit' do
+    sign_in(admins(:admin_one))
     user = users(:user_one)
     get(edit_user_path(id: user.id))
     assert_equal(200, @response.status)
   end
 
   test 'update' do
+    sign_in(admins(:admin_one))
     user = users(:user_one)
     after = "#{user.name} with a change"
     patch(user_path(id: user.id),
@@ -54,6 +61,7 @@ class UserControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'update fail' do
+    sign_in(admins(:admin_one))
     user = users(:user_one)
     before = user.name
     patch(user_path(id: user.id),
@@ -64,6 +72,7 @@ class UserControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'destroy' do
+    sign_in(admins(:admin_one))
     user = users(:user_no_bids)
     delete(user_path(id: user.id))
     assert_response :redirect

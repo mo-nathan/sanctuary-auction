@@ -4,9 +4,14 @@
 
 - Items with no number should round down the bid to an integer multiple of cost and list the number.
 
-Add auth
+- Add auth
 
-Item and User creation and editing only if authenticated
+- Item and User creation and editing only if authenticated
+
+Fix tests
+
+Move Destroy buttons to Edit pages
+Move Edit button after All buttons
 
 Can see user codes if authenticated
 
