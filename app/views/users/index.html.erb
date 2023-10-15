@@ -11,8 +11,8 @@
 <% @users.each do |user| %>
   <hr>
   <div class="panel panel-default p-1 mt-4">
-      <%= link_to(user.name, user_path(user),
-                { class: "btn btn-default btn-lg bg-info-subtle" }) %>
-      Balance: <%= user.balance %>
+    <%= link_to(user.name, user_path(user),
+              { class: "btn btn-default btn-lg bg-info-subtle" }) %>
+    Balance: <%= user.balance %>
   </div>
 <% end %>

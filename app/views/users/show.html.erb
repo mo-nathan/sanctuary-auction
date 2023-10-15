@@ -1,7 +1,10 @@
 <h1><%= @user.name %></h1>
 
 <p>
-  <%= "Balance: #{@user.balance}" %>
+  Balance: <%= @user.balance %>
+  <% if admin_signed_in? %>
+    <br/>Code: <%= @user.code %>
+  <% end %>
 </p>
 
 <div class="container p-2">
