@@ -9,8 +9,8 @@ class Admin < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   def admin_check
-    if Admin.all.size.positive?
-      errors.add(:base, "There Can Be Only One (Admin)")
-    end
+    return unless Admin.all.size.positive?
+
+    errors.add(:base, 'There Can Be Only One (Admin)')
   end
 end

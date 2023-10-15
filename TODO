@@ -14,16 +14,16 @@
 
 - Move Edit button after All buttons
 
-Only admins can create new admins
+- Only allow one admin account
 
-Can see user codes if authenticated
+- Can see user codes if authenticated
 
 Add live auction items.  Needs a parameter to index to show auction items or not.
   Add auction boolean to items.
   ItemsController#index can show either auction items or raffle items.
   Auction items can only have tickets added if authenticated
 
-Admin user for creating, editing, and deleting users and items.
+- Admin user for creating, editing, and deleting users and items.
 
 - Make things prettier.
 
