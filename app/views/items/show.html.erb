@@ -13,6 +13,13 @@
          Buy in for <%= @item.cost %> SBB
       <% end %>
     </p>
+    <p>
+      <% if @item.auction %>
+        Auction Item
+      <% else %>
+        Raffle Item
+      <% end %>
+    </p>
   </div>
 </div>
 
