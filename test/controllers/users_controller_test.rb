@@ -16,6 +16,12 @@ class UserControllerTest < ActionDispatch::IntegrationTest
     assert_equal(200, @response.status)
   end
 
+  test 'admin required' do
+    get(new_user_path)
+    assert_response :redirect
+    follow_redirect!
+  end
+
   test 'new' do
     sign_in(admins(:admin_one))
     get(new_user_path)
