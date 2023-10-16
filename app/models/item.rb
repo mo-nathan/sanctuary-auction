@@ -3,6 +3,8 @@
 class Item < ApplicationRecord
   has_many :bids
   validates :description, presence: true
+  validate :cost_or_number
+  default_scope { order(description: :asc) }
 
   def total
     result = 0
@@ -10,5 +12,15 @@ class Item < ApplicationRecord
       result += bid.amount
     end
     result
+  end
+
+  def cost_or_number
+    number_positive = number.to_i.positive?
+    cost_positive = cost.to_i.positive?
+    unless (cost.nil? && number_positive) ||
+           (number.nil? && cost_positive)
+      errors.add(:number,
+                 'must be a positive number or cost must be a positive number of Sanctuary Bucks, but not both')
+    end
   end
 end

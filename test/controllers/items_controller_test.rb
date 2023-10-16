@@ -32,7 +32,7 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
     sign_in(admins(:admin_one))
     before = Item.count
     post(items_path,
-         params: { item: { description: 'can create' } })
+         params: { item: { description: 'can create', number: 1 } })
     assert_response :redirect
     follow_redirect!
     assert_equal(before + 1, Item.count)

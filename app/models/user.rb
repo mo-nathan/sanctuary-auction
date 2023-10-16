@@ -5,6 +5,7 @@ class User < ApplicationRecord
   validates :code, presence: true
   validates :code, uniqueness: true
   validates :name, presence: true
+  default_scope { order(name: :desc) }
 
   def deduct(amount)
     safe_amount = amount.to_i

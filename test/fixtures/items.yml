@@ -10,5 +10,4 @@ item_two:
 
 item_no_bids:
   description: No Bid Item
-  cost: 30
   number: 1
