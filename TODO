@@ -1,8 +1,5 @@
-- Figure out https vs. http
-
-Switch to PostgreSQL locally
-Use environment variables for passwords
 Switch to using production database on server
+Use environment variables for passwords
 Upgrade Ruby locally to at least 3.2.0
 
 Figure out how to deploy better
