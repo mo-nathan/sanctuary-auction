@@ -3,12 +3,12 @@
 user_one:
   code: abc
   name: Ashton
-  balance: 500
+  balance: 490
 
 user_two:
   code: def
   name: Dusk
-  balance: 500
+  balance: 480
 
 user_no_bids:
   code: fcg

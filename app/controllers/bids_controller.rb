@@ -25,6 +25,7 @@ class BidsController < ApplicationController
 
     user.balance += bid.amount
     bid.delete
+    user.save
   end
 
   def deduct(item, user, amount)
