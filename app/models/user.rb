@@ -6,13 +6,4 @@ class User < ApplicationRecord
   validates :code, uniqueness: true
   validates :name, presence: true
   default_scope { order(name: :desc) }
-
-  def deduct(amount)
-    safe_amount = amount.to_i
-    return false if balance < safe_amount
-    return false if safe_amount.negative?
-
-    self.balance -= amount.to_i
-    save
-  end
 end

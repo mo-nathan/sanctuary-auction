@@ -53,12 +53,26 @@ class BidsControllerTest < ActionDispatch::IntegrationTest
 
   test 'replace overrun' do
     bid = bids(:bid_one)
-    amount = bid.amount
+    bid.amount
     bid_count = Bid.count
     user = bid.user
     balance = user.balance
     post(item_bids_path(item_id: bid.item.id),
          params: { bid: { code: user.code, amount: '60' } })
+    assert_response :redirect
+    assert_equal(bid_count, Bid.count)
+    user.reload
+    assert_equal(balance, user.balance)
+  end
+
+  test 'clear bid' do
+    bid = bids(:bid_one)
+    amount = bid.amount
+    bid_count = Bid.count
+    user = bid.user
+    balance = user.balance
+    post(item_bids_path(item_id: bid.item.id),
+         params: { bid: { code: user.code, amount: 0 } })
     assert_response :redirect
     assert_equal(bid_count - 1, Bid.count)
     user.reload

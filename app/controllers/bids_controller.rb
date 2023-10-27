@@ -12,28 +12,27 @@ class BidsController < ApplicationController
 
   def update_user(item, user)
     if user
-      delete_old_bid(item, user)
-      deduct(item, user, calc_amount(item))
+      update_balance(item, user, item.bids.find_by(user:), calc_amount(item))
     else
       flash.alert = "Unable to find a user with the code #{params[:bid][:code]}"
     end
   end
 
-  def delete_old_bid(item, user)
-    bid = Bid.find_by(item:, user:)
-    return unless bid
-
-    user.balance += bid.amount
-    bid.delete
-    user.save
+  def update_balance(item, user, bid, amount)
+    balance = calc_balance(user, bid, amount)
+    if balance >= 0
+      user.balance = balance
+      user.save
+      make_bid(item, user, bid, amount)
+    else
+      flash.alert = "Cannot make update. #{user.name} has #{user.balance} tickets left."
+    end
   end
 
-  def deduct(item, user, amount)
-    if user.deduct(amount)
-      item.bids.create(user:, amount:) if amount.positive?
-    else
-      flash.alert = "#{user.name} only has #{user.balance} Tickets"
-    end
+  def calc_balance(user, bid, amount)
+    balance = user.balance - amount
+    balance += bid.amount if bid
+    balance
   end
 
   def calc_amount(item)
@@ -41,5 +40,18 @@ class BidsController < ApplicationController
     return amount unless item.cost
 
     item.cost * amount
+  end
+
+  def make_bid(item, user, bid, amount)
+    if bid
+      if amount.zero?
+        bid.destroy
+      else
+        bid.amount = amount
+        bid.save
+      end
+    else
+      item.bids.create(user:, amount:)
+    end
   end
 end
