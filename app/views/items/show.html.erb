@@ -1,5 +1,5 @@
 <div class="row align-items-center mt-4">
-  <% if @item.image_url %>
+  <% if @item.image_url.present? %>
     <div class="col-5">
       <%= image_tag(@item.image_url, width: "100%") %>
     </div>
@@ -35,15 +35,23 @@
 
 <% if @item.auction %>
   <% if admin_signed_in? %>
-    <div class="container p-2 mb-2">
-      <%= form_with model: [ @item, @item.bids.build ] do |form| %>
-        <span class="m-2"> <%= form.label :code, "Winner Code" %> <%= form.text_field :code, size: 6 %> </span>
+    <%= form_with model: [ @item, @item.bids.build ] do |form| %>
+      <div class="row align-items-center m-2">
+        <div class="col">
+          <%= form.label :code, "Winner Code" %> <%= form.text_field :code, size: 6 %>
+        </div>
         <% if @item.cost %>
-          <span class="m-2"> <%= form.label :amount, "How Many" %> <%= form.text_field :amount, size: 4 %> </span>
+          <div class="col">
+            <%= form.label :amount, "How Many" %> <%= form.text_field :amount, size: 4 %>
+          </div>
         <% else %>
-          <span class="m-2"> <%= form.label :amount, "Total Tickets" %> <%= form.text_field :amount, size: 4 %> </span>
+          <div class="col">
+            <%= form.label :amount, "Total Tickets" %> <%= form.text_field :amount, size: 4 %>
+          </div>
         <% end %>
-        <span class="m-2"><%= form.submit %></span>
+        <div class="col">
+          <%= form.submit %>
+        </div>
       <% end %>
     </div>
 
@@ -58,17 +66,23 @@
     <% end %>
   <% end %>
 <% else %>
-  <div class="container p-2 mb-2">
-    <%= form_with model: [ @item, @item.bids.build ] do |form| %>
-      <span class="m-2"> <%= form.label :code, "Your Code" %> <%= form.text_field :code, size: 6 %> </span>
+  <%= form_with model: [ @item, @item.bids.build ] do |form| %>
+    <div class="row align-items-center m-2">
+      <div class="col">
+        <%= form.label :code, "Your Code" %> <%= form.text_field :code, size: 6 %>
+      </div>
       <% if @item.cost %>
-        <span class="m-2"> <%= form.label :amount, "How Many" %> <%= form.text_field :amount, size: 4 %> </span>
+        <div class="col">
+          <%= form.label :amount, "How Many" %> <%= form.text_field :amount, size: 4 %>
+        </div>
       <% else %>
-        <span class="m-2"> <%= form.label :amount, "Total Tickets" %> <%= form.text_field :amount, size: 4 %> </span>
+        <div class="col">
+          <%= form.label :amount, "Total Tickets" %> <%= form.text_field :amount, size: 4 %>
+        </div>
       <% end %>
-    <span class="m-2"><%= form.submit %></span>
-    <% end %>
-  </div>
+      <div class="col"><%= form.submit %></div>
+    </div>
+  <% end %>
 
   <h3>Ticket Entries</h3>
   <% @item.bids.each do |bid| %>
