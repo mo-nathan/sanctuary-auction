@@ -32,7 +32,7 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
     sign_in(admins(:admin_one))
     before = Item.count
     post(items_path,
-         params: { item: { description: 'can create', number: 1 } })
+         params: { item: { title: 'can create', number: 1 } })
     assert_response :redirect
     follow_redirect!
     assert_equal(before + 1, Item.count)
@@ -42,7 +42,7 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
     sign_in(admins(:admin_one))
     before = Item.count
     post(items_path,
-         params: { item: { description: '' } })
+         params: { item: { title: '' } })
     assert_response :unprocessable_entity
     assert_equal(before, Item.count)
   end
@@ -57,24 +57,24 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
   test 'update' do
     sign_in(admins(:admin_one))
     item = items(:item_one)
-    after = "#{item.description} with a change"
+    after = "#{item.title} with a change"
     patch(item_path(id: item.id),
-          params: { item: { description: after } })
+          params: { item: { title: after } })
     assert_response :redirect
     follow_redirect!
     item.reload
-    assert_equal(after, item.description)
+    assert_equal(after, item.title)
   end
 
   test 'update fail' do
     sign_in(admins(:admin_one))
     item = items(:item_one)
-    before = item.description
+    before = item.title
     patch(item_path(id: item.id),
-          params: { item: { description: '' } })
+          params: { item: { title: '' } })
     assert_response :unprocessable_entity
     item.reload
-    assert_equal(before, item.description)
+    assert_equal(before, item.title)
   end
 
   test 'destroy' do

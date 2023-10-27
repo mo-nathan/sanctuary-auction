@@ -19,7 +19,7 @@
 <h2>Ticket Entries</h2>
 <% @user.bids.each do |bid| %>
   <hr>
-  <%= link_to(bid.item.description, item_path(bid.item),
+  <%= link_to(bid.item.title, item_path(bid.item),
               { class: "btn btn-default btn-lg bg-info-subtle" }) %>
   Tickets: <%= bid.amount %>
 <% end %>

@@ -50,7 +50,7 @@ class BidsControllerTest < ActionDispatch::IntegrationTest
     user = bid.user
     balance = user.balance
     post(item_bids_path(item_id: bid.item.id),
-         params: { bid: { code: user.code, amount: "600" } })
+         params: { bid: { code: user.code, amount: '600' } })
     assert_response :redirect
     assert_equal(bid_count - 1, Bid.count)
     user.reload

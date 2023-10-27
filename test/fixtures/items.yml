@@ -1,13 +1,16 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 item_one:
-  description: Item One
   cost: 10
+  description: Item One is awesome
+  title: Item One
 
 item_two:
-  description: Item Two
+  description: Item Two is even better
   number: 1
+  title: Item Two
 
 item_no_bids:
-  description: No Bid Item
+  description: No Bid Item kind of sucks
   number: 1
+  title: No Bid Item

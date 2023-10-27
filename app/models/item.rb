@@ -2,9 +2,9 @@
 
 class Item < ApplicationRecord
   has_many :bids
-  validates :description, presence: true
+  validates :title, presence: true
   validate :cost_or_number
-  default_scope { order(description: :asc) }
+  default_scope { order(title: :asc) }
 
   def total
     result = 0

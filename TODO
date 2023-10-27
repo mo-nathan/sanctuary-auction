@@ -1,11 +1,17 @@
-Switch to using production database on server
-Use environment variables for passwords
-Upgrade Ruby locally to at least 3.2.0
+- Balance bug
+
+Item title
+
+Mobile layout
+
+Switch item show page to have item count interface rather than ticket interface
+
+Wording for "buy-in items"/passes...?
+
+Bucks to Tickets
+
+Landing page
+
+Documentation on User#index
 
 Figure out how to deploy better
-
-Ideally get on the lateset version of Ruby and PostgreSQL
-
-Sorting items and users
-
-QA
