@@ -6,7 +6,7 @@ class BidsControllerTest < ActionDispatch::IntegrationTest
   test 'create' do
     before = Bid.count
     post(item_bids_path(item_id: items(:item_one).id),
-         params: { bid: { code: users(:user_two).code, amount: '100' } })
+         params: { bid: { code: users(:user_two).code, amount: '10' } })
     assert_response :redirect
     assert_equal(before + 1, Bid.count)
   end
@@ -24,7 +24,7 @@ class BidsControllerTest < ActionDispatch::IntegrationTest
   test 'create bad code' do
     before = Bid.count
     post(item_bids_path(item_id: items(:item_one).id),
-         params: { bid: { code: 'BAD', amount: '100' } })
+         params: { bid: { code: 'BAD', amount: '10' } })
     assert_response :redirect
     assert_equal(before, Bid.count)
   end
@@ -36,7 +36,7 @@ class BidsControllerTest < ActionDispatch::IntegrationTest
     user = bid.user
     balance = user.balance
     post(item_bids_path(item_id: bid.item.id),
-         params: { bid: { code: user.code, amount: (amount * 2).to_s } })
+         params: { bid: { code: user.code, amount: (2 * amount / bid.item.cost).to_s } })
     assert_response :redirect
     assert_equal(bid_count, Bid.count)
     user.reload
@@ -50,7 +50,7 @@ class BidsControllerTest < ActionDispatch::IntegrationTest
     user = bid.user
     balance = user.balance
     post(item_bids_path(item_id: bid.item.id),
-         params: { bid: { code: user.code, amount: '600' } })
+         params: { bid: { code: user.code, amount: '60' } })
     assert_response :redirect
     assert_equal(bid_count - 1, Bid.count)
     user.reload

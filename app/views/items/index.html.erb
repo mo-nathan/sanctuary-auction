@@ -32,8 +32,11 @@
       <div class="col-3">
         <% if item.number %>
           <%= item.number %> items<br/>
+          <%= item.bids.count %> entrant(s)<br/>
         <% end %>
-        <%= item.bids.count %> entrant(s)<br/>
+        <% if item.cost %>
+          <%= item.cost %> tickets each<br/>
+        <% end %>
         <%= item.total %> total tickets
       </div>
     </div>

@@ -11,7 +11,7 @@
       <% if @item.number %>
         Quantity: <%= @item.number %>
       <% else %>
-         Buy in for <%= @item.cost %> Tickets
+         <%= @item.cost %> Tickets Each
       <% end %>
     </p>
     <p>
@@ -38,7 +38,11 @@
     <div class="container p-2 mb-2">
       <%= form_with model: [ @item, @item.bids.build ] do |form| %>
         <span class="m-2"> <%= form.label :code, "Winner Code" %> <%= form.text_field :code, size: 6 %> </span>
-        <span class="m-2"> <%= form.label :amount %> <%= form.text_field :amount, size: 4 %> </span>
+        <% if @item.cost %>
+          <span class="m-2"> <%= form.label :amount, "How Many" %> <%= form.text_field :amount, size: 4 %> </span>
+        <% else %>
+          <span class="m-2"> <%= form.label :amount, "Total Tickets" %> <%= form.text_field :amount, size: 4 %> </span>
+        <% end %>
         <span class="m-2"><%= form.submit %></span>
       <% end %>
     </div>
@@ -57,8 +61,12 @@
   <div class="container p-2 mb-2">
     <%= form_with model: [ @item, @item.bids.build ] do |form| %>
       <span class="m-2"> <%= form.label :code, "Your Code" %> <%= form.text_field :code, size: 6 %> </span>
-      <span class="m-2"> <%= form.label :amount %> <%= form.text_field :amount, size: 4 %> </span>
-      <span class="m-2"><%= form.submit %></span>
+      <% if @item.cost %>
+        <span class="m-2"> <%= form.label :amount, "How Many" %> <%= form.text_field :amount, size: 4 %> </span>
+      <% else %>
+        <span class="m-2"> <%= form.label :amount, "Total Tickets" %> <%= form.text_field :amount, size: 4 %> </span>
+      <% end %>
+    <span class="m-2"><%= form.submit %></span>
     <% end %>
   </div>
 
@@ -69,6 +77,9 @@
       <%= link_to(bid.user.name, user_path(bid.user),
                   { class: "btn btn-default btn-lg bg-info-subtle" }) %>
       Tickets: <%= bid.amount %>
+      <% if @item.cost %>
+        (<%= bid.amount / @item.cost %> count)
+      <% end %>
     <% end %>
   <% end %>
 <% end %>

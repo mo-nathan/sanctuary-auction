@@ -40,6 +40,6 @@ class BidsController < ApplicationController
     amount = params[:bid][:amount].to_i
     return amount unless item.cost
 
-    item.cost * (amount / item.cost) # Integer division
+    item.cost * amount
   end
 end
