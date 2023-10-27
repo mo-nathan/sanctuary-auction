@@ -1,7 +1,7 @@
 <%= form_with model: item do |form| %>
   <div class="mt-3">
     <%= form.label :title %><br>
-    <%= form.text_field :title, size: 80 %>
+    <%= form.text_field :title, size: 60 %>
     <% item.errors.full_messages_for(:title).each do |message| %>
       <div><%= message %></div>
     <% end %>
@@ -9,7 +9,7 @@
 
   <div class="mt-3">
     <%= form.label :description %><br>
-    <%= form.text_area :description, cols: 80, rows: 10 %>
+    <%= form.text_area :description, cols: 60, rows: 10 %>
     <% item.errors.full_messages_for(:description).each do |message| %>
       <div><%= message %></div>
     <% end %>
@@ -22,7 +22,7 @@
 
   <div class="mt-3">
     <%= form.label :image_url, "Image URL:" %>
-    <%= form.text_field :image_url, size: 80 %>
+    <%= form.text_field :image_url, size: 60 %>
   </div>
 
   <div class="mt-3">
