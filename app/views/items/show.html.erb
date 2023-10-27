@@ -36,20 +36,20 @@
 <% if @item.auction %>
   <% if admin_signed_in? %>
     <%= form_with model: [ @item, @item.bids.build ] do |form| %>
-      <div class="row align-items-center m-2">
-        <div class="col">
+      <div class="row align-items-center">
+        <div class="col-sm m-2">
           <%= form.label :code, "Winner Code" %> <%= form.text_field :code, size: 6 %>
         </div>
         <% if @item.cost %>
-          <div class="col">
+          <div class="col-sm m-2">
             <%= form.label :amount, "How Many" %> <%= form.text_field :amount, size: 4 %>
           </div>
         <% else %>
-          <div class="col">
+          <div class="col-sm m-2">
             <%= form.label :amount, "Total Tickets" %> <%= form.text_field :amount, size: 4 %>
           </div>
         <% end %>
-        <div class="col">
+        <div class="col-sm m-2">
           <%= form.submit %>
         </div>
       <% end %>
@@ -68,19 +68,19 @@
 <% else %>
   <%= form_with model: [ @item, @item.bids.build ] do |form| %>
     <div class="row align-items-center m-2">
-      <div class="col">
+      <div class="col-sm m-2">
         <%= form.label :code, "Your Code" %> <%= form.text_field :code, size: 6 %>
       </div>
       <% if @item.cost %>
-        <div class="col">
+        <div class="col-sm m-2">
           <%= form.label :amount, "How Many" %> <%= form.text_field :amount, size: 4 %>
         </div>
       <% else %>
-        <div class="col">
+        <div class="col-sm m-2">
           <%= form.label :amount, "Total Tickets" %> <%= form.text_field :amount, size: 4 %>
         </div>
       <% end %>
-      <div class="col"><%= form.submit %></div>
+      <div class="col-sm m-2"><%= form.submit %></div>
     </div>
   <% end %>
 
