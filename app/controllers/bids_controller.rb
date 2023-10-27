@@ -32,7 +32,7 @@ class BidsController < ApplicationController
     if user.deduct(amount)
       item.bids.create(user:, amount:) if amount.positive?
     else
-      flash.alert = "#{user.name} only has #{user.balance} Sanctuary Boston Bucks"
+      flash.alert = "#{user.name} only has #{user.balance} Tickets"
     end
   end
 

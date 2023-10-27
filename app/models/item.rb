@@ -20,7 +20,7 @@ class Item < ApplicationRecord
     unless (cost.nil? && number_positive) ||
            (number.nil? && cost_positive)
       errors.add(:number,
-                 'must be a positive number or cost must be a positive number of Sanctuary Bucks, but not both')
+                 'must be a positive number or cost must be a positive number of Tickets, but not both')
     end
   end
 end
