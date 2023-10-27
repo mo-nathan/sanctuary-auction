@@ -18,17 +18,19 @@
     <% end %>
     <div class="container">
       <%= yield %>
-      <% if admin_signed_in? %>
-        <p>
-	  <hr>
+      <hr>
+      <p>
+        <%= link_to "Intro", root_path,
+          { class: "btn btn-default bg-secondary-subtle" } %>
+        <% if admin_signed_in? %>
           <%= link_to "Admin Logout", destroy_admin_session_path,
               class: "btn btn-default bg-danger-subtle m-3" ,
               data: {
                 turbo_method: :delete,
                 turbo_confirm: "Are you sure?"
               } %>
-        </p>
-      <% end %>
+        <% end %>
+      </p>
     </div>
   </body>
 </html>

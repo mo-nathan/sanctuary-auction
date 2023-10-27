@@ -1,13 +1,14 @@
-<h1>Users</h1>
+<h1>Participants</h1>
 <p>
   <%= link_to "Items", items_path,
       { class: "btn btn-default bg-secondary-subtle" } %>
   <% if admin_signed_in? %>
-    <%= link_to "New User", new_user_path,
-        { class: "btn btn-default bg-secondary-subtle" } %>
+    <%= link_to "New Participant", new_user_path,
+        { class: "btn btn-default bg-danger-subtle" } %>
   <% end %>
 </p>
 
+Click Participant names to see their activity
 <% @users.each do |user| %>
   <hr>
   <div class="panel panel-default p-1 mt-4">

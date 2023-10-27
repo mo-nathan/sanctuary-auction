@@ -1,0 +1,11 @@
+#!/usr/bin/bash
+
+# su - rails
+# cd ~/sanctuary-auction
+# bin/deploy
+
+git pull
+bundle install
+rails db:migrate
+rake assets:precompile
+systemctl restart rails.service

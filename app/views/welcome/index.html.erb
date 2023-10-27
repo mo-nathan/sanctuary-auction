@@ -1,0 +1,19 @@
+<h1>Welcome to the Sanctuary Boston Anti-Capitalist Auction!</h1>
+
+<p>
+  <%= link_to "Items", items_path,
+      { class: "btn btn-default bg-secondary-subtle" } %>
+  <%= link_to "Participants", users_path,
+      { class: "btn btn-default bg-secondary-subtle" } %>
+</p>
+<% if admin_signed_in? %>
+  <p>
+    <%= link_to "New Item", new_item_path,
+        { class: "btn btn-default bg-danger-subtle" } %>
+    <%= link_to "New Participant", new_user_path,
+        { class: "btn btn-default bg-danger-subtle" } %>
+  </p>
+<% end %>
+
+
+<p>Here's a bunch of text describing what this is.</p>
