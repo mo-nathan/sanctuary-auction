@@ -11,6 +11,14 @@ class BidsControllerTest < ActionDispatch::IntegrationTest
     assert_equal(before + 1, Bid.count)
   end
 
+  test 'create with uppercase' do
+    before = Bid.count
+    post(item_bids_path(item_id: items(:item_one).id),
+         params: { bid: { code: users(:user_two).code.upcase, amount: '10' } })
+    assert_response :redirect
+    assert_equal(before + 1, Bid.count)
+  end
+
   test 'create fail over budget' do
     before = Bid.count
     user = users(:user_one)

@@ -16,6 +16,7 @@ class UsersController < ApplicationController
   end
 
   def create
+    params[:user][:code] = params[:user][:code].downcase.strip
     @user = User.new(user_params)
 
     if @user.save
@@ -30,6 +31,7 @@ class UsersController < ApplicationController
   end
 
   def update
+    params[:user][:code] = params[:user][:code].downcase.strip
     @user = User.find(params[:id])
 
     if @user.update(user_params)

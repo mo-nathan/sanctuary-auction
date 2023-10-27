@@ -3,7 +3,7 @@
 class BidsController < ApplicationController
   def create
     @item = Item.find(params[:item_id])
-    @user = User.find_by(code: params[:bid][:code])
+    @user = User.find_by(code: params[:bid][:code].downcase.strip)
     update_user(@item, @user)
     redirect_to item_path(@item)
   end

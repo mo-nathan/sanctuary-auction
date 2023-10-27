@@ -38,11 +38,38 @@ class UserControllerTest < ActionDispatch::IntegrationTest
     assert_equal(before + 1, User.count)
   end
 
-  test 'create fail' do
+  test 'create fail no name' do
     sign_in(admins(:admin_one))
     before = User.count
     post(users_path,
-         params: { user: { name: '' } })
+         params: { user: { code: 'xyz', name: '' } })
+    assert_response :unprocessable_entity
+    assert_equal(before, User.count)
+  end
+
+  test 'create fail no code' do
+    sign_in(admins(:admin_one))
+    before = User.count
+    post(users_path,
+         params: { user: { code: '', name: 'Rainey' } })
+    assert_response :unprocessable_entity
+    assert_equal(before, User.count)
+  end
+
+  test 'create fail upcase existing code' do
+    sign_in(admins(:admin_one))
+    before = User.count
+    post(users_path,
+         params: { user: { code: users(:user_one).code.upcase, name: 'Rainey' } })
+    assert_response :unprocessable_entity
+    assert_equal(before, User.count)
+  end
+
+  test 'create fail whitespace on existing code' do
+    sign_in(admins(:admin_one))
+    before = User.count
+    post(users_path,
+         params: { user: { code: " #{users(:user_one).code} ", name: 'Rainey' } })
     assert_response :unprocessable_entity
     assert_equal(before, User.count)
   end
@@ -59,7 +86,7 @@ class UserControllerTest < ActionDispatch::IntegrationTest
     user = users(:user_one)
     after = "#{user.name} with a change"
     patch(user_path(id: user.id),
-          params: { user: { name: after } })
+          params: { user: { name: after, code: user.code } })
     assert_response :redirect
     follow_redirect!
     user.reload
@@ -71,7 +98,7 @@ class UserControllerTest < ActionDispatch::IntegrationTest
     user = users(:user_one)
     before = user.name
     patch(user_path(id: user.id),
-          params: { user: { name: '' } })
+          params: { user: { name: '', code: '' } })
     assert_response :unprocessable_entity
     user.reload
     assert_equal(before, user.name)
