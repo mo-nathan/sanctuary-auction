@@ -39,7 +39,7 @@ class BidsController < ApplicationController
     return params[:bid][:amount].to_i unless item.cost
 
     # item.cost * amount
-    if params[:bid][:join] == "0"
+    if params[:bid][:join] == '0'
       0
     else
       item.cost
