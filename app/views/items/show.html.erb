@@ -8,7 +8,7 @@
     <p class="fs-3"><%= @item.title %></p>
     <p class="fs-4"><%= @item.description %></p>
     <% if @item.host %>
-      <p class="fs-5">Hosted by: <%= @item.host %></p>
+      <p class="fs-5">Host: <%= @item.host %></p>
     <% end %>
     <p>
       <% if @item.number %>
@@ -76,7 +76,8 @@
       </div>
       <% if @item.cost %>
         <div class="col-sm m-2">
-          <%= form.label :amount, "How Many" %> <%= form.text_field :amount, size: 4 %>
+          <%= form.check_box :join %>
+	  <%= form.label :join, "Get One" %>
         </div>
       <% else %>
         <div class="col-sm m-2">

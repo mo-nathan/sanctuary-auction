@@ -36,10 +36,14 @@ class BidsController < ApplicationController
   end
 
   def calc_amount(item)
-    amount = params[:bid][:amount].to_i
-    return amount unless item.cost
+    return params[:bid][:amount].to_i unless item.cost
 
-    item.cost * amount
+    # item.cost * amount
+    if params[:bid][:join] == "0"
+      0
+    else
+      item.cost
+    end
   end
 
   def make_bid(item, user, bid, amount)
