@@ -7,6 +7,9 @@
   <div class="col">
     <p class="fs-3"><%= @item.title %></p>
     <p class="fs-4"><%= @item.description %></p>
+    <% if @item.host %>
+      <p class="fs-5">Hosted by: <%= @item.host %></p>
+    <% end %>
     <p>
       <% if @item.number %>
         Quantity: <%= @item.number %>

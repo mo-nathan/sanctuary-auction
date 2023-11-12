@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_10_27_005418) do
+ActiveRecord::Schema[7.1].define(version: 2023_11_12_161848) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -45,6 +45,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_10_27_005418) do
     t.string "image_url"
     t.boolean "auction", default: false
     t.string "title", default: "An Item", null: false
+    t.string "host"
   end
 
   create_table "users", force: :cascade do |t|

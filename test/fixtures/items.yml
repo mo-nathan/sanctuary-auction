@@ -3,10 +3,12 @@
 item_one:
   cost: 10
   description: Item One is awesome
+  host: Someone Amazing
   title: Item One
 
 item_two:
   description: Item Two is even better
+  host: Someone Fabulous
   number: 1
   title: Item Two
 
