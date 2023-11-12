@@ -27,7 +27,10 @@
         <% end %>
       </div>
       <div class="col">
-        <%= item.title %>
+        <span class="fs-4"><%= item.title %></span>
+        <% if item.host %>
+          <br/>Host: <%= item.host %>
+        <% end %>
       </div>
       <div class="col-4">
         <% if item.number %>
