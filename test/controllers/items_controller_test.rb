@@ -9,6 +9,14 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
     item = items(:item_one)
     get(item_path(id: item.id))
     assert_equal(200, @response.status)
+    assert_select('br', count: 0)
+  end
+
+  test 'show long descritpion' do
+    item = items(:item_with_long_description)
+    get(item_path(id: item.id))
+    assert_equal(200, @response.status)
+    assert_select('br', count: 1)
   end
 
   test 'index' do

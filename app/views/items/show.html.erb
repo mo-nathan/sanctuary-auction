@@ -6,7 +6,7 @@
   <% end %>
   <div class="col">
     <p class="fs-3"><%= @item.title %></p>
-    <p class="fs-4"><%= @item.description %></p>
+    <p class="fs-4"><%= format_with_breaks(@item.description) %></p>
     <% if @item.host %>
       <p class="fs-5">Host: <%= @item.host %></p>
     <% end %>

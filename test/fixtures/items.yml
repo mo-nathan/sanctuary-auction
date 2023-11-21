@@ -16,3 +16,8 @@ item_no_bids:
   description: No Bid Item kind of sucks
   number: 1
   title: No Bid Item
+
+item_with_long_description:
+  description: "Such a long description\nit requires a new line"
+  number: 1
+  title: No Bid Item
