@@ -28,8 +28,14 @@
       </div>
       <div class="col">
         <span class="fs-4"><%= item.title %></span>
-        <% if item.host %>
+        <% if item.host.presnt? %>
           <br/>Host: <%= item.host %>
+        <% end %>
+        <% if item.format.presnt? %>
+          <br/>Format: <%= item.format %>
+        <% end %>
+        <% if item.event_date %>
+          <br/>Date: <%= @item.event_date.strftime("%B %e") %>
         <% end %>
       </div>
       <div class="col-4">
