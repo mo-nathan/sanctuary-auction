@@ -29,6 +29,34 @@ class BidsControllerTest < ActionDispatch::IntegrationTest
     assert_equal(before, Bid.count)
   end
 
+  test 'create negative amount' do
+    before = Bid.count
+    post(item_bids_path(item_id: items(:item_one).id),
+         params: { bid: { code: users(:user_two).code, amount: '-10' } })
+    assert_response :redirect
+    assert_equal(before, Bid.count)
+  end
+
+  test 'create empty amount' do
+    before = Bid.count
+    post(item_bids_path(item_id: items(:item_one).id),
+         params: { bid: { code: users(:user_two).code, amount: '' } })
+    assert_response :redirect
+    assert_equal(before, Bid.count)
+  end
+
+  test 'create 0 bid' do
+    before = Bid.count
+    post(item_bids_path(item_id: items(:item_two).id),
+         params: { bid: { code: users(:user_two).code, amount: '0' } })
+    assert_response :redirect
+    assert_equal(before - 1, Bid.count)
+    post(item_bids_path(item_id: items(:item_two).id),
+         params: { bid: { code: users(:user_two).code, amount: '0' } })
+    assert_response :redirect
+    assert_equal(before - 1, Bid.count)
+  end
+
   test 'create bad code' do
     before = Bid.count
     post(item_bids_path(item_id: items(:item_one).id),

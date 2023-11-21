@@ -11,6 +11,8 @@ class BidsController < ApplicationController
   private
 
   def update_user(item, user)
+    return if bad_amount
+
     if user
       update_balance(item, user, item.bids.find_by(user:), calc_amount(item))
     else
@@ -46,6 +48,19 @@ class BidsController < ApplicationController
     end
   end
 
+  def bad_amount
+    amount = params[:bid][:amount]
+    if amount == ''
+      flash.alert = 'Cannot have an empty bid'
+      true
+    elsif amount.to_i.negative?
+      flash.alert = 'Amount cannot be less than 0'
+      true
+    else
+      false
+    end
+  end
+
   def make_bid(item, user, bid, amount)
     if bid
       if amount.zero?
@@ -54,7 +69,7 @@ class BidsController < ApplicationController
         bid.amount = amount
         bid.save
       end
-    else
+    elsif amount.positive?
       item.bids.create(user:, amount:)
     end
   end
