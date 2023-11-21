@@ -12,7 +12,7 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
     assert_select('br', count: 0)
   end
 
-  test 'show long descritpion' do
+  test 'show long description' do
     item = items(:item_with_long_description)
     get(item_path(id: item.id))
     assert_equal(200, @response.status)
@@ -62,7 +62,7 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
     assert_equal(200, @response.status)
   end
 
-  test 'update' do
+  test 'update title' do
     sign_in(admins(:admin_one))
     item = items(:item_one)
     after = "#{item.title} with a change"
@@ -72,6 +72,30 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
     follow_redirect!
     item.reload
     assert_equal(after, item.title)
+  end
+
+  test 'update format' do
+    sign_in(admins(:admin_one))
+    item = items(:item_one)
+    after = "#{item.format} with a change"
+    patch(item_path(id: item.id),
+          params: { item: { format: after } })
+    assert_response :redirect
+    follow_redirect!
+    item.reload
+    assert_equal(after, item.format)
+  end
+
+  test 'update event date' do
+    sign_in(admins(:admin_one))
+    item = items(:item_one)
+    date = Date.today
+    patch(item_path(id: item.id),
+          params: { item: { event_date: date } })
+    assert_response :redirect
+    follow_redirect!
+    item.reload
+    assert_equal(date, item.event_date)
   end
 
   test 'update fail' do

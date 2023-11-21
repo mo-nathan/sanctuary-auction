@@ -7,8 +7,14 @@
   <div class="col">
     <p class="fs-3"><%= @item.title %></p>
     <p class="fs-4"><%= format_with_breaks(@item.description) %></p>
-    <% if @item.host %>
+    <% if @item.host.present? %>
       <p class="fs-5">Host: <%= @item.host %></p>
+    <% end %>
+    <% if @item.format.present? %>
+      <p class="fs-5">Format: <%= @item.format %></p>
+    <% end %>
+    <% if @item.event_date %>
+      <p class="fs-5">Date: <%= @item.event_date.strftime("%B %e") %></p>
     <% end %>
     <p>
       <% if @item.number %>

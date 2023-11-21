@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_11_12_161848) do
+ActiveRecord::Schema[7.1].define(version: 2023_11_21_180822) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -46,6 +46,8 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_12_161848) do
     t.boolean "auction", default: false
     t.string "title", default: "An Item", null: false
     t.string "host"
+    t.date "event_date"
+    t.string "format"
   end
 
   create_table "users", force: :cascade do |t|

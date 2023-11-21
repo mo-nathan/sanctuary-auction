@@ -12,3 +12,7 @@ Style/Documentation:
   # And see Martin, Clean Code, ch. 4
   #   (Redundant Comments and Mandated Comments are Bad Comments)
   Enabled: false
+
+Metrics/ClassLength:
+  Exclude:
+    - "test/**/*"
