@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Item < ApplicationRecord
-  has_many :bids
+  has_many :bids, dependent: :destroy
   validates :title, presence: true
   validate :cost_or_number
   default_scope { order(title: :asc) }
