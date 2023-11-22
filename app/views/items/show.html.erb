@@ -1,4 +1,4 @@
-<%= render "tabs", tab: @item.auction ? :auction : :raffle %>
+<%= render "tabs", tab: @item.item_type %>
 
 <div class="row align-items-center mt-4">
   <% if @item.image_url.present? %>

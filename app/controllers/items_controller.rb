@@ -4,8 +4,8 @@ class ItemsController < ApplicationController
   before_action :authenticate_admin!, except: %i[index show]
 
   def index
-    @auction = params[:auction] == '1'
-    @items = Item.where(auction: @auction)
+    @type = params[:type] || 'raffle'
+    @items = Item.by_type(@type)
   end
 
   def show

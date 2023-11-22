@@ -5,6 +5,19 @@ class Item < ApplicationRecord
   validates :title, presence: true
   validate :cost_or_number
   default_scope { order(title: :asc) }
+  scope :buy_in_items, -> { where('cost IS NOT NULL') }
+  scope :raffle_items, -> { where('cost IS NULL AND NOT auction') }
+  scope :auction_items, -> { where('cost IS NULL AND auction') }
+
+  def self.by_type(type)
+    if type == 'Buy-In'
+      buy_in_items
+    elsif type == 'Auction'
+      auction_items
+    else
+      raffle_items
+    end
+  end
 
   def total
     result = 0
@@ -21,6 +34,14 @@ class Item < ApplicationRecord
            (number.nil? && cost_positive)
       errors.add(:number,
                  'must be a positive number or cost must be a positive number of Tickets, but not both')
+    end
+  end
+
+  def item_type
+    if cost.nil?
+      auction ? 'Auction' : 'Raffle'
+    else
+      'Buy-In'
     end
   end
 end
