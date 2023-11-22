@@ -1,3 +1,5 @@
+<%= render "tabs", tab: @item.auction ? :auction : :raffle %>
+
 <div class="row align-items-center mt-4">
   <% if @item.image_url.present? %>
     <div class="col-5">
@@ -33,14 +35,13 @@
   </div>
 </div>
 
-<div class="container p-2">
-  <%= link_to "All Items", items_path,
-      class: "btn btn-default bg-secondary-subtle" %>
-  <% if admin_signed_in? %>
+
+<% if admin_signed_in? %>
+  <div class="container p-2">
     <%= link_to "Edit Item", edit_item_path(@item),
         { class: "btn btn-default bg-danger-subtle" } %>
-  <% end %>
-</div>
+  </div>
+<% end %>
 
 <% if @item.auction %>
   <% if admin_signed_in? %>

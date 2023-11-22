@@ -1,3 +1,5 @@
+<%= render "tabs", tab: @item.auction ? :auction : :raffle %>
+
 <h1 class="mt-4">Edit Item</h1>
 
 <%= render "form", item: @item %>

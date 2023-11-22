@@ -1,3 +1,5 @@
+<%= render "tabs", tab: :user %>
+
 <h1><%= @user.name %></h1>
 
 <p>
@@ -7,14 +9,12 @@
   <% end %>
 </p>
 
-<div class="container p-2">
-  <%= link_to "All Participants", users_path,
-      class: "btn btn-default bg-secondary-subtle" %>
-  <% if admin_signed_in? %>
+<% if admin_signed_in? %>
+  <div class="container p-2">
     <%= link_to "Edit Participant", edit_user_path(@user),
         { class: "btn btn-default bg-danger-subtle" } %>
-  <% end %>
-</div>
+  </div>
+<% end %>
 
 <h2>Ticket Entries</h2>
 <% @user.bids.each do |bid| %>

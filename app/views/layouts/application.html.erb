@@ -21,22 +21,9 @@
         <%= link_to(image_tag("/logo.png", height: 100), root_path) %>
         <span class="fs-1 align-bottom">Anti-Capitalist Auction!</span>
       </div>
-      <p>
-        <%= link_to "Raffle", items_path(auction: "0"),
-          { class: "btn btn-default bg-secondary-subtle" } %>
-        <%= link_to "Live Auction", items_path(auction: "1"),
-          { class: "btn btn-default bg-secondary-subtle" } %>
-        <%= link_to "Particpants", users_path,
-          { class: "btn btn-default bg-secondary-subtle" } %>
-        <%= link_to "Home", root_path,
-          { class: "btn btn-default bg-secondary-subtle" } %>
-      </p>
-
       <%= yield %>
       <hr>
       <p>
-        <%= link_to "Home", root_path,
-          { class: "btn btn-default bg-secondary-subtle" } %>
         <% if admin_signed_in? %>
           <%= link_to "Admin Logout", destroy_admin_session_path,
               class: "btn btn-default bg-danger-subtle m-3" ,

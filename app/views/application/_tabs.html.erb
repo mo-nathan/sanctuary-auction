@@ -1,0 +1,20 @@
+<ul class="nav nav-tabs">
+  <% inactive = { class: "nav-link" }
+     active = { class: "nav-link active", 'aria-current': "page" } %>
+  <li class="nav-item">
+    <%= link_to "Raffle", items_path(auction: "0"),
+      tab == :raffle ? active : inactive %>
+  </li>
+  <li class="nav-item">
+    <%= link_to "Live Auction", items_path(auction: "1"),
+      tab == :auction ? active : inactive %>
+  </li>
+  <li class="nav-item">
+    <%= link_to "Particpants", users_path,
+      tab == :user ? active : inactive %>
+  </li>
+  <li class="nav-item">
+    <%= link_to "Home", root_path,
+      tab == :home ? active : inactive %>
+  </li>
+</ul>
