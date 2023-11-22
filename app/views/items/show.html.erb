@@ -25,13 +25,6 @@
          <%= @item.cost %> Tickets Each
       <% end %>
     </p>
-    <p>
-      <% if @item.auction %>
-        Auction Item
-      <% else %>
-        Raffle Item
-      <% end %>
-    </p>
   </div>
 </div>
 
@@ -43,7 +36,7 @@
   </div>
 <% end %>
 
-<% if @item.auction %>
+<% if @item.item_type == 'Auction' %>
   <% if admin_signed_in? %>
     <%= form_with model: [ @item, @item.bids.build ] do |form| %>
       <div class="row align-items-center">
