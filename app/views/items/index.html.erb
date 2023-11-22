@@ -1,15 +1,10 @@
 <h1><%= @auction ? "Auction" : "Raffle" %> Items</h1>
-<p>
-  <%= link_to "Participants", users_path,
-      { class: "btn btn-default bg-secondary-subtle" } %>
-  <%= link_to @auction ? "Raffle Items" : "Auction Items",
-      items_path(auction: @auction ? "0" : "1"),
-      { class: "btn btn-default bg-secondary-subtle" } %>
-  <% if admin_signed_in? %>
+<% if admin_signed_in? %>
+  <p>
     <%= link_to "New Item", new_item_path,
         { class: "btn btn-default bg-danger-subtle" } %>
-  <% end %>
-</p>
+  </p>
+<% end %>
 
 <% @items.each do |item| %>
   <hr>
