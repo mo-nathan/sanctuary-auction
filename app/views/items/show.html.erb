@@ -95,7 +95,7 @@
   <% end %>
 
   <h3>Ticket Entries</h3>
-  <% @item.bids.each do |bid| %>
+  <% @item.bids.includes(:user).order("users.name").each do |bid| %>
     <% if bid.user %>
       <hr>
       <%= link_to(bid.user.name, user_path(bid.user),

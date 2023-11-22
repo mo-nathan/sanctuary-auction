@@ -5,5 +5,5 @@ class User < ApplicationRecord
   validates :code, presence: true
   validates :code, uniqueness: true
   validates :name, presence: true
-  default_scope { order(name: :desc) }
+  default_scope { order(name: :asc) }
 end
