@@ -19,8 +19,36 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
     assert_select('br', count: 1)
   end
 
-  test 'index' do
+  test 'index default' do
     get(items_path)
+    assert_equal(200, @response.status)
+    cat_one = items(:item_two).category
+    assert(@response.body.include?("Category: #{cat_one}"))
+    cat_two = items(:item_with_long_description).category
+    assert(@response.body.include?("Category: #{cat_two}"))
+  end
+
+  test 'index raffle' do
+    get(items_path(type: 'Raffle'))
+    assert_equal(200, @response.status)
+  end
+
+  test 'index raffle category' do
+    cat_one = items(:item_two).category
+    get(items_path(type: 'Raffle', filter: cat_one))
+    assert_equal(200, @response.status)
+    assert(@response.body.include?("Category: #{cat_one}"))
+    cat_two = items(:item_with_long_description).category
+    assert_not(@response.body.include?("Category: #{cat_two}"))
+  end
+
+  test 'index auction' do
+    get(items_path(type: 'Auction'))
+    assert_equal(200, @response.status)
+  end
+
+  test 'index buy-in' do
+    get(items_path(type: 'Buy-In'))
     assert_equal(200, @response.status)
   end
 

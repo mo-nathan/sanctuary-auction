@@ -9,14 +9,14 @@ class ItemTest < ActiveSupport::TestCase
   end
 
   test 'buy-in item' do
-    items(:item_one).item_type == :buy_in
+    assert_equal(items(:item_one).item_type, 'Buy-In')
   end
 
   test 'raffle item' do
-    items(:item_two).item_type == :raffle
+    assert_equal(items(:item_two).item_type, 'Raffle')
   end
 
   test 'auction item' do
-    items(:item_no_bids).item_type == :auction
+    assert_equal(items(:item_no_bids).item_type, 'Auction')
   end
 end

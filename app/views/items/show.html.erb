@@ -9,6 +9,9 @@
   <div class="col">
     <p class="fs-3"><%= @item.title %></p>
     <p class="fs-4"><%= format_with_breaks(@item.description) %></p>
+    <% if @item.category.present? %>
+      <p class="fs-5">Category: <%= @item.category %></p>
+    <% end %>
     <% if @item.host.present? %>
       <p class="fs-5">Host: <%= @item.host %></p>
     <% end %>

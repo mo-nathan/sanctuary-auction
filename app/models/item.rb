@@ -9,6 +9,15 @@ class Item < ApplicationRecord
   scope :raffle_items, -> { where('cost IS NULL AND NOT auction') }
   scope :auction_items, -> { where('cost IS NULL AND auction') }
 
+  def self.selected(type, filter = nil)
+    result = by_type(type)
+    if filter.present? && filter != 'All'
+      result.where(category: filter)
+    else
+      result
+    end
+  end
+
   def self.by_type(type)
     if type == 'Buy-In'
       buy_in_items

@@ -8,6 +8,24 @@
   </p>
 <% end %>
 
+<p>
+  <% categories = unique_categories(@type)
+     if categories.present? %>
+    <div class="dropdown">
+      <a class="btn btn-default bg-secondary-subtle dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <%= @filter %>
+      </a>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href=<%= items_path(type: @type, filter: 'All') %>>All</a></li>
+        <hr>
+        <% categories.each do |category| %>
+          <li><a class="dropdown-item" href=<%= items_path(type: @type, filter: category) %>><%= category %></a></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+</p>
+
 <% @items.each do |item| %>
   <hr>
   <div class="panel panel-default p-1">
@@ -25,6 +43,9 @@
       </div>
       <div class="col">
         <span class="fs-4"><%= item.title %></span>
+        <% if item.category.present? %>
+          <br/>Category: <%= item.category %>
+        <% end %>
         <% if item.host.present? %>
           <br/>Host: <%= item.host %>
         <% end %>

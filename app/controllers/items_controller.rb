@@ -5,7 +5,8 @@ class ItemsController < ApplicationController
 
   def index
     @type = params[:type] || 'Raffle'
-    @items = Item.by_type(@type)
+    @filter = params[:filter] || 'All'
+    @items = Item.selected(@type, @filter)
   end
 
   def show
@@ -50,7 +51,7 @@ class ItemsController < ApplicationController
   private
 
   def item_params
-    params.require(:item).permit(:format, :event_date, :host, :description,
+    params.require(:item).permit(:format, :event_date, :category, :host, :description,
                                  :cost, :number, :image_url, :auction, :title)
   end
 end
