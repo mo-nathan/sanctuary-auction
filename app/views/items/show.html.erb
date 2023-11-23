@@ -45,11 +45,11 @@
         </div>
         <% if @item.cost %>
           <div class="col-sm m-2">
-            <%= form.label :amount, "How Many" %> <%= form.text_field :amount, size: 4 %>
+            <%= form.label :amount, "How Many" %> <%= form.number_field :amount, size: 4 %>
           </div>
         <% else %>
           <div class="col-sm m-2">
-            <%= form.label :amount, "Total Tickets" %> <%= form.text_field :amount, size: 4 %>
+            <%= form.label :amount, "Total Tickets" %> <%= form.number_field :amount, size: 4 %>
           </div>
         <% end %>
         <div class="col-sm m-2">
@@ -81,7 +81,7 @@
         </div>
       <% else %>
         <div class="col-sm m-2">
-          <%= form.label :amount, "Total Tickets" %> <%= form.text_field :amount, size: 4 %>
+          <%= form.label :amount, "Total Tickets" %> <%= form.number_field :amount %>
         </div>
       <% end %>
       <div class="col-sm m-2"><%= form.submit %></div>

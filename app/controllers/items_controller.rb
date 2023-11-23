@@ -4,7 +4,7 @@ class ItemsController < ApplicationController
   before_action :authenticate_admin!, except: %i[index show]
 
   def index
-    @type = params[:type] || 'raffle'
+    @type = params[:type] || 'Raffle'
     @items = Item.by_type(@type)
   end
 

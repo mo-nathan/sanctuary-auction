@@ -11,12 +11,12 @@ class BidsController < ApplicationController
   private
 
   def update_user(item, user)
-    return if bad_amount
+    return if bad_amount(user)
 
     if user
       update_balance(item, user, item.bids.find_by(user:), calc_amount(item))
     else
-      flash.alert = "Unable to find a user with the code #{params[:bid][:code]}"
+      flash.alert = "Unable to find a user with the code #{params[:bid][:code]}."
     end
   end
 
@@ -26,6 +26,7 @@ class BidsController < ApplicationController
       user.balance = balance
       user.save
       make_bid(item, user, bid, amount)
+      flash.notice = "#{user.name} has #{user.balance} tickets left."
     else
       flash.alert = "Cannot make update. #{user.name} has #{user.balance} tickets left."
     end
@@ -48,13 +49,13 @@ class BidsController < ApplicationController
     end
   end
 
-  def bad_amount
+  def bad_amount(user)
     amount = params[:bid][:amount]
     if amount == ''
-      flash.alert = 'Cannot have an empty bid'
+      flash.alert = "Cannot have an empty bid.  #{user.name} has #{user.balance} tickets left."
       true
     elsif amount.to_i.negative?
-      flash.alert = 'Amount cannot be less than 0'
+      flash.alert = "Amount cannot be less than 0.  #{user.name} has #{user.balance} tickets left."
       true
     else
       false

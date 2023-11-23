@@ -12,7 +12,7 @@
 
   <body>
     <% flash.each do |type, msg| %>
-      <div class="alert alert-danger">
+      <div class="alert alert-<%= class_from_type(type) %>">
         <%= msg %>
       </div>
     <% end %>
