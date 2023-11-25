@@ -52,8 +52,8 @@
         <% if item.format.present? %>
           <br/>Format: <%= item.format %>
         <% end %>
-        <% if item.event_date %>
-          <br/>Date: <%= item.event_date.strftime("%B %e") %>
+        <% if item.timing %>
+          <br/>Timing: <%= item.timing %>
         <% end %>
       </div>
       <div class="col-4">

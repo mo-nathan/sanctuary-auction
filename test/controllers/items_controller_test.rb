@@ -114,16 +114,16 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
     assert_equal(after, item.format)
   end
 
-  test 'update event date' do
+  test 'update timing' do
     sign_in(admins(:admin_one))
     item = items(:item_one)
-    date = Date.today
+    date = Date.today.strftime('%B %e')
     patch(item_path(id: item.id),
-          params: { item: { event_date: date } })
+          params: { item: { timing: date } })
     assert_response :redirect
     follow_redirect!
     item.reload
-    assert_equal(date, item.event_date)
+    assert_equal(date, item.timing)
   end
 
   test 'update fail' do

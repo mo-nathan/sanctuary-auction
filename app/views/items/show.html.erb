@@ -18,8 +18,8 @@
     <% if @item.format.present? %>
       <p class="fs-5">Format: <%= @item.format %></p>
     <% end %>
-    <% if @item.event_date %>
-      <p class="fs-5">Date: <%= @item.event_date.strftime("%B %e") %></p>
+    <% if @item.timing %>
+      <p class="fs-5">Timing: <%= @item.timing %></p>
     <% end %>
     <p>
       <% if @item.number %>
