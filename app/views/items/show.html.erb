@@ -8,7 +8,6 @@
   <% end %>
   <div class="col">
     <p class="fs-3"><%= @item.title %></p>
-    <p class="fs-4"><%= format_with_breaks(@item.description) %></p>
     <% if @item.category.present? %>
       <p class="fs-5">Category: <%= @item.category %></p>
     <% end %>
@@ -21,6 +20,7 @@
     <% if @item.timing %>
       <p class="fs-5">Timing: <%= @item.timing %></p>
     <% end %>
+    <p><%= format_with_breaks(@item.description) %></p>
     <p>
       <% if @item.number %>
         Quantity: <%= @item.number %>
