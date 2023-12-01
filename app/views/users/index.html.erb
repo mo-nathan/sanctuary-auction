@@ -1,14 +1,13 @@
 <%= render "tabs", tab: "user" %>
 
-<h1>Participants</h1>
 <% if admin_signed_in? %>
   <p>
     <%= link_to "New Participant", new_user_path,
         { class: "btn btn-default bg-danger-subtle" } %>
   </p>
 <% end %>
-
-Click Participant names to see their activity
+<br/>
+Click a person's name to see their activity
 <% @users.each do |user| %>
   <hr>
   <div class="panel panel-default p-1 mt-4">
