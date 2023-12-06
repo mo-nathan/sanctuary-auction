@@ -2,14 +2,10 @@
 
 class BidsController < ApplicationController
   def create
-    if Time.now > Time.parse("2023-12-03 00:00 -0500")
-      flash.alert = "No more bids allowed"
-    else
-      @item = Item.find(params[:item_id])
-      @user = User.find_by(code: params[:bid][:code].downcase.strip)
-      update_user(@item, @user)
-      redirect_to item_path(@item)
-    end
+    @item = Item.find(params[:item_id])
+    @user = User.find_by(code: params[:bid][:code].downcase.strip)
+    update_user(@item, @user)
+    redirect_to item_path(@item)
   end
 
   private
