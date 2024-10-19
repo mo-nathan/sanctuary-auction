@@ -4,37 +4,37 @@ require 'test_helper'
 
 class TagsControllerTest < ActionDispatch::IntegrationTest
   test 'should get index' do
-    get tags_index_url
+    get tags_url
     assert_response :success
   end
 
   test 'should get show' do
-    get tags_show_url
+    get tag_url(tags(:one))
     assert_response :success
   end
 
   test 'should get new' do
-    get tags_new_url
+    get new_tag_url
     assert_response :success
   end
 
   test 'should get create' do
-    get tags_create_url
+    post tags_url
     assert_response :success
   end
 
   test 'should get edit' do
-    get tags_edit_url
+    get edit_tag_url(tags(:one))
     assert_response :success
   end
 
   test 'should get update' do
-    get tags_update_url
+    put tag_url(tags(:one))
     assert_response :success
   end
 
   test 'should get destroy' do
-    get tags_destroy_url
+    delete tag_url(tags(:one))
     assert_response :success
   end
 end
