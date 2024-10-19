@@ -2,6 +2,8 @@
 
 class Item < ApplicationRecord
   has_many :bids, dependent: :destroy
+  has_many :item_tags, dependent: :destroy
+  has_many :tags, through: :item_tags
   validates :title, presence: true
   validate :cost_or_number
   default_scope { order(title: :asc) }
