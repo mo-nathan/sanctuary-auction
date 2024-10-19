@@ -17,6 +17,10 @@ class ItemsController < ApplicationController
     @item = Item.new
   end
 
+  def edit
+    @item = Item.find(params[:id])
+  end
+
   def create
     @item = Item.new(item_params)
 
@@ -25,10 +29,6 @@ class ItemsController < ApplicationController
     else
       render :new, status: :unprocessable_entity
     end
-  end
-
-  def edit
-    @item = Item.find(params[:id])
   end
 
   def update

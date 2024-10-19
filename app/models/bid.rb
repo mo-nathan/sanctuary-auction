@@ -12,7 +12,7 @@ class Bid < ApplicationRecord
   def self.report
     File.open(Bid::REPORT_NAME, 'w') do |file|
       file.write("User Name\tUser Code\tBid Amount\tItem Type\tItem Number\tItem Title\n")
-      Bid.all.find_each do |bid|
+      Bid.find_each do |bid|
         file.write("#{bid.user.name}\t#{bid.user.code}\t#{bid.amount}\t#{bid.item.item_type}\t" \
                    "#{bid.item.number}\t#{bid.item.title}\n")
       end

@@ -117,7 +117,7 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
   test 'update timing' do
     sign_in(admins(:admin_one))
     item = items(:item_one)
-    date = Date.today.strftime('%B %e')
+    date = Time.zone.today.strftime('%B %e')
     patch(item_path(id: item.id),
           params: { item: { timing: date } })
     assert_response :redirect

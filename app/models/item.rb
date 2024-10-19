@@ -5,7 +5,7 @@ class Item < ApplicationRecord
   validates :title, presence: true
   validate :cost_or_number
   default_scope { order(title: :asc) }
-  scope :buy_in_items, -> { where('cost IS NOT NULL') }
+  scope :buy_in_items, -> { where.not(cost: nil) }
   scope :raffle_items, -> { where('cost IS NULL AND NOT auction') }
   scope :auction_items, -> { where('cost IS NULL AND auction') }
 

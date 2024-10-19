@@ -15,6 +15,10 @@ class UsersController < ApplicationController
     @user = User.new
   end
 
+  def edit
+    @user = User.find(params[:id])
+  end
+
   def create
     params[:user][:code] = params[:user][:code].downcase.strip
     @user = User.new(user_params)
@@ -24,10 +28,6 @@ class UsersController < ApplicationController
     else
       render :new, status: :unprocessable_entity
     end
-  end
-
-  def edit
-    @user = User.find(params[:id])
   end
 
   def update
