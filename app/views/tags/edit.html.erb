@@ -1,2 +1,12 @@
-<h1>Tags#edit</h1>
-<p>Find me in app/views/tags/edit.html.erb</p>
+<%= render "tabs", tab: "tags" %>
+
+<h1 class="mt-4">Edit Tag</h1>
+
+<%= render "form", tag: @tag %>
+
+<%= link_to "Destroy", tag_path(@tag),
+    class: "btn btn-default bg-danger-subtle mt-3" ,
+    data: {
+      turbo_method: :delete,
+      turbo_confirm: "Are you sure?"
+    } %>

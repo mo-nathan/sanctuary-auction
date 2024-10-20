@@ -19,8 +19,10 @@ class TagsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should get create' do
-    post tags_url
-    assert_response :success
+    post tags_url(tag: { name: 'New Tag' })
+    assert_response :redirect
+    tag = Tag.last
+    assert_equal(tag.name, 'New Tag')
   end
 
   test 'should get edit' do
@@ -29,12 +31,15 @@ class TagsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should get update' do
-    put tag_url(tags(:one))
-    assert_response :success
+    tag = tags(:one)
+    put tag_url(tag, tag: { name: 'Won' })
+    assert_response :redirect
+    tag.reload
+    assert_equal(tag.name, 'Won')
   end
 
   test 'should get destroy' do
     delete tag_url(tags(:one))
-    assert_response :success
+    assert_response :redirect
   end
 end
