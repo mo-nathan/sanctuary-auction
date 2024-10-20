@@ -21,6 +21,7 @@ class TagsController < ApplicationController
     @tag = Tag.new(tag_params)
 
     if @tag.save
+      flash.notice = "#{@tag.name} tag created."
       redirect_to tags_url
     else
       render :new, status: :unprocessable_entity
@@ -31,6 +32,7 @@ class TagsController < ApplicationController
     @tag = Tag.find(params[:id])
 
     if @tag.update(tag_params)
+      flash.notice = 'Tag was successfully updated.'
       redirect_to tags_url
     else
       render :edit, status: :unprocessable_entity
@@ -39,7 +41,9 @@ class TagsController < ApplicationController
 
   def destroy
     @tag = Tag.find(params[:id])
+    name = @tag.name
     @tag.destroy
+    flash.notice = "#{name} tag successfully destroyed."
 
     redirect_to tags_url
   end

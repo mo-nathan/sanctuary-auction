@@ -3,7 +3,7 @@
     <%= form.label :name %><br>
     <%= form.text_field :name, size: 60 %>
     <% tag.errors.full_messages_for(:name).each do |message| %>
-      <div><%= message %></div>
+      <div class="error"><%= message %></div>
     <% end %>
   </div>
 
