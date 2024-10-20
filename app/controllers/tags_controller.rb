@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class TagsController < ApplicationController
+  before_action :authenticate_admin!
+
   def index
     @tags = Tag.all
   end
@@ -52,5 +54,11 @@ class TagsController < ApplicationController
 
   def tag_params
     params.require(:tag).permit(:name)
+  end
+
+  def authenticate_admin!
+    return if admin_signed_in?
+
+    redirect_to root_path, alert: I18n.t('must_be_admin')
   end
 end

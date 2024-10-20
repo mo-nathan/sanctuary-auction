@@ -28,6 +28,7 @@
 #       enabled: "ON"
 
 en:
+  must_be_admin: "You must be an admin to access this section."
   hello: "Hello world"
   helpers:
     submit:

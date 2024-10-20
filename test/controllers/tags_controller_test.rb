@@ -3,6 +3,12 @@
 require 'test_helper'
 
 class TagsControllerTest < ActionDispatch::IntegrationTest
+  include Devise::Test::IntegrationHelpers
+
+  def setup
+    sign_in(admins(:admin_one))
+  end
+
   test 'should get index' do
     get tags_url
     assert_response :success
@@ -40,6 +46,15 @@ class TagsControllerTest < ActionDispatch::IntegrationTest
     end
     assert_response :unprocessable_entity
     assert_select 'div.error', /Name has already been taken/
+  end
+
+  test 'non-admin should fail to create tag' do
+    sign_out(admins(:admin_one))
+    name = 'Non-admin tag'
+    assert_difference('Tag.count', 0) do
+      post tags_url(tag: { name: })
+    end
+    assert_redirected_to root_path
   end
 
   test 'should get edit' do
