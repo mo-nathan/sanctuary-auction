@@ -8,6 +8,9 @@ Rails.application.routes.draw do
 
   resources :items do
     resources :bids
+    collection do
+      get 'filter_by_tags'
+    end
   end
   resources :users
   resources :tags

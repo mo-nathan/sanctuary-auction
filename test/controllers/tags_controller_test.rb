@@ -34,8 +34,7 @@ class TagsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to tags_url
     follow_redirect!
     assert_response :success
-    tag = Tag.last
-    assert_equal tag.name, 'New Tag'
+    tag = Tag.find_by(name: 'New Tag')
     assert_select 'div.alert.alert-success', "#{tag.name} tag created."
   end
 

@@ -4,9 +4,9 @@ class ItemsController < ApplicationController
   before_action :authenticate_admin!, except: %i[index show]
 
   def index
-    @type = params[:type] || 'Raffle'
-    @filter = params[:filter] || 'All'
-    @items = Item.selected(@type, @filter)
+    select_items
+    @tags = Tag.all # Fetching all tags to show in the filter form
+    @selected_tag_ids = params[:tag_ids] || []
   end
 
   def show
@@ -50,8 +50,18 @@ class ItemsController < ApplicationController
 
   private
 
+  def select_items
+    @items = Item.all
+    params[:tag_ids]&.delete_if(&:empty?)
+    return if params[:tag_ids].blank?
+
+    @items = Item.joins(:tags).group('items.id').having('COUNT(tags.id) = ?',
+                                                        params[:tag_ids].size).where(tags: { id: params[:tag_ids] })
+  end
+
   def item_params
-    params.require(:item).permit(:format, :timing, :category, :host, :description,
-                                 :cost, :number, :image_url, :auction, :title)
+    params.require(:item).permit(:format, :timing, :host, :description,
+                                 :cost, :number, :image_url, :auction, :title,
+                                 tag_ids: [])
   end
 end

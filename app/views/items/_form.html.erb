@@ -16,14 +16,6 @@
   </div>
 
   <div class="mt-3">
-    <%= form.label :category %><br>
-    <%= form.text_field :category, size: 60 %>
-    <% item.errors.full_messages_for(:category).each do |message| %>
-      <div><%= message %></div>
-    <% end %>
-  </div>
-
-  <div class="mt-3">
     <%= form.label :host %><br>
     <%= form.text_field :host, size: 60 %>
     <% item.errors.full_messages_for(:host).each do |message| %>
@@ -67,6 +59,16 @@
     <%= form.number_field :number %>
     <% item.errors.full_messages_for(:number).each do |message| %>
       <div><%= message %></div>
+    <% end %>
+  </div>
+
+  <div class="mt-3 field">
+    <%= form.label :tags %><br>
+    <%= form.collection_check_boxes :tag_ids, Tag.all, :id, :name do |cb| %>
+      <div>
+        <%= cb.check_box %>
+        <%= cb.label %>
+      </div>
     <% end %>
   </div>
 

@@ -5,4 +5,5 @@ class Tag < ApplicationRecord
   has_many :items, through: :item_tags
 
   validates :name, presence: true, uniqueness: true
+  default_scope { order(name: :asc) }
 end

@@ -8,48 +8,40 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
   test 'show' do
     item = items(:item_one)
     get(item_path(id: item.id))
-    assert_equal(200, @response.status)
+    assert_response :success
     assert_select('br', count: 0)
   end
 
   test 'show long description' do
     item = items(:item_with_long_description)
     get(item_path(id: item.id))
-    assert_equal(200, @response.status)
+    assert_response :success
     assert_select('br', count: 1)
   end
 
   test 'index default' do
     get(items_path)
-    assert_equal(200, @response.status)
-    cat_one = items(:item_two).category
-    assert(@response.body.include?("Category: #{cat_one}"))
-    cat_two = items(:item_with_long_description).category
-    assert(@response.body.include?("Category: #{cat_two}"))
+    assert_response :success
+    # assert_match items(:item_one).title, @response.body
+    assert_select 'span', text: items(:item_one).title
+    assert_select 'span', text: items(:item_two).title
   end
 
-  test 'index raffle' do
-    get(items_path(type: 'Raffle'))
-    assert_equal(200, @response.status)
-  end
-
-  test 'index raffle category' do
-    cat_one = items(:item_two).category
-    get(items_path(type: 'Raffle', filter: cat_one))
-    assert_equal(200, @response.status)
-    assert(@response.body.include?("Category: #{cat_one}"))
-    cat_two = items(:item_with_long_description).category
-    assert_not(@response.body.include?("Category: #{cat_two}"))
+  test 'index tag test' do
+    get(items_path(tag_ids: [tags(:one).id.to_s]))
+    assert_response :success
+    assert_select 'span', text: items(:item_one).title
+    assert_select 'span', text: items(:item_two).title, count: 0
   end
 
   test 'index auction' do
     get(items_path(type: 'Auction'))
-    assert_equal(200, @response.status)
+    assert_response :success
   end
 
   test 'index buy-in' do
     get(items_path(type: 'Buy-In'))
-    assert_equal(200, @response.status)
+    assert_response :success
   end
 
   test 'admin required' do
@@ -61,7 +53,7 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
   test 'new' do
     sign_in(admins(:admin_one))
     get(new_item_path)
-    assert_equal(200, @response.status)
+    assert_response :success
   end
 
   test 'create' do
@@ -87,7 +79,7 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
     sign_in(admins(:admin_one))
     item = items(:item_one)
     get(edit_item_path(id: item.id))
-    assert_equal(200, @response.status)
+    assert_response :success
   end
 
   test 'update title' do

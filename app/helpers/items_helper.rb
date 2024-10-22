@@ -13,8 +13,4 @@ module ItemsHelper
     end
     result
   end
-
-  def unique_categories(type)
-    (Item.selected(type).pluck(:category).uniq - [nil, '']).sort
-  end
 end

@@ -8,63 +8,101 @@
   </p>
 <% end %>
 
-<p>
-  <% categories = unique_categories(@type)
-     if categories.present? %>
-    <div class="dropdown">
-      Filter by Category:
-      <a class="btn btn-default bg-secondary-subtle dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-        <%= @filter %>
-      </a>
-      <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href=<%= items_path(type: @type, filter: 'All') %>>All</a></li>
-        <hr>
-        <% categories.each do |category| %>
-          <li><a class="dropdown-item" href=<%= items_path(type: @type, filter: category) %>><%= category %></a></li>
-        <% end %>
-      </ul>
+<!-- Button to toggle visibility of the filter form -->
+<% if @selected_tag_ids == [] %>
+  <button id="toggle-filter-btn" class="mb-2 btn btn-default bg-info-subtle">
+    Filter by Tag
+  </button>
+<% end %>
+
+<div id="filter-form" style="display: <%= @selected_tag_ids.any? ? 'block' : 'none' %>;">
+  <%= form_with url: items_path, method: :get, local: true, data: { turbo: false } do |form| %>
+    <%= form.label :tag_ids, "Filter by Tags" %>
+    <%= form.collection_check_boxes :tag_ids, @tags, :id, :name do |cb| %>
+      <div>
+        <%= cb.check_box checked: @selected_tag_ids.include?(cb.value.to_s) %>
+        <%= cb.label %>
+      </div>
+    <% end %>
+    <%= form.submit "Filter", class: "mt-2 btn btn-default bg-info-subtle" %>
+  <% end %>
+</div>
+
+<% if @items&.present? %>
+  <% @items.each do |item| %>
+    <hr>
+    <div class="panel panel-default p-1">
+      <div class="row align-items-center">
+        <div class="col-sm-3 col-lg-2 mt-2 mb-2">
+          <% if item.image_url %>
+            <%= link_to(image_tag(item.image_url, width: "100%"), item_path(item)) %>
+          <% end %>
+        </div>
+        <div class="col">
+          <span class="fs-4"><%= item.title %></span>
+          <% if item.host.present? %>
+            <br/>Host: <%= item.host %>
+          <% end %>
+          <% if item.format.present? %>
+            <br/>Format: <%= item.format %>
+          <% end %>
+          <% if item.timing %>
+            <br/>Timing: <%= item.timing %>
+          <% end %>
+        </div>
+        <div class="col-4">
+          <% if admin_signed_in? || @type != 'Auction' %>
+            <%= link_to(@type == 'Auction' ? "Bid" : "Enter Tickets", item_path(item),
+                        { class: "mb-2 btn btn-default btn-lg bg-info-subtle" }) %><br/>
+          <% end %>
+          <% if item.number %>
+            <%= item.number %> items<br/>
+            <%= item.bids.count %> entrant(s)<br/>
+          <% end %>
+          <% if item.cost %>
+            <%= item.cost %> tickets each<br/>
+          <% end %>
+          <%= item.total %> total tickets
+        </div>
+      </div>
     </div>
   <% end %>
-</p>
-
-<% @items.each do |item| %>
-  <hr>
-  <div class="panel panel-default p-1">
-    <div class="row align-items-center">
-      <div class="col-sm-3 col-lg-2 mt-2 mb-2">
-        <% if item.image_url %>
-          <%= link_to(image_tag(item.image_url, width: "100%"), item_path(item)) %>
-        <% end %>
-      </div>
-      <div class="col">
-        <span class="fs-4"><%= item.title %></span>
-        <% if item.category.present? %>
-          <br/>Category: <%= item.category %>
-        <% end %>
-        <% if item.host.present? %>
-          <br/>Host: <%= item.host %>
-        <% end %>
-        <% if item.format.present? %>
-          <br/>Format: <%= item.format %>
-        <% end %>
-        <% if item.timing %>
-          <br/>Timing: <%= item.timing %>
-        <% end %>
-      </div>
-      <div class="col-4">
-        <% if admin_signed_in? || @type != 'Auction' %>
-          <%= link_to(@type == 'Auction' ? "Bid" : "Enter Tickets", item_path(item),
-                      { class: "mb-2 btn btn-default btn-lg bg-info-subtle" }) %><br/>
-        <% end %>
-        <% if item.number %>
-          <%= item.number %> items<br/>
-          <%= item.bids.count %> entrant(s)<br/>
-        <% end %>
-        <% if item.cost %>
-          <%= item.cost %> tickets each<br/>
-        <% end %>
-        <%= item.total %> total tickets
-      </div>
-    </div>
-  </div>
+<% else %>
+  <p>No items found for these tags.</p>
 <% end %>
+
+<script>
+document.addEventListener("turbo:load", function() {
+  console.log("Turbo:load event triggered"); // Confirm event is fired
+  var filterForm = document.getElementById("filter-form");
+  var toggleButton = document.getElementById("toggle-filter-btn");
+
+  if (filterForm && toggleButton) {
+    console.log("Form and Button Found"); // Confirm DOM elements are found
+
+    function updateButtonVisibility() {
+      console.log("Updating Button Visibility"); // Debugging visibility updates
+      if (filterForm.style.display === 'block') {
+        toggleButton.style.display = 'none'; // Hide the toggle button
+      } else {
+        toggleButton.style.display = 'inline-block'; // Show the toggle button
+      }
+    }
+
+    toggleButton.addEventListener("click", function() {
+      console.log("Toggle Button Clicked"); // Debugging button click
+      if (filterForm.style.display === 'none' || filterForm.style.display === '') {
+        filterForm.style.display = 'block';
+      } else {
+        filterForm.style.display = 'none';
+      }
+      updateButtonVisibility();
+    });
+
+    // Set the initial state of the button visibility based on the filter form's display status
+    updateButtonVisibility();
+  } else {
+    console.log("Form or Button Not Found");
+  }
+});
+</script>
