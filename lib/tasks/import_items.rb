@@ -20,6 +20,12 @@ class ImportItems
     'Service' => 'Services'
   }.freeze
 
+  def self.create_tags
+    COLUMN_TO_TAG.values.each do |value|
+      Tag.find_or_create_by(name: value)
+    end
+  end
+
   def self.import_from_csv(file_path)
     unless File.exist?(file_path)
       Rails.logger.debug { "File not found: #{file_path}" }
@@ -38,7 +44,7 @@ class ImportItems
     item_attributes = build_item_attributes(row)
     result = Item.create(item_attributes)
     if result
-      Rails.logger.debug { "Successfully created Item: #{item.title} from #{item.host}" }
+      Rails.logger.debug { "Successfully created Item: #{result.title} from #{result.host}" }
     else
       Rails.logger.debug { "Unable to create item: #{row}" }
     end
@@ -90,13 +96,13 @@ class ImportItems
   end
 
   def self.update_tags(item, row)
-    row.each_key do |key|
+    row.each_entry do |key, value|
       next unless COLUMN_TO_TAG.include?(key)
 
       tag = Tag.find_by(name: COLUMN_TO_TAG[key])
       next unless tag
 
-      if row[key] == '1 - Yes'
+      if value == '1 - Yes'
         item.tags << tag unless item.tags.include?(tag)
       elsif item.tags.include?(tag)
         item.tags.delete(tag)
@@ -108,6 +114,7 @@ end
 # Accept the CSV file path from the command line arguments
 if ARGV.length == 1
   file_path = ARGV[0]
+  ImportItems.create_tags
   ImportItems.import_from_csv(file_path)
 else
   Rails.logger.debug 'Usage: rails runner lib/tasks/import_items.rb <path_to_csv_file>'
