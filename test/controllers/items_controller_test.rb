@@ -94,18 +94,6 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
     assert_equal(after, item.title)
   end
 
-  test 'update format' do
-    sign_in(admins(:admin_one))
-    item = items(:item_one)
-    after = "#{item.format} with a change"
-    patch(item_path(id: item.id),
-          params: { item: { format: after } })
-    assert_response :redirect
-    follow_redirect!
-    item.reload
-    assert_equal(after, item.format)
-  end
-
   test 'update timing' do
     sign_in(admins(:admin_one))
     item = items(:item_one)

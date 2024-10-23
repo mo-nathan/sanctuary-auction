@@ -53,8 +53,7 @@ class ImportItems
       image_url: row['Image'],
       title: row['Title'],
       host: row['Host'],
-      timing: row['Time'],
-      format: 'Deprecated'
+      timing: row['Time']
     }
   end
 
@@ -87,7 +86,6 @@ class ImportItems
     item.cost = calc_cost(row)
     item.number = row['Number']
     item.timing = row['Time']
-    item.format = 'Deprecated'
     Rails.logger.debug { "Successfully updated Item: #{item.title} from #{item.host}" }
   end
 

@@ -60,8 +60,7 @@ class ItemsController < ApplicationController
   end
 
   def item_params
-    params.require(:item).permit(:format, :timing, :host, :description,
-                                 :cost, :number, :image_url, :auction, :title,
+    params.require(:item).permit(:timing, :host, :description, :cost, :number, :image_url, :auction, :title,
                                  tag_ids: [])
   end
 end
