@@ -11,20 +11,6 @@ class Item < ApplicationRecord
   scope :raffle_items, -> { where('cost IS NULL AND NOT auction') }
   scope :auction_items, -> { where('cost IS NULL AND auction') }
 
-  def self.selected(type)
-    by_type(type)
-  end
-
-  def self.by_type(type)
-    if type == 'Buy-In'
-      buy_in_items
-    elsif type == 'Auction'
-      auction_items
-    else
-      raffle_items
-    end
-  end
-
   def total
     result = 0
     bids.each do |bid|

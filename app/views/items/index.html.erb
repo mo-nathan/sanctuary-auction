@@ -72,16 +72,14 @@
 <% end %>
 
 <script>
-document.addEventListener("turbo:load", function() {
-  console.log("Turbo:load event triggered"); // Confirm event is fired
+window.listenerAdded = window.listenerAdded || false;
+
+function handleTurboLoad(event) {
   var filterForm = document.getElementById("filter-form");
   var toggleButton = document.getElementById("toggle-filter-btn");
 
   if (filterForm && toggleButton) {
-    console.log("Form and Button Found"); // Confirm DOM elements are found
-
     function updateButtonVisibility() {
-      console.log("Updating Button Visibility"); // Debugging visibility updates
       if (filterForm.style.display === 'block') {
         toggleButton.style.display = 'none'; // Hide the toggle button
       } else {
@@ -90,7 +88,6 @@ document.addEventListener("turbo:load", function() {
     }
 
     toggleButton.addEventListener("click", function() {
-      console.log("Toggle Button Clicked"); // Debugging button click
       if (filterForm.style.display === 'none' || filterForm.style.display === '') {
         filterForm.style.display = 'block';
       } else {
@@ -99,10 +96,12 @@ document.addEventListener("turbo:load", function() {
       updateButtonVisibility();
     });
 
-    // Set the initial state of the button visibility based on the filter form's display status
     updateButtonVisibility();
-  } else {
-    console.log("Form or Button Not Found");
   }
-});
+};
+
+if (!window.listenerAdded) {
+  document.addEventListener("turbo:load", handleTurboLoad);
+  window.listenerAdded = true; // Set the flag to true to avoid re-adding the listener
+}
 </script>
