@@ -4,9 +4,8 @@
 # cd ~/sanctuary-auction
 # bin/deploy
 
-systemctl stop rails.service
 git pull
 bundle install
 rails db:migrate
 rake assets:precompile
-systemctl start rails.service
+sudo systemctl restart rails.service
