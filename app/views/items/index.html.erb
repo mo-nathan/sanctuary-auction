@@ -17,13 +17,22 @@
 
 <div id="filter-form" style="display: <%= @selected_tag_ids.any? ? 'block' : 'none' %>;">
   <%= form_with url: items_path, method: :get, local: true, data: { turbo: false } do |form| %>
-    <%= form.label :tag_ids, "Filter by Tags" %>
-    <%= form.collection_check_boxes :tag_ids, @tags, :id, :name do |cb| %>
-      <div>
-        <%= cb.check_box checked: @selected_tag_ids.include?(cb.value.to_s) %>
-        <%= cb.label %>
-      </div>
-    <% end %>
+    <div class="row">
+      <% Tag.groups.each do |group| %>
+        <div class="col-md-4 mb-3">
+          <div class="group-section">
+            <strong><%= group if group %></strong>
+            <%= form.collection_check_boxes :tag_ids, @tags.where(group: group), :id, :name do |cb| %>
+              <div>
+                <%= cb.check_box checked: @selected_tag_ids.include?(cb.value.to_s) %>
+                <%= cb.label %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
     <%= form.submit "Filter", class: "mt-2 btn btn-default bg-info-subtle" %>
   <% end %>
 </div>

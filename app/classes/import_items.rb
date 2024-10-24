@@ -4,18 +4,18 @@ require 'csv'
 
 class ImportItems
   COLUMN_TO_TAG = {
-    'Activity' => 'Activities & Experiences',
-    'Artwork' => 'Artwork, Music, and Crafts',
-    'Buyin' => 'Buy-In',
-    'Event_Hybrid' => 'Event: Hybrid',
-    'Event_InPerson' => 'Event: In Person',
-    'Event_Virtual' => 'Event: Virtual',
-    'Family' => 'Family Friendly',
-    'Food' => 'Food',
-    'GroupEvent' => 'Group Events',
-    'Object_Deliver' => 'Item: Delivered',
-    'Object_Mail' => 'Item: Mailed',
-    'Service' => 'Services'
+    'Activity' => ['Category', 'Activities & Experiences'],
+    'Artwork' => ['Category', 'Artwork, Music, and Crafts'],
+    'Buyin' => ['Other Tags', 'Buy-In'],
+    'Event_Hybrid' => ['Format', 'Event: Hybrid'],
+    'Event_InPerson' => ['Format', 'Event: In Person'],
+    'Event_Virtual' => ['Format', 'Event: Virtual'],
+    'Family' => ['Other Tags', 'Family Friendly'],
+    'Food' => %w[Category Food],
+    'GroupEvent' => ['Category', 'Group Events'],
+    'Object_Deliver' => ['Format', 'Item: Delivered'],
+    'Object_Mail' => ['Format', 'Item: Mailed'],
+    'Service' => %w[Category Services]
   }.freeze
 
   def self.import_from_csv(file_path)
@@ -34,8 +34,8 @@ class ImportItems
   end
 
   def self.create_tags
-    COLUMN_TO_TAG.each_value do |value|
-      Tag.find_or_create_by(name: value)
+    COLUMN_TO_TAG.each_value do |group, name|
+      Tag.find_or_create_by(group:, name:)
     end
   end
 
@@ -102,14 +102,19 @@ class ImportItems
     row.each_entry do |key, value|
       next unless COLUMN_TO_TAG.include?(key)
 
-      tag = Tag.find_by(name: COLUMN_TO_TAG[key])
-      next unless tag
+      group, name = COLUMN_TO_TAG[key]
+      tag = Tag.find_by(group:, name:)
+      update_tag(item, tag, value == '1 - Yes')
+    end
+  end
 
-      if value == '1 - Yes'
-        item.tags << tag unless item.tags.include?(tag)
-      elsif item.tags.include?(tag)
-        item.tags.delete(tag)
-      end
+  def self.update_tag(item, tag, include)
+    return unless tag
+
+    if include
+      item.tags << tag unless item.tags.include?(tag)
+    elsif item.tags.include?(tag)
+      item.tags.delete(tag)
     end
   end
 end

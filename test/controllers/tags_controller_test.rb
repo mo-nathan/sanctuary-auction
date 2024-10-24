@@ -16,9 +16,11 @@ class TagsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should get show' do
-    get tag_url(tags(:one))
+    tag = tags(:one)
+    get tag_url(tag)
     assert_response :success
-    assert_select 'h1', "#{tags(:one).name} Tag"
+
+    assert_select 'h1', "#{tag.group}: #{tag.name} Tag"
   end
 
   test 'should get new' do
