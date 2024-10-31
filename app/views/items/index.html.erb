@@ -1,6 +1,6 @@
 <%= render "tabs", tab: @type %>
 
-<h1><%= @type %> Items</h1>
+<h1><%= @type.capitalize %> Items</h1>
 <% if admin_signed_in? %>
   <p>
     <%= link_to "New Item", new_item_path,

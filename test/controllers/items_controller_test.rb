@@ -22,9 +22,30 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
   test 'index default' do
     get(items_path)
     assert_response :success
-    # assert_match items(:item_one).title, @response.body
     assert_select 'span', text: items(:item_one).title
     assert_select 'span', text: items(:item_two).title
+    assert_select 'span', text: items(:item_three).title
+  end
+
+  test 'auction index' do
+    Tagger.create_tags
+    item = items(:item_three)
+    item.tags << Tagger.auction_tag
+    get(items_path(type: 'Auction'))
+    assert_response :success
+    assert_select 'span', text: item.title
+    assert_select 'span', count: 0, text: items(:item_one).title
+  end
+
+  test 'auction index from tag' do
+    Tagger.create_tags
+    item = items(:item_three)
+    tag = Tagger.auction_tag
+    item.tags << Tagger.auction_tag
+    get(items_path(tag_ids: [tag.id.to_s]))
+    assert_response :success
+    assert_select 'span', text: item.title
+    assert_select 'span', count: 0, text: items(:item_one).title
   end
 
   test 'index tag test' do

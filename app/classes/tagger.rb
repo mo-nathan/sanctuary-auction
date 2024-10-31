@@ -36,6 +36,10 @@ class Tagger
     end
   end
 
+  def self.auction_tag
+    Tag.find_by(name: 'Auction')
+  end
+
   def self.update_tag(item, tag, include)
     return unless tag
 
