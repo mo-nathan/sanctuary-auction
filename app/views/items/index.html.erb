@@ -26,6 +26,7 @@
               <div>
                 <%= cb.check_box checked: @selected_tag_ids.include?(cb.value.to_s) %>
                 <%= cb.label %>
+		<%= " (#{cb.object.items.count})" %>
               </div>
             <% end %>
           </div>
