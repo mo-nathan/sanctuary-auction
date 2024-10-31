@@ -4,4 +4,4 @@
 Rails.logger = ActiveSupport::Logger.new($stdout)
 Rails.logger.level = Logger::DEBUG # Set to DEBUG level, or another level as needed
 
-AllocateItems.new.report
+ItemAllocator.new.report

@@ -12,6 +12,12 @@ item_two:
   number: 1
   title: Item Two
 
+item_three:
+  description: Item Three is the best
+  host: Someone Fabulous
+  number: 2
+  title: Item Three
+
 item_no_bids:
   description: No Bid Item kind of sucks
   number: 1

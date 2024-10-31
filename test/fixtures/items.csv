@@ -1,2 +1,2 @@
-Host,Title,Description,Number,Time,Details,Image,Object_Mail,Object_Deliver,Event_InPerson,Event_Virtual,Event_Hybrid,Activity,Food,Artwork,Service,GroupEvent,Family,Buyin,Email,Phone,Pic Received?,Prt Comments,Team Notes
-Da Host,Da Item,So amazing,3,Tomorrow,More details,,1 - Yes,0 - No,0 - No,0 - No,0 - No,0 - No,1 - Yes,0 - No,0 - No,0 - No,1 - Yes,0 - No,host@example.com,555-555-5555,Yes,N/A,Da Notes
+Host,Title,Description,Number,Time,Details,Image,Object_Mail,Object_Deliver,Event_InPerson,Event_Virtual,Event_Hybrid,Activity,Food,Artwork,Service,GroupEvent,Family,Auction,Buyin,Email,Phone,Pic Received?,Prt Comments,Team Notes
+Da Host,Da Item,So amazing,3,Tomorrow,More details,,1 - Yes,0 - No,0 - No,0 - No,0 - No,0 - No,1 - Yes,0 - No,0 - No,0 - No,1 - Yes,0 - No,0 - No,host@example.com,555-555-5555,Yes,N/A,Da Notes

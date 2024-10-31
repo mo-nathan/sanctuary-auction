@@ -9,3 +9,15 @@ bid_two:
   user: user_two
   item: item_two
   amount: 20
+
+bid_three:
+  user: user_two
+  item: item_three
+  amount: 20
+
+bid_four:
+  user: user_one
+  item: item_three
+  amount: 20
+
+# Need another item

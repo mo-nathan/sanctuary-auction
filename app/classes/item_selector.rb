@@ -24,8 +24,6 @@ class ItemSelector
     @items.sample
   end
 
-  private
-
   def total_bids(item)
     total = 0
     item.bids.find_each do |bid|
@@ -33,6 +31,8 @@ class ItemSelector
     end
     total
   end
+
+  private
 
   def wins(bid)
     @max_bid = bid.amount

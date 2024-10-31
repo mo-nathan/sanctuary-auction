@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class AllocateItems
+class ItemAllocator
   def initialize
     init_item_statuses
     @user_assignments = {}
@@ -46,12 +46,15 @@ class AllocateItems
   end
 
   def output_report
+    result = []
     @user_assignments.each do |key, value|
       Rails.logger.info "#{key.name} won:"
       value.each do |item|
         Rails.logger.info "\t#{item.title} from #{item.host}"
+        result.append([key.name, item.title, item.host])
       end
     end
+    result
   end
 
   def find_item_for_user(user)
