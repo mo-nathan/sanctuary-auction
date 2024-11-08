@@ -87,11 +87,20 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
     assert_equal(before + 1, Item.count)
   end
 
-  test 'create fail' do
+  test 'create fail with non title' do
     sign_in(admins(:admin_one))
     before = Item.count
     post(items_path,
          params: { item: { title: '' } })
+    assert_response :unprocessable_entity
+    assert_equal(before, Item.count)
+  end
+
+  test 'create fail with bad image_url' do
+    sign_in(admins(:admin_one))
+    before = Item.count
+    post(items_path,
+         params: { item: { title: 'Bad Image', image_url: '<bad>' } })
     assert_response :unprocessable_entity
     assert_equal(before, Item.count)
   end

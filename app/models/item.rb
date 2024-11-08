@@ -6,6 +6,7 @@ class Item < ApplicationRecord
   has_many :tags, through: :item_tags
   validates :title, presence: true
   validate :cost_or_number
+  validate :check_image_url
   default_scope { order(title: :asc) }
   scope :buy_in_items, -> { where.not(cost: nil) }
   scope :raffle_items, -> { where('cost IS NULL AND NOT auction') }
@@ -17,6 +18,13 @@ class Item < ApplicationRecord
       result += bid.amount
     end
     result
+  end
+
+  def check_image_url
+    return if !image_url || image_url == '' || (image_url.starts_with?('http') && image_url.exclude?('<'))
+
+    errors.add(:image_url,
+               'must start with "http" and not contain "<"')
   end
 
   def cost_or_number
