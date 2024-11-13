@@ -6,8 +6,8 @@
       tab == 'home' ? active : inactive %>
   </li>
   <li class="nav-item">
-    <%= link_to "All Items", items_path,
-      tab == 'all' ? active : inactive %>
+    <%= link_to "Raffle Items", items_path,
+      tab == 'raffle' ? active : inactive %>
   </li>
   <li class="nav-item">
     <%= link_to "Auction", items_path(type: 'Auction'),

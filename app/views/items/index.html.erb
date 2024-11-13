@@ -8,35 +8,9 @@
   </p>
 <% end %>
 
-<!-- Button to toggle visibility of the filter form -->
-<% if @selected_tag_ids == [] %>
-  <button id="toggle-filter-btn" class="mb-2 btn btn-default bg-info-subtle">
-    Filter by Tag
-  </button>
+<% if @type == 'raffle' %>
+  <%= render "filter", item: @item %>
 <% end %>
-
-<div id="filter-form" style="display: <%= @selected_tag_ids.any? ? 'block' : 'none' %>;">
-  <%= form_with url: items_path, method: :get, local: true, data: { turbo: false } do |form| %>
-    <div class="row">
-      <% Tag.groups.each do |group| %>
-        <div class="col-md-4 mb-3">
-          <div class="group-section">
-            <strong><%= group if group %></strong>
-            <%= form.collection_check_boxes :tag_ids, @tags.where(group: group), :id, :name do |cb| %>
-              <div>
-                <%= cb.check_box checked: @selected_tag_ids.include?(cb.value.to_s) %>
-                <%= cb.label %>
-		<%= " (#{cb.object.items.count})" %>
-              </div>
-            <% end %>
-          </div>
-        </div>
-      <% end %>
-    </div>
-
-    <%= form.submit "Filter", class: "mt-2 btn btn-default bg-info-subtle" %>
-  <% end %>
-</div>
 
 <% if @items&.present? %>
   <% @items.each do |item| %>
@@ -63,11 +37,12 @@
                         { class: "mb-2 btn btn-default btn-lg bg-info-subtle" }) %><br/>
           <% end %>
           <% if item.number %>
-            <%= item.number %> items<br/>
+            <%= "#{item.number} #{'item'.pluralize(item.number)}" %><br/>
             <%= item.bids.count %> entrant(s)<br/>
           <% end %>
           <% if item.cost %>
-            <%= item.cost %> tickets each<br/>
+            <%= "Unlimited Item" %><br/>
+            <%= "#{item.cost} #{'ticket'.pluralize(item.cost)} each" %><br/>
           <% end %>
           <%= item.total %> total tickets
         </div>
@@ -77,38 +52,3 @@
 <% else %>
   <p>No items found for these tags.</p>
 <% end %>
-
-<script>
-window.listenerAdded = window.listenerAdded || false;
-
-function handleTurboLoad(event) {
-  var filterForm = document.getElementById("filter-form");
-  var toggleButton = document.getElementById("toggle-filter-btn");
-
-  if (filterForm && toggleButton) {
-    function updateButtonVisibility() {
-      if (filterForm.style.display === 'block') {
-        toggleButton.style.display = 'none'; // Hide the toggle button
-      } else {
-        toggleButton.style.display = 'inline-block'; // Show the toggle button
-      }
-    }
-
-    toggleButton.addEventListener("click", function() {
-      if (filterForm.style.display === 'none' || filterForm.style.display === '') {
-        filterForm.style.display = 'block';
-      } else {
-        filterForm.style.display = 'none';
-      }
-      updateButtonVisibility();
-    });
-
-    updateButtonVisibility();
-  }
-};
-
-if (!window.listenerAdded) {
-  document.addEventListener("turbo:load", handleTurboLoad);
-  window.listenerAdded = true; // Set the flag to true to avoid re-adding the listener
-}
-</script>

@@ -8,9 +8,8 @@ class Item < ApplicationRecord
   validate :cost_or_number
   validate :check_image_url
   default_scope { order(title: :asc) }
-  scope :buy_in_items, -> { where.not(cost: nil) }
-  scope :raffle_items, -> { where('cost IS NULL AND NOT auction') }
-  scope :auction_items, -> { where('cost IS NULL AND auction') }
+  scope :raffle_items, -> { where(auction: false) }
+  scope :auction_items, -> { where(auction: true) }
 
   def total
     result = 0
@@ -41,7 +40,7 @@ class Item < ApplicationRecord
     if cost.nil?
       auction ? 'Auction' : 'Raffle'
     else
-      'Buy-In'
+      'Unlimited'
     end
   end
 end

@@ -53,14 +53,19 @@ class ItemsController < ApplicationController
 
   def calc_type
     return params[:type] if params[:type]
-    return 'Auction' if params[:tag_ids]&.include?(auction_id)
 
-    'all'
+    # return 'Auction' if params[:tag_ids]&.include?(auction_id)
+
+    'raffle'
   end
 
   def select_items
-    @items = Item.all
-    add_type_tag
+    @items = if @type == 'Auction'
+               Item.where(auction: true)
+             else
+               Item.where(auction: false)
+             end
+    # add_type_tag
     return if blank_params?
 
     @items = Item.joins(:tags).group('items.id').having('COUNT(tags.id) = ?',
@@ -72,22 +77,22 @@ class ItemsController < ApplicationController
     params[:tag_ids].blank?
   end
 
-  def add_type_tag
-    return unless @type == 'Auction' && auction_id
+  # def add_type_tag
+  #   return unless @type == 'Auction' && auction_id
 
-    if params[:tag_ids]
-      params[:tag_ids].append(auction_id) unless params[:tag_ids].include?(auction_id)
-    else
-      params[:tag_ids] = [auction_id]
-    end
-  end
+  #   if params[:tag_ids]
+  #     params[:tag_ids].append(auction_id) unless params[:tag_ids].include?(auction_id)
+  #   else
+  #     params[:tag_ids] = [auction_id]
+  #   end
+  # end
 
-  def auction_id
-    tag = Tagger.auction_tag
-    return nil unless tag
+  # def auction_id
+  #   tag = Tagger.auction_tag
+  #   return nil unless tag
 
-    @auction_id ||= tag.id.to_s
-  end
+  #   @auction_id ||= tag.id.to_s
+  # end
 
   def item_params
     params.require(:item).permit(:timing, :host, :description, :cost, :number, :image_url, :auction, :title,

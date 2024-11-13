@@ -29,20 +29,8 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
 
   test 'auction index' do
     Tagger.create_tags
-    item = items(:item_three)
-    item.tags << Tagger.auction_tag
+    item = items(:item_no_bids)
     get(items_path(type: 'Auction'))
-    assert_response :success
-    assert_select 'span', text: item.title
-    assert_select 'span', count: 0, text: items(:item_one).title
-  end
-
-  test 'auction index from tag' do
-    Tagger.create_tags
-    item = items(:item_three)
-    tag = Tagger.auction_tag
-    item.tags << Tagger.auction_tag
-    get(items_path(tag_ids: [tag.id.to_s]))
     assert_response :success
     assert_select 'span', text: item.title
     assert_select 'span', count: 0, text: items(:item_one).title
@@ -57,11 +45,6 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
 
   test 'index auction' do
     get(items_path(type: 'Auction'))
-    assert_response :success
-  end
-
-  test 'index buy-in' do
-    get(items_path(type: 'Buy-In'))
     assert_response :success
   end
 

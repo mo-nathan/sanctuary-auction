@@ -6,8 +6,7 @@ class Tagger
   COLUMN_TO_TAG = {
     'Activity' => ['Category', 'Activities & Experiences'],
     'Artwork' => ['Category', 'Artwork, Music, and Crafts'],
-    'Auction' => ['Other Tags', 'Auction'],
-    'Buyin' => ['Other Tags', 'Buy-In'],
+    'Buyin' => ['Other Tags', 'Unlimited'],
     'Event_Hybrid' => ['Format', 'Event: Hybrid'],
     'Event_InPerson' => ['Format', 'Event: In Person'],
     'Event_Virtual' => ['Format', 'Event: Virtual'],
@@ -34,10 +33,6 @@ class Tagger
       tag = Tag.find_by(group:, name:)
       update_tag(item, tag, value == '1 - Yes')
     end
-  end
-
-  def self.auction_tag
-    Tag.find_by(name: 'Auction')
   end
 
   def self.update_tag(item, tag, include)
