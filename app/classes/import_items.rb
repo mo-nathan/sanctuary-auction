@@ -47,7 +47,8 @@ class ImportItems
       image_url: row['Image'],
       title: row['Title'],
       host: row['Host'],
-      timing: row['Time']
+      timing: row['Time'],
+      auction: row['Live auction?'] == 'Yes'
     }
   end
 

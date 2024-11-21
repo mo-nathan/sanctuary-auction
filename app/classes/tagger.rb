@@ -14,6 +14,7 @@ class Tagger
     'Food' => %w[Category Food],
     'GroupEvent' => ['Category', 'Group Events'],
     'Object_Deliver' => ['Format', 'Item: Delivered'],
+    'Object_Electronic' => ['Format', 'Item: Electronic'],
     'Object_Mail' => ['Format', 'Item: Mailed'],
     'Service' => %w[Category Services]
   }.freeze
