@@ -33,7 +33,16 @@ class ItemAllocator
     @item_statuses ||= ItemStatus.initial_list
 
     assign_item_to_users
+    assign_unlimited_items
     output_report
+  end
+
+  def assign_unlimited_items
+    Item.where.not(cost: nil).find_each do |item|
+      item.bids.each do |bid|
+        update_user_assignments(item, bid.user)
+      end
+    end
   end
 
   def assign_item_to_users
@@ -47,10 +56,11 @@ class ItemAllocator
 
   def output_report
     result = []
+    Rails.logger.info 'Winner,Item,Host'
     @user_assignments.each do |key, value|
-      Rails.logger.info "#{key.name} won:"
+      winner = key.name
       value.each do |item|
-        Rails.logger.info "\t#{item.title} from #{item.host}"
+        Rails.logger.info "#{winner},\"#{item.title}\",#{item.host}"
         result.append([key.name, item.title, item.host])
       end
     end
