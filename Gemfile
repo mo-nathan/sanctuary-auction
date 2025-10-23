@@ -5,7 +5,7 @@ source 'https://rubygems.org'
 ruby(File.read('.ruby-version').strip)
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem 'rails', '~> 7.1.1'
+gem 'rails', '~> 8.0.2'
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem 'sprockets-rails'
@@ -14,7 +14,7 @@ gem 'sprockets-rails'
 gem 'pg'
 
 # Use the Puma web server [https://github.com/puma/puma]
-gem 'puma', '>= 5.0'
+gem 'puma' # , '>= 5.0'
 
 # Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
 gem 'importmap-rails'
@@ -66,7 +66,7 @@ group :development do
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
 
-  gem 'error_highlight', '>= 0.4.0', platforms: [:ruby]
+  gem 'error_highlight', platforms: [:ruby] # , '>= 0.4.0'
 end
 
 group :test do
@@ -75,8 +75,8 @@ group :test do
   gem 'selenium-webdriver'
 end
 
-gem 'cssbundling-rails', '~> 1.3'
+gem 'cssbundling-rails' # , '~> 1.3'
 
-gem 'jsbundling-rails', '~> 1.2'
+gem 'jsbundling-rails' # , '~> 1.2'
 
-gem 'devise', '~> 4.9'
+gem 'devise' # , '~> 4.9'

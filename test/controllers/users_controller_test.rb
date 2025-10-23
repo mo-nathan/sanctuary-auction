@@ -43,7 +43,7 @@ class UserControllerTest < ActionDispatch::IntegrationTest
     before = User.count
     post(users_path,
          params: { user: { code: 'xyz', name: '' } })
-    assert_response :unprocessable_entity
+    assert_response :unprocessable_content
     assert_equal(before, User.count)
   end
 
@@ -52,7 +52,7 @@ class UserControllerTest < ActionDispatch::IntegrationTest
     before = User.count
     post(users_path,
          params: { user: { code: '', name: 'Rainey' } })
-    assert_response :unprocessable_entity
+    assert_response :unprocessable_content
     assert_equal(before, User.count)
   end
 
@@ -61,7 +61,7 @@ class UserControllerTest < ActionDispatch::IntegrationTest
     before = User.count
     post(users_path,
          params: { user: { code: users(:user_one).code.upcase, name: 'Rainey' } })
-    assert_response :unprocessable_entity
+    assert_response :unprocessable_content
     assert_equal(before, User.count)
   end
 
@@ -70,7 +70,7 @@ class UserControllerTest < ActionDispatch::IntegrationTest
     before = User.count
     post(users_path,
          params: { user: { code: " #{users(:user_one).code} ", name: 'Rainey' } })
-    assert_response :unprocessable_entity
+    assert_response :unprocessable_content
     assert_equal(before, User.count)
   end
 
@@ -99,7 +99,7 @@ class UserControllerTest < ActionDispatch::IntegrationTest
     before = user.name
     patch(user_path(id: user.id),
           params: { user: { name: '', code: '' } })
-    assert_response :unprocessable_entity
+    assert_response :unprocessable_content
     user.reload
     assert_equal(before, user.name)
   end

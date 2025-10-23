@@ -26,7 +26,7 @@ class TagsController < ApplicationController
       flash.notice = "#{@tag.name} tag created."
       redirect_to tags_url
     else
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 
@@ -37,7 +37,7 @@ class TagsController < ApplicationController
       flash.notice = 'Tag was successfully updated.'
       redirect_to tags_url
     else
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_content
     end
   end
 

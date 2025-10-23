@@ -75,7 +75,7 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
     before = Item.count
     post(items_path,
          params: { item: { title: '' } })
-    assert_response :unprocessable_entity
+    assert_response :unprocessable_content
     assert_equal(before, Item.count)
   end
 
@@ -84,7 +84,7 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
     before = Item.count
     post(items_path,
          params: { item: { title: 'Bad Image', image_url: '<bad>' } })
-    assert_response :unprocessable_entity
+    assert_response :unprocessable_content
     assert_equal(before, Item.count)
   end
 
@@ -125,7 +125,7 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
     before = item.title
     patch(item_path(id: item.id),
           params: { item: { title: '' } })
-    assert_response :unprocessable_entity
+    assert_response :unprocessable_content
     item.reload
     assert_equal(before, item.title)
   end

@@ -45,7 +45,7 @@ class TagsControllerTest < ActionDispatch::IntegrationTest
     assert_difference('Tag.count', 0) do
       post tags_url(tag: { name: })
     end
-    assert_response :unprocessable_entity
+    assert_response :unprocessable_content
     assert_select 'div.error', /Name has already been taken/
   end
 
@@ -78,7 +78,7 @@ class TagsControllerTest < ActionDispatch::IntegrationTest
   test 'should fail to update with duplicate name' do
     tag = tags(:one)
     patch tag_url(tag, tag: { name: tags(:two).name })
-    assert_response :unprocessable_entity
+    assert_response :unprocessable_content
     assert_select 'div.error', /Name has already been taken/
   end
 
