@@ -46,7 +46,7 @@ class ItemAllocator
   end
 
   def assign_item_to_users
-    while @item_statuses.count != 0
+    while @item_statuses.any?
       user = next_user
       break unless user
 
@@ -70,7 +70,7 @@ class ItemAllocator
   def find_item_for_user(user)
     selector = ItemSelector.new
     user.bids.find_each do |bid|
-      next unless available(user, bid.item)
+      next unless available?(user, bid.item)
 
       selector.consider(bid)
     end
@@ -79,7 +79,7 @@ class ItemAllocator
     item
   end
 
-  def available(user, item)
+  def available?(user, item)
     return false if @user_assignments[user]&.include?(item)
 
     @item_statuses.include?(item)

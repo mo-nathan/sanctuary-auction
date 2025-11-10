@@ -33,4 +33,4 @@ en:
   helpers:
     submit:
       bid:
-        create: "Update Tickets"
+        create: "Update Hearts"

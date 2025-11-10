@@ -95,7 +95,7 @@ class ItemsController < ApplicationController
   # end
 
   def item_params
-    params.require(:item).permit(:timing, :host, :description, :cost, :number, :image_url, :auction, :title,
-                                 tag_ids: [])
+    params.expect(item: [:timing, :host, :description, :cost, :number, :image_url, :auction, :title,
+                         { tag_ids: [] }])
   end
 end

@@ -51,6 +51,6 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:code, :name, :balance)
+    params.expect(user: %i[code name balance])
   end
 end

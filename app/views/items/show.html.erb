@@ -19,7 +19,7 @@
       <% if @item.number %>
         Quantity: <%= @item.number %>
       <% else %>
-         <%= @item.cost %> Tickets Each
+         <%= @item.cost %> Heart Each
       <% end %>
     </p>
     <% if @item.tags.present? %>
@@ -52,7 +52,7 @@
           </div>
         <% else %>
           <div class="col-sm m-2">
-            <%= form.label :amount, "Total Tickets" %> <%= form.number_field :amount, size: 4 %>
+            <%= form.label :amount, "Total Hearts" %> <%= form.number_field :amount, size: 4 %>
           </div>
         <% end %>
         <div class="col-sm m-2">
@@ -67,7 +67,7 @@
         <hr>
         <%= link_to("#{bid.user.name}: #{bid.user.code}", user_path(bid.user),
                     { class: "btn btn-default btn-lg bg-info-subtle" }) %>
-        Tickets: <%= bid.amount %>
+        Hearts: <%= bid.amount %>
       <% end %>
     <% end %>
   <% end %>
@@ -84,20 +84,20 @@
         </div>
       <% else %>
         <div class="col-sm m-2">
-          <%= form.label :amount, "Total Tickets" %> <%= form.number_field :amount %>
+          <%= form.label :amount, "Total Hearts" %> <%= form.number_field :amount %>
         </div>
       <% end %>
       <div class="col-sm m-2"><%= form.submit %></div>
     </div>
   <% end %>
 
-  <h3>Ticket Entries</h3>
+  <h3>Bids</h3>
   <% @item.bids.includes(:user).order("users.name").each do |bid| %>
     <% if bid.user %>
       <hr>
       <%= link_to(bid.user.name, user_path(bid.user),
                   { class: "btn btn-default btn-lg bg-info-subtle" }) %>
-      Tickets: <%= bid.amount %>
+      Hearts: <%= bid.amount %>
       <% if @item.cost %>
         (<%= bid.amount / @item.cost %> count)
       <% end %>

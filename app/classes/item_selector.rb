@@ -20,9 +20,7 @@ class ItemSelector
     end
   end
 
-  def sample
-    @items.sample
-  end
+  delegate :sample, to: :@items
 
   def total_bids(item)
     total = 0
