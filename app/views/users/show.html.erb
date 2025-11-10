@@ -16,12 +16,12 @@
   </div>
 <% end %>
 
-<h2>Ticket Entries</h2>
+<h2>Bids</h2>
 <% @user.bids.includes(:item).order("items.title").each do |bid| %>
   <hr>
   <%= link_to(bid.item.title, item_path(bid.item),
               { class: "btn btn-default btn-lg bg-info-subtle" }) %>
-  Tickets: <%= bid.amount %>
+  Hearts: <%= bid.amount %>
   <% if bid.item.cost %>
     (<%= bid.amount / bid.item.cost %> count)
   <% end %>

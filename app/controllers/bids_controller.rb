@@ -26,9 +26,9 @@ class BidsController < ApplicationController
       user.balance = balance
       user.save
       make_bid(item, user, bid, amount)
-      flash.notice = "#{user.name} has #{user.balance} tickets left."
+      flash.notice = "#{user.name} has #{user.balance} hearts left."
     else
-      flash.alert = "Cannot make update. #{user.name} has #{user.balance} tickets left."
+      flash.alert = "Cannot make update. #{user.name} has #{user.balance} hearts left."
     end
   end
 
@@ -52,10 +52,10 @@ class BidsController < ApplicationController
   def bad_amount(user)
     amount = params[:bid][:amount]
     if amount == ''
-      flash.alert = "Cannot have an empty bid.  #{user.name} has #{user.balance} tickets left."
+      flash.alert = "Cannot have an empty bid.  #{user.name} has #{user.balance} hearts left."
       true
     elsif amount.to_i.negative?
-      flash.alert = "Amount cannot be less than 0.  #{user.name} has #{user.balance} tickets left."
+      flash.alert = "Amount cannot be less than 0.  #{user.name} has #{user.balance} hearts left."
       true
     else
       false

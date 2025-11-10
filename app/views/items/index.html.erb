@@ -33,7 +33,7 @@
         </div>
         <div class="col-4">
           <% if admin_signed_in? || @type != 'Auction' %>
-            <%= link_to(@type == 'Auction' ? "Bid" : "Enter Tickets", item_path(item),
+            <%= link_to(@type == 'Auction' ? "Bid" : "Enter Hearts", item_path(item),
                         { class: "mb-2 btn btn-default btn-lg bg-info-subtle" }) %><br/>
           <% end %>
           <% if item.number %>
@@ -42,9 +42,9 @@
           <% end %>
           <% if item.cost %>
             <%= "Unlimited Item" %><br/>
-            <%= "#{item.cost} #{'ticket'.pluralize(item.cost)} each" %><br/>
+            <%= "#{item.cost} #{'heart'.pluralize(item.cost)} each" %><br/>
           <% end %>
-          <%= item.total %> total tickets
+          <%= item.total %> total hearts
         </div>
       </div>
     </div>
