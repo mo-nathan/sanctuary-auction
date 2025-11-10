@@ -11,7 +11,7 @@ class BidsController < ApplicationController
   private
 
   def update_user(item, user)
-    return if bad_amount(user)
+    return if bad_amount?(user)
 
     if user
       update_balance(item, user, item.bids.find_by(user:), calc_amount(item))
@@ -49,7 +49,7 @@ class BidsController < ApplicationController
     end
   end
 
-  def bad_amount(user)
+  def bad_amount?(user)
     amount = params[:bid][:amount]
     if amount == ''
       flash.alert = "Cannot have an empty bid.  #{user.name} has #{user.balance} hearts left."

@@ -53,7 +53,7 @@ class TagsController < ApplicationController
   private
 
   def tag_params
-    params.require(:tag).permit(:group, :name)
+    params.expect(tag: %i[group name])
   end
 
   def authenticate_admin!
