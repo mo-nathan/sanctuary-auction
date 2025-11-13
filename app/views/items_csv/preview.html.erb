@@ -1,0 +1,18 @@
+<%= render "tabs", tab: "Items" %>
+
+<h1>Confirm CSV Import</h1>
+
+<div class="alert alert-info mt-3">
+  <strong>Ready to import:</strong> <%= @item_count %> <%= 'item'.pluralize(@item_count) %> found in the CSV file.
+</div>
+
+<div class="alert alert-danger mt-3">
+  <strong>Final Warning:</strong> Clicking "Confirm Import" will permanently delete ALL existing items and tags and replace them with the items from your CSV file. This action cannot be undone!
+</div>
+
+<div class="mt-3">
+  <%= form_with url: items_csv_path, method: :post, data: { turbo: false } do |form| %>
+    <%= form.submit "Confirm Import", class: "btn btn-danger btn-lg", data: { confirm: "Are you absolutely sure? This will delete ALL existing items and tags!" } %>
+    <%= link_to "Cancel", new_items_csv_path, class: "btn btn-secondary btn-lg" %>
+  <% end %>
+</div>
