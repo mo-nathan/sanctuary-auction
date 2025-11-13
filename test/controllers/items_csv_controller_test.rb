@@ -7,14 +7,14 @@ class ItemsCsvControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   setup do
-    @csv_file_path = Rails.root.join('test', 'fixtures', 'items.csv')
+    @csv_file_path = Rails.root.join('test/fixtures/items.csv')
     @csv_file = fixture_file_upload(@csv_file_path, 'text/csv')
   end
 
   teardown do
     # Clean up any temporary files
-    Dir[Rails.root.join('tmp', 'uploads', 'items_import_*.csv')].each do |file|
-      File.delete(file) if File.exist?(file)
+    Rails.root.glob('tmp/uploads/items_import_*.csv').each do |file|
+      FileUtils.rm_f(file)
     end
   end
 
@@ -75,7 +75,7 @@ class ItemsCsvControllerTest < ActionDispatch::IntegrationTest
   test 'preview with invalid CSV redirects with error' do
     sign_in admins(:admin_one)
     invalid_csv = fixture_file_upload(
-      Rails.root.join('test', 'fixtures', 'files', 'invalid.csv'),
+      Rails.root.join('test/fixtures/files/invalid.csv'),
       'text/csv'
     )
     post preview_items_csv_path, params: { csv_file: invalid_csv }
@@ -99,7 +99,7 @@ class ItemsCsvControllerTest < ActionDispatch::IntegrationTest
   test 'preview with multiple items shows correct count' do
     sign_in admins(:admin_one)
     multi_csv = fixture_file_upload(
-      Rails.root.join('test', 'fixtures', 'files', 'multi_items.csv'),
+      Rails.root.join('test/fixtures/files/multi_items.csv'),
       'text/csv'
     )
 
@@ -132,7 +132,7 @@ class ItemsCsvControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
 
     # Count items before import
-    before_count = Item.count
+    Item.count
 
     # Perform import
     post items_csv_path
@@ -158,7 +158,7 @@ class ItemsCsvControllerTest < ActionDispatch::IntegrationTest
     # Set a session path that doesn't exist
     post preview_items_csv_path, params: { csv_file: @csv_file }
     temp_path = session[:csv_temp_path]
-    File.delete(temp_path) if File.exist?(temp_path)
+    FileUtils.rm_f(temp_path)
 
     post items_csv_path
     assert_response :redirect
@@ -227,7 +227,7 @@ class ItemsCsvControllerTest < ActionDispatch::IntegrationTest
     post items_csv_path
 
     # Verify tags were created
-    assert Tag.count.positive?, 'Tags should be created'
+    assert Tag.any?, 'Tags should be created'
 
     # Verify item has correct tags
     item = Item.find_by(title: 'Da Item')
@@ -243,7 +243,7 @@ class ItemsCsvControllerTest < ActionDispatch::IntegrationTest
     sign_in admins(:admin_one)
 
     # Create a CSV with only headers (no data rows)
-    empty_csv_path = Rails.root.join('tmp', 'empty.csv')
+    empty_csv_path = Rails.root.join('tmp/empty.csv')
     File.write(empty_csv_path, "Host,Title,Description,Number\n")
 
     post preview_items_csv_path, params: { csv_file: fixture_file_upload(empty_csv_path, 'text/csv') }
@@ -255,7 +255,27 @@ class ItemsCsvControllerTest < ActionDispatch::IntegrationTest
     assert_response :redirect
     assert_redirected_to items_path
 
-    File.delete(empty_csv_path) if File.exist?(empty_csv_path)
+    FileUtils.rm_f(empty_csv_path)
+  end
+
+  test 'create handles import failure when temp file is corrupted' do
+    sign_in admins(:admin_one)
+
+    # Preview with valid CSV to create temp file
+    post preview_items_csv_path, params: { csv_file: @csv_file }
+    assert_response :success
+    temp_path = session[:csv_temp_path]
+
+    # Corrupt the temp file with malformed CSV that will cause CSV parsing to fail
+    # Unclosed quote will trigger CSV::MalformedCSVError
+    File.write(temp_path, "Header1,Header2\n\"Unclosed quote,value\nAnother,Row")
+
+    # Import should catch the error and redirect with alert
+    post items_csv_path
+    assert_response :redirect
+    assert_redirected_to new_items_csv_path
+    assert flash[:alert].present?
+    assert_match(/Error importing CSV/, flash[:alert])
   end
 
   test 'create is destructive and replaces all items' do
@@ -281,7 +301,7 @@ class ItemsCsvControllerTest < ActionDispatch::IntegrationTest
 
     # Use the invalid CSV fixture that will cause parsing to fail
     invalid_csv = fixture_file_upload(
-      Rails.root.join('test', 'fixtures', 'files', 'invalid.csv'),
+      Rails.root.join('test/fixtures/files/invalid.csv'),
       'text/csv'
     )
 
@@ -293,7 +313,7 @@ class ItemsCsvControllerTest < ActionDispatch::IntegrationTest
     assert flash[:alert].present?
 
     # Verify temp file was cleaned up (no orphaned files from this upload)
-    temp_files = Dir[Rails.root.join('tmp', 'uploads', 'items_import_*.csv')]
+    temp_files = Rails.root.glob('tmp/uploads/items_import_*.csv')
     # If any temp files exist, they shouldn't contain our invalid content
     temp_files.each do |file|
       content = File.read(file) if File.exist?(file)
