@@ -12,6 +12,11 @@ Rails.application.routes.draw do
       get 'filter_by_tags'
     end
   end
+
+  resource :items_csv, only: %i[new create], controller: 'items_csv' do
+    post :preview, on: :member
+  end
+
   resources :users
   resources :tags
 

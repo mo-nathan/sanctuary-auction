@@ -1,0 +1,3 @@
+Host,Title,Description,Number,Time,Details,Image,Object_Mail,Object_Deliver,Event_InPerson,Event_Virtual,Event_Hybrid,Activity,Food,Artwork,Service,GroupEvent,Family,Auction,Buyin,Email,Phone,Pic Received?,Prt Comments,Team Notes
+First Host,First Item,Amazing item,3,Tomorrow,More details,,1 - Yes,0 - No,0 - No,0 - No,0 - No,0 - No,1 - Yes,0 - No,0 - No,0 - No,1 - Yes,0 - No,0 - No,host@example.com,555-555-5555,Yes,N/A,Notes
+Second Host,Second Item,Another item,2,Next Week,Even more details,,0 - No,1 - Yes,1 - Yes,0 - No,0 - No,1 - Yes,0 - No,0 - No,0 - No,0 - No,0 - No,0 - No,0 - No,host2@example.com,555-555-5556,Yes,N/A,More notes
