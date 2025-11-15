@@ -37,6 +37,10 @@ en:
       read_error: "Error reading CSV file: %{message}"
       import_error: "Error importing CSV: %{message}"
       import_success: "Items successfully imported from CSV!"
+  site_settings:
+    update_success: "Site settings updated successfully."
+  bids:
+    limited_bidding_disabled: "Bidding on limited items is currently disabled."
   helpers:
     submit:
       bid:

@@ -10,9 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_10_24_115821) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_14_131030) do
   # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
+  enable_extension "pg_catalog.plpgsql"
 
   create_table "admins", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -56,6 +56,17 @@ ActiveRecord::Schema[7.1].define(version: 2024_10_24_115821) do
     t.string "title", default: "An Item", null: false
     t.string "host"
     t.string "timing"
+  end
+
+  create_table "site_settings", force: :cascade do |t|
+    t.boolean "site_enabled", default: true, null: false
+    t.datetime "site_enable_time"
+    t.datetime "site_disable_time"
+    t.boolean "limited_bidding_enabled", default: true, null: false
+    t.datetime "limited_bidding_enable_time"
+    t.datetime "limited_bidding_disable_time"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "tags", force: :cascade do |t|

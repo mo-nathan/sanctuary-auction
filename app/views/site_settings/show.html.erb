@@ -1,0 +1,83 @@
+<%= render "tabs", tab: "settings" %>
+
+<h1>Site Settings</h1>
+
+<%= form_with model: @site_setting, url: site_settings_path, method: :patch do |form| %>
+  <% if @site_setting.errors.any? %>
+    <div class="alert alert-danger">
+      <h4><%= pluralize(@site_setting.errors.count, "error") %> prohibited this setting from being saved:</h4>
+      <ul>
+        <% @site_setting.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="card mt-3">
+    <div class="card-header">
+      <h3>Site Access Control</h3>
+    </div>
+    <div class="card-body">
+      <p class="text-muted">Control when non-admin users can access the site</p>
+
+      <div class="form-check mb-3">
+        <%= form.check_box :site_enabled, { checked: SiteSetting.site_accessible?, class: "form-check-input" }, true, false %>
+        <%= form.label :site_enabled, "Site Enabled", class: "form-check-label" %>
+        <div class="form-text">When unchecked, only admins can access the site (scheduled times override this setting)</div>
+      </div>
+
+      <div class="mb-3">
+        <%= form.label :site_enable_time, "Enable At (Optional - Eastern Time)" %>
+        <%= form.datetime_local_field :site_enable_time, class: "form-control" %>
+        <div class="form-text">Site will become enabled at this time. Enter time in Eastern timezone (shown to users when disabled)</div>
+      </div>
+
+      <div class="mb-3">
+        <%= form.label :site_disable_time, "Disable At (Optional - Eastern Time)" %>
+        <%= form.datetime_local_field :site_disable_time, class: "form-control" %>
+        <div class="form-text">Site will become disabled at this time. Enter time in Eastern timezone</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card mt-3">
+    <div class="card-header">
+      <h3>Limited Item Bidding Control</h3>
+    </div>
+    <div class="card-body">
+      <p class="text-muted">Control when users can bid on limited items (raffle/auction). Unlimited items are always available.</p>
+
+      <div class="form-check mb-3">
+        <%= form.check_box :limited_bidding_enabled, { checked: SiteSetting.limited_bidding_allowed?, class: "form-check-input" }, true, false %>
+        <%= form.label :limited_bidding_enabled, "Limited Bidding Enabled", class: "form-check-label" %>
+        <div class="form-text">When unchecked, users cannot bid on raffle or auction items (scheduled times override this setting)</div>
+      </div>
+
+      <div class="mb-3">
+        <%= form.label :limited_bidding_enable_time, "Enable Bidding At (Optional - Eastern Time)" %>
+        <%= form.datetime_local_field :limited_bidding_enable_time, class: "form-control" %>
+        <div class="form-text">Bidding on limited items will become enabled at this time. Enter time in Eastern timezone</div>
+      </div>
+
+      <div class="mb-3">
+        <%= form.label :limited_bidding_disable_time, "Disable Bidding At (Optional - Eastern Time)" %>
+        <%= form.datetime_local_field :limited_bidding_disable_time, class: "form-control" %>
+        <div class="form-text">Bidding on limited items will become disabled at this time. Enter time in Eastern timezone</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-3">
+    <%= form.submit "Update Settings", class: "btn btn-primary" %>
+    <%= link_to "Cancel", root_path, class: "btn btn-secondary" %>
+  </div>
+<% end %>
+
+<div class="mt-4">
+  <h4>Current Status</h4>
+  <ul>
+    <li><strong>Site Accessible:</strong> <%= SiteSetting.site_accessible? ? "Yes" : "No" %></li>
+    <li><strong>Limited Bidding Allowed:</strong> <%= SiteSetting.limited_bidding_allowed? ? "Yes" : "No" %></li>
+  </ul>
+</div>
