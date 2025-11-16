@@ -140,4 +140,20 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
       item.reload
     end
   end
+
+  test 'index shows next limited bidding enable time when bidding is disabled' do
+    site_setting = SiteSetting.instance
+    future_time = 2.hours.from_now
+    site_setting.update(
+      limited_bidding_enabled: false,
+      limited_bidding_enable_time: future_time
+    )
+
+    get items_path(type: 'raffle')
+    assert_response :success
+
+    # This exercises SiteSetting.next_limited_bidding_enable_time
+    formatted_time = future_time.in_time_zone('Eastern Time (US & Canada)').strftime('%b %d, %I:%M %p %Z')
+    assert_select 'button', text: /Bidding Starts: #{Regexp.escape(formatted_time)}/
+  end
 end

@@ -242,4 +242,35 @@ class SiteSettingsControllerTest < ActionDispatch::IntegrationTest
     # Verify it's in Eastern timezone
     assert_equal 'EST', @site_setting.site_enable_time.zone
   end
+
+  test 'update renders show with unprocessable_content on validation failure' do
+    sign_in admins(:admin_one)
+
+    # Stub the update method to return false to trigger validation failure path
+    SiteSetting.any_instance.stubs(:update).returns(false)
+
+    patch site_settings_path, params: {
+      site_setting: {
+        site_enabled: true,
+        limited_bidding_enabled: true
+      }
+    }
+
+    assert_response :unprocessable_content
+    # Verify it renders the form (not a redirect)
+    assert_select 'form[action=?]', site_settings_path
+  end
+
+  test 'limited_bidding_allowed returns false when disable_time has passed' do
+    sign_in admins(:admin_one)
+    @site_setting.update(
+      limited_bidding_enabled: true,
+      limited_bidding_disable_time: 1.hour.ago
+    )
+
+    get site_settings_path
+    assert_response :success
+    # This exercises line 42 in site_setting.rb
+    assert_not SiteSetting.limited_bidding_allowed?
+  end
 end
