@@ -7,5 +7,5 @@
 git pull
 bundle install
 rails db:migrate
-rake assets:precompile
+rails assets:precompile
 sudo systemctl restart rails.service
