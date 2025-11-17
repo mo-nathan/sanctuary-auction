@@ -20,6 +20,11 @@ Rails.application.routes.draw do
   resource :site_settings, only: %i[show update]
   get 'site_disabled', to: 'site_disabled#index'
 
+  resources :awards, only: %i[index create] do
+    get ':filename', action: :download, on: :collection, as: :download, constraints: { filename: %r{[^/]+} }
+    delete ':filename', action: :destroy, on: :collection, as: :delete, constraints: { filename: %r{[^/]+} }
+  end
+
   resources :users
   resources :tags
 
