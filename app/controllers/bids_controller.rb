@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class BidsController < ApplicationController
+  before_action :check_limited_bidding, unless: :admin_signed_in?
+
   def create
     @item = Item.find(params[:item_id])
     @user = User.find_by(code: params[:bid][:code].downcase.strip)
@@ -9,6 +11,20 @@ class BidsController < ApplicationController
   end
 
   private
+
+  def check_limited_bidding
+    @item = Item.find(params[:item_id])
+
+    # Allow unlimited items (items with cost) regardless of limited bidding status
+    return if @item.cost.present?
+
+    # Check if limited bidding is allowed for items with number (raffle/auction)
+    return if SiteSetting.limited_bidding_allowed?
+
+    # Bidding is not allowed
+    flash[:alert] = t('bids.limited_bidding_disabled')
+    redirect_to item_path(@item)
+  end
 
   def update_user(item, user)
     return if bad_amount?(user)

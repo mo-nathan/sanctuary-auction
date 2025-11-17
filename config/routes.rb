@@ -17,6 +17,9 @@ Rails.application.routes.draw do
     post :preview, on: :member
   end
 
+  resource :site_settings, only: %i[show update]
+  get 'site_disabled', to: 'site_disabled#index'
+
   resources :users
   resources :tags
 

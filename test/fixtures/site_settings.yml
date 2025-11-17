@@ -1,0 +1,9 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+default:
+  site_enabled: true
+  site_enable_time:
+  site_disable_time:
+  limited_bidding_enabled: true
+  limited_bidding_enable_time:
+  limited_bidding_disable_time:

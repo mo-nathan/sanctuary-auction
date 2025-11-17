@@ -34,10 +34,35 @@
           <% end %>
         </div>
         <div class="col-4">
-          <% if admin_signed_in? || @type != 'Auction' %>
-            <%= link_to(@type == 'Auction' ? "Bid" : "Enter Hearts", item_path(item),
+          <% # Determine if this is a limited item (has number) or unlimited (has cost) %>
+          <% is_limited_item = item.number.present? %>
+          <% is_unlimited_item = item.cost.present? %>
+
+          <% # Show button/message based on item type and bidding status %>
+          <% if is_unlimited_item %>
+            <%# Unlimited items are always biddable %>
+            <%= link_to("Enter Hearts", item_path(item),
                         { class: "mb-2 btn btn-default btn-lg bg-info-subtle" }) %><br/>
+          <% elsif is_limited_item %>
+            <% if @type == 'Auction' %>
+              <%# Auction items always show Details button %>
+              <%= link_to("Details", item_path(item),
+                          { class: "mb-2 btn btn-default btn-lg bg-info-subtle" }) %><br/>
+            <% elsif admin_signed_in? %>
+              <%# Admins can always bid on raffle items %>
+              <%= link_to("Enter Hearts", item_path(item),
+                          { class: "mb-2 btn btn-default btn-lg bg-info-subtle" }) %><br/>
+            <% elsif limited_bidding_allowed? %>
+              <%# Bidding is enabled for raffle items %>
+              <%= link_to("Enter Hearts", item_path(item),
+                          { class: "mb-2 btn btn-default btn-lg bg-info-subtle" }) %><br/>
+            <% else %>
+              <%# Bidding is disabled for raffle items - show Details button %>
+              <%= link_to("Details", item_path(item),
+                          { class: "mb-2 btn btn-default btn-lg bg-info-subtle" }) %><br/>
+            <% end %>
           <% end %>
+
           <% if item.number %>
             <%= "#{item.number} #{'item'.pluralize(item.number)}" %><br/>
             <%= item.bids.count %> entrant(s)<br/>

@@ -1,0 +1,30 @@
+<%= render "tabs", tab: "home" %>
+
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-body text-center p-5">
+          <h1 class="mb-4">Site Currently Unavailable</h1>
+
+          <p class="lead">
+            This site is currently disabled for public use.
+          </p>
+
+          <% if @next_enable_time.present? %>
+            <div class="alert alert-info mt-4">
+              <h4>Site Will Be Available:</h4>
+              <p class="mb-0 fs-4">
+                <%= @next_enable_time.in_time_zone('Eastern Time (US & Canada)').strftime("%B %d, %Y at %I:%M %p %Z") %>
+              </p>
+            </div>
+          <% end %>
+
+          <p class="mt-4 text-muted">
+            If you are an administrator, please <%= link_to "sign in", new_admin_session_path %>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
