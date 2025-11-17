@@ -44,31 +44,22 @@
             <%= link_to("Enter Hearts", item_path(item),
                         { class: "mb-2 btn btn-default btn-lg bg-info-subtle" }) %><br/>
           <% elsif is_limited_item %>
-            <% if admin_signed_in? %>
-              <%# Admins can always bid %>
-              <%= link_to(@type == 'Auction' ? "Bid" : "Enter Hearts", item_path(item),
+            <% if @type == 'Auction' %>
+              <%# Auction items always show Details button %>
+              <%= link_to("Details", item_path(item),
+                          { class: "mb-2 btn btn-default btn-lg bg-info-subtle" }) %><br/>
+            <% elsif admin_signed_in? %>
+              <%# Admins can always bid on raffle items %>
+              <%= link_to("Enter Hearts", item_path(item),
                           { class: "mb-2 btn btn-default btn-lg bg-info-subtle" }) %><br/>
             <% elsif limited_bidding_allowed? %>
-              <%# Bidding is enabled for limited items %>
-              <% if @type == 'Auction' %>
-                <%= link_to("Bid", item_path(item),
-                            { class: "mb-2 btn btn-default btn-lg bg-info-subtle" }) %><br/>
-              <% else %>
-                <%= link_to("Enter Hearts", item_path(item),
-                            { class: "mb-2 btn btn-default btn-lg bg-info-subtle" }) %><br/>
-              <% end %>
+              <%# Bidding is enabled for raffle items %>
+              <%= link_to("Enter Hearts", item_path(item),
+                          { class: "mb-2 btn btn-default btn-lg bg-info-subtle" }) %><br/>
             <% else %>
-              <%# Bidding is disabled for limited items %>
-              <% next_enable_time = SiteSetting.next_limited_bidding_enable_time %>
-              <% if next_enable_time.present? %>
-                <button class="mb-2 btn btn-default btn-lg bg-secondary" disabled>
-                  Bidding Starts: <%= next_enable_time.in_time_zone('Eastern Time (US & Canada)').strftime("%b %d, %I:%M %p %Z") %>
-                </button><br/>
-              <% else %>
-                <button class="mb-2 btn btn-default btn-lg bg-secondary" disabled>
-                  Bidding Disabled on This Item
-                </button><br/>
-              <% end %>
+              <%# Bidding is disabled for raffle items - show Details button %>
+              <%= link_to("Details", item_path(item),
+                          { class: "mb-2 btn btn-default btn-lg bg-info-subtle" }) %><br/>
             <% end %>
           <% end %>
 

@@ -21,10 +21,14 @@ class SiteSettingsController < ApplicationController
 
   def processed_site_setting_params
     raw_params = params[:site_setting]
-    {
-      site_enabled: raw_params[:site_enabled],
-      limited_bidding_enabled: raw_params[:limited_bidding_enabled]
-    }.merge(parse_datetime_fields(raw_params))
+    result = {}
+
+    # Convert boolean checkbox values (handle both "true"/"false" and "1"/"0" strings)
+    result[:site_enabled] = %w[true 1].include?(raw_params[:site_enabled].to_s)
+    result[:limited_bidding_enabled] = %w[true 1].include?(raw_params[:limited_bidding_enabled].to_s)
+
+    # Parse datetime fields
+    result.merge(parse_datetime_fields(raw_params))
   end
 
   def parse_datetime_fields(raw_params)

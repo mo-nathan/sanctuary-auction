@@ -72,35 +72,47 @@
     <% end %>
   <% end %>
 <% else %>
-  <%= form_with model: [ @item, @item.bids.build ] do |form| %>
-    <div class="row align-items-center m-2">
-      <div class="col-sm m-2">
-        <%= form.label :code, "Your Code" %> <%= form.text_field :code, size: 6 %>
+  <% if admin_signed_in? || limited_bidding_allowed? %>
+    <%= form_with model: [ @item, @item.bids.build ] do |form| %>
+      <div class="row align-items-center m-2">
+        <div class="col-sm m-2">
+          <%= form.label :code, "Your Code" %> <%= form.text_field :code, size: 6 %>
+        </div>
+        <% if @item.cost %>
+          <div class="col-sm m-2">
+            <%= form.check_box :join %>
+	    <%= form.label :join, "Get One" %>
+          </div>
+        <% else %>
+          <div class="col-sm m-2">
+            <%= form.label :amount, "Total Hearts" %> <%= form.number_field :amount %>
+          </div>
+        <% end %>
+        <div class="col-sm m-2"><%= form.submit %></div>
       </div>
-      <% if @item.cost %>
-        <div class="col-sm m-2">
-          <%= form.check_box :join %>
-	  <%= form.label :join, "Get One" %>
-        </div>
-      <% else %>
-        <div class="col-sm m-2">
-          <%= form.label :amount, "Total Hearts" %> <%= form.number_field :amount %>
-        </div>
-      <% end %>
-      <div class="col-sm m-2"><%= form.submit %></div>
-    </div>
-  <% end %>
+    <% end %>
 
-  <h3>Bids</h3>
-  <% @item.bids.includes(:user).order("users.name").each do |bid| %>
-    <% if bid.user %>
-      <hr>
-      <%= link_to(bid.user.name, user_path(bid.user),
-                  { class: "btn btn-default btn-lg bg-info-subtle" }) %>
-      Hearts: <%= bid.amount %>
-      <% if @item.cost %>
-        (<%= bid.amount / @item.cost %> count)
+    <h3>Bids</h3>
+    <% @item.bids.includes(:user).order("users.name").each do |bid| %>
+      <% if bid.user %>
+        <hr>
+        <%= link_to(bid.user.name, user_path(bid.user),
+                    { class: "btn btn-default btn-lg bg-info-subtle" }) %>
+        Hearts: <%= bid.amount %>
+        <% if @item.cost %>
+          (<%= bid.amount / @item.cost %> count)
+        <% end %>
       <% end %>
     <% end %>
+  <% else %>
+    <div class="alert alert-info mt-4">
+      <h4>Bidding on Limited Items is Currently Disabled</h4>
+      <% next_enable_time = SiteSetting.next_limited_bidding_enable_time %>
+      <% if next_enable_time.present? %>
+        <p class="mb-0">
+          Bidding will start: <strong><%= next_enable_time.in_time_zone('Eastern Time (US & Canada)').strftime("%B %d, %Y at %I:%M %p %Z") %></strong>
+        </p>
+      <% end %>
+    </div>
   <% end %>
 <% end %>
