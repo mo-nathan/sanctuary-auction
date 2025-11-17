@@ -41,6 +41,9 @@ en:
     update_success: "Site settings updated successfully."
   bids:
     limited_bidding_disabled: "Bidding on limited items is currently disabled."
+  awards:
+    file_not_found: "Award file not found."
+    file_deleted: "Award file deleted successfully."
   helpers:
     submit:
       bid:

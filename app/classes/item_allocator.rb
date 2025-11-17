@@ -17,9 +17,8 @@ class ItemAllocator
 
   def next_user
     @user_queue = @users.dup.shuffle if @user_queue == []
-    user = @user_queue.pop
-    Rails.logger.info "Assigning an item to #{user.name}" if user
-    user
+    @user_queue.pop
+    # Rails.logger.info "Assigning an item to #{user.name}" if user
   end
 
   def items_with_no_bids
