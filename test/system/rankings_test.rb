@@ -47,6 +47,20 @@ class RankingsTest < ApplicationSystemTestCase
     assert_equal([30, 29, 28], @user.bids.joins(:item).order('bids.amount DESC').pluck(:amount))
   end
 
+  test 'each section shows only its own controls' do
+    press('Add', 'Alpha')
+
+    assert_button 'Move up: Alpha', disabled: :all
+    assert_no_button 'Add: Alpha'
+    assert_button 'Add: Bravo'
+    assert_no_button 'Remove: Bravo'
+    assert_no_button 'Move up: Bravo', disabled: :all
+
+    press('Remove', 'Alpha')
+    assert_button 'Add: Alpha'
+    assert_no_button 'Remove: Alpha'
+  end
+
   test 'end positions disable the moves that do not apply' do
     %w[Alpha Bravo].each { |title| press('Add', title) }
 

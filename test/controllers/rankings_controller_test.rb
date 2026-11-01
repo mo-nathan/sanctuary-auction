@@ -22,6 +22,14 @@ class RankingsControllerTest < ActionDispatch::IntegrationTest
     assert_select 'li a', { text: items(:item_one).title, count: 0 }
   end
 
+  test 'create shows a key for the hearts' do
+    post ranking_path, params: { code: users(:user_one).code }
+
+    RankingsHelper::RANKING_MOVES.each do |move|
+      assert_select 'li', text: /#{Regexp.escape(move[:help])}: #{move[:meaning]}/
+    end
+  end
+
   test 'create with an unknown code returns to the code form' do
     post ranking_path, params: { code: 'nobody' }
 
@@ -69,11 +77,11 @@ class RankingsControllerTest < ActionDispatch::IntegrationTest
   test 'closed bidding hides the tab from everyone but admins' do
     SiteSetting.instance.update!(limited_bidding_enabled: false)
     get root_path
-    assert_select 'a', { text: 'Rank Items', count: 0 }
+    assert_select 'a', { text: 'Fairy Helper', count: 0 }
 
     sign_in admins(:admin_one)
     get root_path
-    assert_select 'a', { text: 'Rank Items', count: 1 }
+    assert_select 'a', { text: 'Fairy Helper', count: 1 }
   end
 
   test 'admins can rank while bidding is closed' do

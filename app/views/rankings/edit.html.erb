@@ -1,15 +1,19 @@
 <%= render "tabs", tab: "ranking" %>
 
-<h1>Rank Raffle Items</h1>
+<h1>Fairy Helper</h1>
 
 <p>
   <%= @user.name %> has <%= @user.balance %> hearts left.
 </p>
 <p>
-  Saving replaces all of your Hearts on raffle items. Your top item gets
-  <%= HeartRanking::TOP_AMOUNT %> Hearts, the next gets <%= HeartRanking::TOP_AMOUNT - 1 %>,
-  and so on down to 1 Heart each until your Hearts run out.
+  This page helps you tell the Auction Fairy what you want the most. It will automatically
+  assign your hearts in a way that when it's your turn to get something, the fairy will pick
+  whatever is left that you want the most. Remember that adding more to the bottom of your
+  list doesn't affect your chances of getting things higher on your list, so include
+  everything that you have any interest in.
 </p>
+
+<%= render "key" %>
 
 <%= form_with url: ranking_path, method: :patch, data: { turbo: false, controller: "ranking" } do |form| %>
   <%= form.hidden_field :code, value: @user.code %>

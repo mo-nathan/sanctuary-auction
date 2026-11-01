@@ -10,14 +10,13 @@
     <% end %>
   </div>
   <div data-controls="ranked" <%= "hidden" unless ranked %>>
-    <% [["Remove", "remove", "Remove"], ["▲▲", "top", "Move to top"], ["▲", "up", "Move up"],
-        ["▼", "down", "Move down"], ["▼▼", "bottom", "Move to bottom"]].each do |label, action, name| %>
-      <%= button_tag label, type: "button", class: "btn btn-sm btn-outline-secondary",
-          "aria-label": "#{name}: #{item.title}", data: { action: "ranking##{action}", move: action } %>
+    <% RankingsHelper::RANKING_MOVES.each do |move| %>
+      <%= button_tag tag.span(move[:heart], class: "fs-5"), type: "button", class: "btn btn-sm btn-outline-secondary",
+          "aria-label": "#{move[:label]}: #{item.title}", data: { action: "ranking##{move[:action]}", move: move[:action] } %>
     <% end %>
   </div>
   <div data-controls="unranked" <%= "hidden" if ranked %>>
-    <%= button_tag "Add", type: "button", class: "btn btn-sm btn-outline-secondary",
+    <%= button_tag tag.span("💗", class: "fs-5"), type: "button", class: "btn btn-sm btn-outline-secondary",
         "aria-label": "Add: #{item.title}", data: { action: "ranking#add" } %>
   </div>
 </li>
