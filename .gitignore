@@ -73,3 +73,9 @@ yarn-debug.log*
 !/app/assets/builds/.keep
 
 /node_modules
+
+# Database dumps from bin/backup
+/backups/
+
+# Files from previous auctions
+/2025/

@@ -20,3 +20,6 @@ Style/Documentation:
 Metrics/ClassLength:
   Exclude:
     - "test/**/*"
+
+Rails/StrongParametersExpect:
+  Enabled: false

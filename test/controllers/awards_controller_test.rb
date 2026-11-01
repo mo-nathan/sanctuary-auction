@@ -106,7 +106,7 @@ class AwardsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
 
     # Get all list items
-    doc = Nokogiri::HTML(response.body)
+    doc = response.parsed_body
     dates = doc.css('li.list-group-item').map(&:text).map(&:strip)
 
     # Newest should be first
