@@ -9,10 +9,12 @@
     <%= link_to "Raffle Items", items_path,
       tab == 'raffle' ? active : inactive %>
   </li>
-  <li class="nav-item">
-    <%= link_to "Auction", items_path(type: 'Auction'),
-      tab == 'Auction' ? active : inactive %>
-  </li>
+  <% if auction_items? %>
+    <li class="nav-item">
+      <%= link_to "Auction", items_path(type: 'Auction'),
+        tab == 'Auction' ? active : inactive %>
+    </li>
+  <% end %>
   <li class="nav-item">
     <%= link_to "Users", users_path,
       tab == 'user' ? active : inactive %>

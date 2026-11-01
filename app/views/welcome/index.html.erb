@@ -18,8 +18,12 @@
 <br/>
 
 <p>
-  As a participant in the auction, you have 500 hearts to use between
-  raffle and auction items. Each type of item works differently:
+  As a participant in the event, you have 500 hearts to use
+  <% if auction_items? %>
+    between raffle and auction items. Each type of item works differently:
+  <% else %>
+    on raffle items.
+  <% end %>
 </p>
 
 <p>
@@ -36,11 +40,13 @@
   and a plus one, or you and your family.
 </p>
 
-<p>
-  <b><a href="/items?type=Auction">Auction:</a></b>
-  These items will be auctioned live during the event (see details
-  below). You can view the item listings before the auction starts.
-</p>
+<% if auction_items? %>
+  <p>
+    <b><a href="/items?type=Auction">Auction:</a></b>
+    These items will be auctioned live during the event (see details
+    below). You can view the item listings before the auction starts.
+  </p>
+<% end %>
 
 <br/>
 
@@ -89,18 +95,20 @@
 
 <br/>
 
-<h4>Auction:</h4>
-<p>
-  During the auction, each item will be announced, and you will have a
-  chance to bid. The item will go to the highest individual bidder,
-  who will have deducted the number of hearts they bid. The amount you
-  bid is part of your total heart count. Please do not bid more than
-  you have.
-</p>
+<% if auction_items? %>
+  <h4>Auction:</h4>
+  <p>
+    During the auction, each item will be announced, and you will have a
+    chance to bid. The item will go to the highest individual bidder,
+    who will have deducted the number of hearts they bid. The amount you
+    bid is part of your total heart count. Please do not bid more than
+    you have.
+  </p>
+<% end %>
 
 <p>
-  After the auction, there will be a chance to enter any hearts not
-  used in the auction on UNLIMITED raffle items. Most of the raffle
+  After the event, there will be a chance to enter any hearts not
+  used in the event on UNLIMITED raffle items. Most of the raffle
   items will be unavailable for bidding after 3 pm.
 </p>
 

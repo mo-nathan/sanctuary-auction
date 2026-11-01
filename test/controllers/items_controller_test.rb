@@ -43,6 +43,12 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
     assert_select 'span', text: items(:item_two).title, count: 0
   end
 
+  test 'hides auction tab on item pages when there are no auction items' do
+    Item.auction_items.destroy_all
+    get(items_path)
+    assert_select 'a.nav-link', text: 'Auction', count: 0
+  end
+
   test 'index auction' do
     get(items_path(type: 'Auction'))
     assert_response :success
