@@ -2,7 +2,7 @@
 
 require 'simplecov'
 SimpleCov.start 'rails' do
-  add_filter 'lib/tasks' # Exclude the lib/tasks directory
+  skip 'lib/tasks' # Exclude the lib/tasks directory
 end
 
 ENV['RAILS_ENV'] ||= 'test'

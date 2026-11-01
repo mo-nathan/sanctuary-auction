@@ -5,7 +5,7 @@ source 'https://rubygems.org'
 ruby(File.read('.ruby-version').strip)
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem 'rails', '~> 8.0.2'
+gem 'rails', '~> 8.1.0'
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem 'sprockets-rails'
@@ -81,3 +81,5 @@ gem 'cssbundling-rails' # , '~> 1.3'
 gem 'jsbundling-rails' # , '~> 1.2'
 
 gem 'devise' # , '~> 4.9'
+
+gem 'csv'

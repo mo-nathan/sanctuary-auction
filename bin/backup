@@ -1,0 +1,12 @@
+#!/usr/bin/bash
+set -euo pipefail
+
+# Writes a database dump to backups/ and keeps the most recent 14.
+# Copy these off the server, since they don't survive losing the Droplet.
+cd "$(dirname "$0")/.."
+
+mkdir -p backups
+file="backups/auction-$(date +%F-%H%M).dump"
+docker compose exec -T db sh -c 'pg_dump -U "$POSTGRES_USER" -Fc "$POSTGRES_DB"' > "$file"
+ls -1t backups/auction-*.dump | tail -n +15 | xargs -r rm --
+echo "$file"

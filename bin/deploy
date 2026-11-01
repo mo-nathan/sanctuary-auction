@@ -1,11 +1,9 @@
 #!/usr/bin/bash
+set -euo pipefail
 
-# su - rails
-# cd ~/sanctuary-auction
-# bin/deploy
+# Run on the server from any directory. The web container migrates on startup.
+cd "$(dirname "$0")/.."
 
 git pull
-bundle install
-rails db:migrate
-rails assets:precompile
-sudo systemctl restart rails.service
+docker compose up -d --build
+docker image prune -f
