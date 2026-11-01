@@ -1,2 +1,10 @@
 @import 'bootstrap/scss/bootstrap';
 @import 'bootstrap-icons/font/bootstrap-icons';
+
+// Browsers draw the default border faintly, especially Safari
+input:not([type="checkbox"], [type="radio"], [type="submit"], [type="file"], .form-control),
+textarea:not(.form-control),
+select:not(.form-select) {
+  border: 1px solid $gray-700;
+  border-radius: $border-radius-sm;
+}
