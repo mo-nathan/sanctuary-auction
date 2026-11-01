@@ -76,3 +76,6 @@ yarn-debug.log*
 
 # Database dumps from bin/backup
 /backups/
+
+# Files from previous auctions
+/2025/
