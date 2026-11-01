@@ -1,0 +1,30 @@
+<%= render "tabs", tab: "ranking" %>
+
+<h1>Rank Raffle Items</h1>
+
+<p>
+  <%= @user.name %> has <%= @user.balance %> hearts left.
+</p>
+<p>
+  Saving replaces all of your Hearts on raffle items. Your top item gets
+  <%= HeartRanking::TOP_AMOUNT %> Hearts, the next gets <%= HeartRanking::TOP_AMOUNT - 1 %>,
+  and so on down to 1 Heart each until your Hearts run out.
+</p>
+
+<%= form_with url: ranking_path, method: :patch, data: { turbo: false, controller: "ranking" } do |form| %>
+  <%= form.hidden_field :code, value: @user.code %>
+
+  <h2>Your Ranking</h2>
+  <ol class="list-group list-group-numbered mb-3" data-ranking-target="ranked">
+    <%= render partial: "item", collection: @ranking.ranked_items, locals: { ranked: true } %>
+  </ol>
+
+  <div class="mb-3">
+    <%= form.submit "Save", class: "btn btn-default btn-lg bg-info-subtle" %>
+  </div>
+
+  <h2>Not Ranked</h2>
+  <ul class="list-group" data-ranking-target="unranked">
+    <%= render partial: "item", collection: @ranking.unranked_items, locals: { ranked: false } %>
+  </ul>
+<% end %>

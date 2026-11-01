@@ -25,6 +25,8 @@ Rails.application.routes.draw do
     delete ':filename', action: :destroy, on: :collection, as: :delete, constraints: { filename: %r{[^/]+} }
   end
 
+  resource :ranking, only: %i[show create update]
+
   resources :users
   resources :tags
 
