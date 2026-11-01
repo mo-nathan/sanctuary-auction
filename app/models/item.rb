@@ -11,6 +11,7 @@ class Item < ApplicationRecord
   default_scope { order(title: :asc) }
   scope :raffle_items, -> { where(auction: false) }
   scope :auction_items, -> { where(auction: true) }
+  scope :rankable_items, -> { raffle_items.where(cost: nil) }
 
   def total
     result = 0
