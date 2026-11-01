@@ -4,6 +4,7 @@ class Item < ApplicationRecord
   has_many :bids, dependent: :destroy
   has_many :item_tags, dependent: :destroy
   has_many :tags, through: :item_tags
+  before_validation :resolve_image_url, if: :image_url_changed?
   validates :title, presence: true
   validate :cost_or_number
   validate :check_image_url
@@ -17,6 +18,10 @@ class Item < ApplicationRecord
       result += bid.amount
     end
     result
+  end
+
+  def resolve_image_url
+    self.image_url = ImageUrlResolver.resolve(image_url)
   end
 
   def check_image_url
