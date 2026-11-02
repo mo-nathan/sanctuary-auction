@@ -19,12 +19,32 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
     assert_select('br', count: 1)
   end
 
-  test 'index default' do
+  test 'index default lists raffle items but not unlimited ones' do
     get(items_path)
     assert_response :success
-    assert_select 'span', text: items(:item_one).title
+    assert_select 'span', text: items(:item_one).title, count: 0
     assert_select 'span', text: items(:item_two).title
     assert_select 'span', text: items(:item_three).title
+  end
+
+  test 'unlimited index lists only unlimited items' do
+    get(items_path(type: 'Unlimited'))
+    assert_response :success
+    assert_select 'h1', text: 'Unlimited Items'
+    assert_select 'a.nav-link.active', text: 'Unlimited'
+    assert_select 'span', text: items(:item_one).title
+    assert_select 'span', text: items(:item_two).title, count: 0
+  end
+
+  test 'unlimited tab sits between home and raffle items' do
+    get(items_path)
+    assert_equal(['Home', 'Unlimited', 'Raffle Items'], css_select('a.nav-link').map(&:text).first(3))
+  end
+
+  test 'hides unlimited tab when there are no unlimited items' do
+    Item.unlimited_items.destroy_all
+    get(items_path)
+    assert_select 'a.nav-link', text: 'Unlimited', count: 0
   end
 
   test 'auction index' do
@@ -36,11 +56,13 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
     assert_select 'span', count: 0, text: items(:item_one).title
   end
 
-  test 'index tag test' do
+  test 'index tag test stays within raffle items' do
+    items(:item_two).tags << tags(:one)
     get(items_path(tag_ids: [tags(:one).id.to_s]))
     assert_response :success
-    assert_select 'span', text: items(:item_one).title
-    assert_select 'span', text: items(:item_two).title, count: 0
+    assert_select 'span', text: items(:item_two).title
+    assert_select 'span', text: items(:item_one).title, count: 0
+    assert_select 'span', text: items(:item_three).title, count: 0
   end
 
   test 'hides auction tab on item pages when there are no auction items' do
@@ -179,5 +201,14 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
     formatted_time = future_time.in_time_zone('Eastern Time (US & Canada)').strftime('%B %d, %Y at %I:%M %p %Z')
     assert_select '.alert-info h4', text: 'Bidding on Limited Items is Currently Disabled'
     assert_select '.alert-info p', text: /Bidding will start: #{Regexp.escape(formatted_time)}/
+  end
+
+  test 'show pluralizes the hearts for unlimited items' do
+    get item_path(items(:item_one))
+    assert_includes(response.body, '10 Hearts Each')
+
+    items(:item_one).update!(cost: 1)
+    get item_path(items(:item_one))
+    assert_includes(response.body, '1 Heart Each')
   end
 end

@@ -22,6 +22,16 @@ class RankingsControllerTest < ActionDispatch::IntegrationTest
     assert_select 'li a', { text: items(:item_one).title, count: 0 }
   end
 
+  test 'create labels the controls and includes item details' do
+    post ranking_path, params: { code: users(:user_one).code }
+
+    RankingsHelper::RANKING_MOVES.each do |move|
+      assert_select 'button[aria-label=?]', move[:label]
+    end
+    assert_select 'button[aria-label=?]', RankingsHelper::ADD_LABEL
+    assert_select 'template', /#{items(:item_three).description}/
+  end
+
   test 'create with an unknown code returns to the code form' do
     post ranking_path, params: { code: 'nobody' }
 
@@ -34,10 +44,10 @@ class RankingsControllerTest < ActionDispatch::IntegrationTest
     patch ranking_path, params: { code: user.code, item_ids: [items(:item_two).id, items(:item_three).id] }
 
     assert_response :success
-    assert_equal(30, user.bids.find_by(item: items(:item_two)).amount)
-    assert_equal(29, user.bids.find_by(item: items(:item_three)).amount)
-    assert_equal(461, user.reload.balance)
-    assert_match('461 hearts left', flash[:notice])
+    assert_equal(31, user.bids.find_by(item: items(:item_two)).amount)
+    assert_equal(30, user.bids.find_by(item: items(:item_three)).amount)
+    assert_equal(459, user.reload.balance)
+    assert_match('459 hearts left', flash[:notice])
   end
 
   test 'update without items clears the ranking' do
@@ -69,11 +79,11 @@ class RankingsControllerTest < ActionDispatch::IntegrationTest
   test 'closed bidding hides the tab from everyone but admins' do
     SiteSetting.instance.update!(limited_bidding_enabled: false)
     get root_path
-    assert_select 'a', { text: 'Rank Items', count: 0 }
+    assert_select 'a', { text: 'Fairy Helper', count: 0 }
 
     sign_in admins(:admin_one)
     get root_path
-    assert_select 'a', { text: 'Rank Items', count: 1 }
+    assert_select 'a', { text: 'Fairy Helper', count: 1 }
   end
 
   test 'admins can rank while bidding is closed' do

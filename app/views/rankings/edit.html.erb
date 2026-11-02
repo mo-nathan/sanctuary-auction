@@ -1,14 +1,16 @@
 <%= render "tabs", tab: "ranking" %>
 
-<h1>Rank Raffle Items</h1>
+<h1>Fairy Helper</h1>
 
 <p>
   <%= @user.name %> has <%= @user.balance %> hearts left.
 </p>
 <p>
-  Saving replaces all of your Hearts on raffle items. Your top item gets
-  <%= HeartRanking::TOP_AMOUNT %> Hearts, the next gets <%= HeartRanking::TOP_AMOUNT - 1 %>,
-  and so on down to 1 Heart each until your Hearts run out.
+  This page helps you tell the Auction Fairy what you want the most. It will automatically
+  assign your hearts in a way that when it's your turn to get something, the fairy will pick
+  whatever is left that you want the most. Remember that adding more to the bottom of your
+  list doesn't affect your chances of getting things higher on your list, so include
+  everything that you have any interest in.
 </p>
 
 <%= form_with url: ranking_path, method: :patch, data: { turbo: false, controller: "ranking" } do |form| %>
@@ -27,4 +29,24 @@
   <ul class="list-group" data-ranking-target="unranked">
     <%= render partial: "item", collection: @ranking.unranked_items, locals: { ranked: false } %>
   </ul>
+
+  <div class="modal fade" tabindex="-1" aria-labelledby="item-details-title" aria-hidden="true"
+       data-ranking-target="modal">
+    <div class="modal-dialog modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="item-details-title" data-ranking-target="modalTitle"></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" data-ranking-target="modalBody"></div>
+        <div class="modal-footer">
+          <span data-ranking-target="modalAdd">
+            <%= ranking_button(RankingsHelper::ADD_HEART, nil, RankingsHelper::ADD_LABEL, "ranking#addFromDetails") %>
+          </span>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                  data-ranking-target="modalClose">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
 <% end %>

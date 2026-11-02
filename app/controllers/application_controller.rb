@@ -3,7 +3,7 @@
 class ApplicationController < ActionController::Base
   before_action :check_site_access, unless: :skip_site_access_check?
 
-  helper_method :limited_bidding_allowed?, :auction_items?
+  helper_method :limited_bidding_allowed?, :auction_items?, :unlimited_items?
 
   private
 
@@ -25,5 +25,11 @@ class ApplicationController < ActionController::Base
     return @auction_items if defined?(@auction_items)
 
     @auction_items = Item.auction_items.exists?
+  end
+
+  def unlimited_items?
+    return @unlimited_items if defined?(@unlimited_items)
+
+    @unlimited_items = Item.unlimited_items.exists?
   end
 end

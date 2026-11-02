@@ -1,23 +1,24 @@
 <li class="list-group-item d-flex flex-wrap align-items-center gap-2" data-title="<%= item.title %>">
   <%= hidden_field_tag "item_ids[]", item.id, id: nil, disabled: !ranked %>
   <% if item.image_url.present? %>
-    <%= image_tag(item.image_url, width: 60, alt: "") %>
+    <%= link_to(image_tag(item.image_url, width: 60, alt: ""), item_path(item),
+                tabindex: -1, data: { action: "ranking#details:prevent" }) %>
   <% end %>
   <div class="flex-grow-1">
-    <%= link_to(item.title, item_path(item), target: "_blank", rel: "noopener") %>
+    <%= link_to(item.title, item_path(item), data: { action: "ranking#details:prevent" }) %>
     <% if item.host.present? %>
       <br/>Host: <%= item.host %>
     <% end %>
   </div>
   <div data-controls="ranked" <%= "hidden" unless ranked %>>
-    <% [["Remove", "remove", "Remove"], ["▲▲", "top", "Move to top"], ["▲", "up", "Move up"],
-        ["▼", "down", "Move down"], ["▼▼", "bottom", "Move to bottom"]].each do |label, action, name| %>
-      <%= button_tag label, type: "button", class: "btn btn-sm btn-outline-secondary",
-          "aria-label": "#{name}: #{item.title}", data: { action: "ranking##{action}", move: action } %>
+    <% RankingsHelper::RANKING_MOVES.each do |move| %>
+      <%= ranking_button(move[:heart], move[:symbol], move[:label], "ranking##{move[:action]}", move: move[:action]) %>
     <% end %>
   </div>
   <div data-controls="unranked" <%= "hidden" if ranked %>>
-    <%= button_tag "Add", type: "button", class: "btn btn-sm btn-outline-secondary",
-        "aria-label": "Add: #{item.title}", data: { action: "ranking#add" } %>
+    <%= ranking_button(RankingsHelper::ADD_HEART, nil, RankingsHelper::ADD_LABEL, "ranking#add") %>
   </div>
+  <template>
+    <%= render "details", item: %>
+  </template>
 </li>
