@@ -28,8 +28,17 @@ class RankingsControllerTest < ActionDispatch::IntegrationTest
     RankingsHelper::RANKING_MOVES.each do |move|
       assert_select 'button[aria-label=?]', move[:label]
     end
-    assert_select 'button[aria-label=?]', RankingsHelper::ADD_LABEL
+    assert_select 'button[aria-label=?]', RankingsHelper::ADD_MOVE[:label]
     assert_select 'template', /#{items(:item_three).description}/
+  end
+
+  test 'create ties each button to its item title' do
+    post ranking_path, params: { code: users(:user_one).code }
+
+    title_id = "item-title-#{items(:item_three).id}"
+    assert_select "a##{title_id}", text: items(:item_three).title
+    assert_select "button[aria-describedby='#{title_id}']", count: RankingsHelper::RANKING_MOVES.size + 1
+    assert_select '[aria-live=polite]'
   end
 
   test 'create with an unknown code returns to the code form' do

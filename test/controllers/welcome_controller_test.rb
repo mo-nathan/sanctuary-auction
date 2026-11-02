@@ -8,6 +8,12 @@ class WelcomeControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'layout declares the language and labels the logo link' do
+    get welcome_index_url
+    assert_select 'html[lang=en]'
+    assert_select 'a[href=?] img[alt=?]', root_path, 'The Sanctuary Boston, home'
+  end
+
   test 'shows auction tab and text when there are auction items' do
     get welcome_index_url
     assert_select 'a.nav-link', text: 'Auction'

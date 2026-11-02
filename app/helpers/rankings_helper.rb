@@ -8,12 +8,11 @@ module RankingsHelper
     { action: 'bottom', heart: '💛', symbol: '▼▼', label: 'Move to Bottom' },
     { action: 'remove', heart: '💔', symbol: '▬', label: 'Remove from Your List' }
   ].freeze
-  ADD_HEART = '💗'
-  ADD_LABEL = 'Add to Your List'
+  ADD_MOVE = { action: 'add', heart: '💗', label: 'Add to Your List' }.freeze
 
-  def ranking_button(heart, symbol, label, action, move: nil)
-    button_tag(safe_join([tag.span(heart, class: 'fs-5'), symbol].compact, ' '),
-               type: 'button', class: 'btn btn-sm btn-outline-secondary', 'aria-label': label,
-               data: { action:, move: }.compact)
+  def ranking_button(move, describedby: nil, action: "ranking##{move[:action]}")
+    button_tag(safe_join([tag.span(move[:heart], class: 'fs-5'), move[:symbol]].compact, ' '),
+               type: 'button', class: 'btn btn-sm btn-outline-secondary', 'aria-label': move[:label],
+               'aria-describedby': describedby, data: { action:, move: move[:action] })
   end
 end

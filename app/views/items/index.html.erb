@@ -21,7 +21,8 @@
       <div class="row align-items-center">
         <div class="col-sm-3 col-lg-2 mt-2 mb-2">
           <% if item.image_url %>
-            <%= link_to(image_tag(item.image_url, width: "100%"), item_path(item)) %>
+            <%= link_to(image_tag(item.image_url, width: "100%", alt: ""), item_path(item),
+                        tabindex: -1, "aria-hidden": true) %>
           <% end %>
         </div>
         <div class="col">

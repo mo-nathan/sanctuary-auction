@@ -3,7 +3,7 @@
 <div class="row align-items-center mt-4">
   <% if @item.image_url.present? %>
     <div class="col-5">
-      <%= image_tag(@item.image_url, width: "100%") %>
+      <%= image_tag(@item.image_url, width: "100%", alt: "") %>
     </div>
   <% end %>
   <div class="col">
