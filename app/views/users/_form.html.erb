@@ -2,17 +2,13 @@
   <div class="mt-3">
     <%= form.label :code %><br>
     <%= form.text_field :code %>
-    <% user.errors.full_messages_for(:code).each do |message| %>
-      <div><%= message %></div>
-    <% end %>
+    <%= field_errors(form, :code) %>
   </div>
 
   <div class="mt-3">
     <%= form.label :name %><br>
     <%= form.text_field :name %>
-    <% user.errors.full_messages_for(:name).each do |message| %>
-      <div><%= message %></div>
-    <% end %>
+    <%= field_errors(form, :name) %>
   </div>
 
   <div class="mt-3">

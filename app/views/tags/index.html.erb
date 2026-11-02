@@ -1,3 +1,4 @@
+<% content_for :title, "Tags" %>
 <%= render "tabs", tab: "tags" %>
 
 <h1>All Tags</h1>
@@ -13,7 +14,9 @@
   <div class="row">
     <% Tag.groups.each do |group| %>
       <div class="col-md-4 col-sm-12 mb-3">
-        <h4><%= group if group %></h4>
+        <% if group %>
+          <h2 class="h4"><%= group %></h2>
+        <% end %>
         <% @tags.where(group: group).each do |tag| %>
           <div class="panel panel-default p-1">
             <div class="row">

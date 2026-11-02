@@ -2,16 +2,12 @@
   <div class="mt-3">
     <%= form.label :group %><br>
     <%= form.text_field :group, size: 60 %>
-    <% tag.errors.full_messages_for(:group).each do |message| %>
-      <div class="error"><%= message %></div>
-    <% end %>
+    <%= field_errors(form, :group) %>
   </div>
   <div class="mt-3">
     <%= form.label :name %><br>
     <%= form.text_field :name, size: 60 %>
-    <% tag.errors.full_messages_for(:name).each do |message| %>
-      <div class="error"><%= message %></div>
-    <% end %>
+    <%= field_errors(form, :name) %>
   </div>
 
   <div class="mt-3">
