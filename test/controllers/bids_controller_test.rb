@@ -133,4 +133,15 @@ class BidsControllerTest < ActionDispatch::IntegrationTest
     # Should succeed for unlimited items even when limited bidding is disabled
     assert_equal(before + 1, Bid.count)
   end
+
+  test 'flash messages are announced' do
+    post(item_bids_path(item_id: items(:item_one).id),
+         params: { bid: { code: users(:user_two).code, amount: '10' } })
+    follow_redirect!
+    assert_select '[role=region][aria-label=Messages] .alert[role=status]'
+
+    post(item_bids_path(item_id: items(:item_one).id), params: { bid: { code: 'nobody', amount: '10' } })
+    follow_redirect!
+    assert_select '.alert[role=alert]'
+  end
 end

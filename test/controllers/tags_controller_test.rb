@@ -46,7 +46,7 @@ class TagsControllerTest < ActionDispatch::IntegrationTest
       post tags_url(tag: { name: })
     end
     assert_response :unprocessable_content
-    assert_select 'div.error', /Name has already been taken/
+    assert_select 'div#tag_name_error', /Name has already been taken/
   end
 
   test 'non-admin should fail to create tag' do
@@ -79,7 +79,7 @@ class TagsControllerTest < ActionDispatch::IntegrationTest
     tag = tags(:one)
     patch tag_url(tag, tag: { name: tags(:two).name })
     assert_response :unprocessable_content
-    assert_select 'div.error', /Name has already been taken/
+    assert_select 'div#tag_name_error', /Name has already been taken/
   end
 
   test 'should destroy tag' do
@@ -92,5 +92,11 @@ class TagsControllerTest < ActionDispatch::IntegrationTest
     follow_redirect!
     assert_response :success
     assert_select 'div.alert.alert-success', "#{name} tag successfully destroyed."
+  end
+
+  test 'index skips the heading for tags without a group' do
+    sign_in(admins(:admin_one))
+    get(tags_path)
+    assert_select 'h2:empty', 0
   end
 end

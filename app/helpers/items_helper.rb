@@ -13,4 +13,11 @@ module ItemsHelper
     end
     result
   end
+
+  # Names the item for screen readers, since every item has the same link text
+  def item_link(label, item)
+    link_to(item_path(item), class: 'mb-2 btn btn-default btn-lg bg-info-subtle') do
+      safe_join([label, tag.span(" for #{item.title}", class: 'visually-hidden')])
+    end
+  end
 end

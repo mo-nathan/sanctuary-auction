@@ -1,3 +1,4 @@
+<% content_for :title, "Site Settings" %>
 <%= render "tabs", tab: "settings" %>
 
 <h1>Site Settings</h1>
@@ -5,7 +6,7 @@
 <%= form_with model: @site_setting, url: site_settings_path, method: :patch do |form| %>
   <% if @site_setting.errors.any? %>
     <div class="alert alert-danger">
-      <h4><%= pluralize(@site_setting.errors.count, "error") %> prohibited this setting from being saved:</h4>
+      <h2 class="h4"><%= pluralize(@site_setting.errors.count, "error") %> prohibited this setting from being saved:</h2>
       <ul>
         <% @site_setting.errors.full_messages.each do |message| %>
           <li><%= message %></li>
@@ -16,7 +17,7 @@
 
   <div class="card mt-3">
     <div class="card-header">
-      <h3>Site Access Control</h3>
+      <h2 class="h3">Site Access Control</h2>
     </div>
     <div class="card-body">
       <p class="text-muted">Control when non-admin users can access the site</p>
@@ -43,7 +44,7 @@
 
   <div class="card mt-3">
     <div class="card-header">
-      <h3>Limited Item Bidding Control</h3>
+      <h2 class="h3">Limited Item Bidding Control</h2>
     </div>
     <div class="card-body">
       <p class="text-muted">Control when users can bid on limited items (raffle/auction). Unlimited items are always available.</p>
@@ -75,7 +76,7 @@
 <% end %>
 
 <div class="mt-4">
-  <h4>Current Status</h4>
+  <h2 class="h4">Current Status</h2>
   <ul>
     <li><strong>Site Accessible:</strong> <%= SiteSetting.site_accessible? ? "Yes" : "No" %></li>
     <li><strong>Limited Bidding Allowed:</strong> <%= SiteSetting.limited_bidding_allowed? ? "Yes" : "No" %></li>

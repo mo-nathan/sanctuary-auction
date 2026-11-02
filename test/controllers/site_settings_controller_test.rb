@@ -37,7 +37,7 @@ class SiteSettingsControllerTest < ActionDispatch::IntegrationTest
     sign_in admins(:admin_one)
     get site_settings_path
     assert_response :success
-    assert_select 'h3', text: 'Site Access Control'
+    assert_select 'h2', text: 'Site Access Control'
     assert_select 'input[name="site_setting[site_enabled]"]'
     assert_select 'input[name="site_setting[site_enable_time]"]'
     assert_select 'input[name="site_setting[site_disable_time]"]'
@@ -47,7 +47,7 @@ class SiteSettingsControllerTest < ActionDispatch::IntegrationTest
     sign_in admins(:admin_one)
     get site_settings_path
     assert_response :success
-    assert_select 'h3', text: 'Limited Item Bidding Control'
+    assert_select 'h2', text: 'Limited Item Bidding Control'
     assert_select 'input[name="site_setting[limited_bidding_enabled]"]'
     assert_select 'input[name="site_setting[limited_bidding_enable_time]"]'
     assert_select 'input[name="site_setting[limited_bidding_disable_time]"]'
@@ -57,7 +57,7 @@ class SiteSettingsControllerTest < ActionDispatch::IntegrationTest
     sign_in admins(:admin_one)
     get site_settings_path
     assert_response :success
-    assert_select 'h4', text: 'Current Status'
+    assert_select 'h2', text: 'Current Status'
     assert_select 'strong', text: 'Site Accessible:'
     assert_select 'strong', text: 'Limited Bidding Allowed:'
   end

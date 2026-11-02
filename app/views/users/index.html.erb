@@ -1,4 +1,7 @@
+<% content_for :title, "Users" %>
 <%= render "tabs", tab: "user" %>
+
+<h1 class="visually-hidden">Users</h1>
 
 <% if admin_signed_in? %>
   <p>

@@ -22,9 +22,31 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
   test 'index default lists raffle items but not unlimited ones' do
     get(items_path)
     assert_response :success
-    assert_select 'span', text: items(:item_one).title, count: 0
-    assert_select 'span', text: items(:item_two).title
-    assert_select 'span', text: items(:item_three).title
+    assert_select 'h2', text: items(:item_one).title, count: 0
+    assert_select 'h2', text: items(:item_two).title
+    assert_select 'h2', text: items(:item_three).title
+  end
+
+  test 'index titles items as headings and names each item link' do
+    get(items_path)
+    assert_select 'title', 'Raffle Items | Anti-Capitalist Community Auction'
+    assert_select 'h2', text: items(:item_two).title
+    assert_select 'a .visually-hidden', text: /for #{items(:item_two).title}/
+    assert_select 'button#toggle-filter-btn[type=button][aria-controls=filter-form][aria-expanded=false]'
+  end
+
+  test 'show titles the page with the item' do
+    get(item_path(items(:item_two)))
+    assert_select 'title', "#{items(:item_two).title} | Anti-Capitalist Community Auction"
+    assert_select 'h1', text: items(:item_two).title
+  end
+
+  test 'form errors are tied to their fields' do
+    sign_in(admins(:admin_one))
+    post(items_path, params: { item: { title: '', number: 1 } })
+    assert_select 'input#item_title[aria-invalid=true][aria-describedby=item_title_error]'
+    assert_select 'div#item_title_error', /Title can't be blank/
+    assert_select 'input#item_host:not([aria-invalid])'
   end
 
   test 'index hides duplicate picture links from screen readers' do
@@ -38,8 +60,8 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select 'h1', text: 'Unlimited Items'
     assert_select 'a.nav-link.active', text: 'Unlimited'
-    assert_select 'span', text: items(:item_one).title
-    assert_select 'span', text: items(:item_two).title, count: 0
+    assert_select 'h2', text: items(:item_one).title
+    assert_select 'h2', text: items(:item_two).title, count: 0
   end
 
   test 'unlimited tab sits between home and raffle items' do
@@ -58,17 +80,17 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
     item = items(:item_no_bids)
     get(items_path(type: 'Auction'))
     assert_response :success
-    assert_select 'span', text: item.title
-    assert_select 'span', count: 0, text: items(:item_one).title
+    assert_select 'h2', text: item.title
+    assert_select 'h2', count: 0, text: items(:item_one).title
   end
 
   test 'index tag test stays within raffle items' do
     items(:item_two).tags << tags(:one)
     get(items_path(tag_ids: [tags(:one).id.to_s]))
     assert_response :success
-    assert_select 'span', text: items(:item_two).title
-    assert_select 'span', text: items(:item_one).title, count: 0
-    assert_select 'span', text: items(:item_three).title, count: 0
+    assert_select 'h2', text: items(:item_two).title
+    assert_select 'h2', text: items(:item_one).title, count: 0
+    assert_select 'h2', text: items(:item_three).title, count: 0
   end
 
   test 'hides auction tab on item pages when there are no auction items' do
@@ -187,7 +209,7 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
 
     # Should show Details button instead of disabled message
-    assert_select 'a', text: 'Details'
+    assert_select 'a', text: /\ADetails for /
   end
 
   test 'show displays bidding disabled message when bidding is disabled' do

@@ -1,6 +1,7 @@
 <!-- Button to toggle visibility of the filter form -->
 <% if @selected_tag_ids == [] %>
-  <button id="toggle-filter-btn" class="mb-2 btn btn-default bg-info-subtle">
+  <button type="button" id="toggle-filter-btn" class="mb-2 btn btn-default bg-info-subtle"
+          aria-controls="filter-form" aria-expanded="false">
     Filter by Tag
   </button>
 <% end %>
@@ -50,7 +51,13 @@ function handleTurboLoad(event) {
       } else {
         filterForm.style.display = 'none';
       }
+      toggleButton.setAttribute("aria-expanded", filterForm.style.display === 'block');
       updateButtonVisibility();
+      // The button hides itself, so move focus into the form it opened
+      if (filterForm.style.display === 'block') {
+        var firstBox = filterForm.querySelector("input[type=checkbox]");
+        if (firstBox) firstBox.focus();
+      }
     });
 
     updateButtonVisibility();
