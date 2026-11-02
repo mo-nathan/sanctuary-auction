@@ -1,0 +1,14 @@
+<% if item.image_url.present? %>
+  <p><%= image_tag(item.image_url, width: "100%", alt: "") %></p>
+<% end %>
+<% if item.host.present? %>
+  <p class="fs-5">Host: <%= item.host %></p>
+<% end %>
+<% if item.timing.present? %>
+  <p class="fs-5">Timing: <%= item.timing %></p>
+<% end %>
+<p><%= format_with_breaks(item.description) %></p>
+<p>Quantity: <%= item.number %></p>
+<% if item.tags.present? %>
+  <p>Tags: <%= item.tags.map(&:name).join(", ") %></p>
+<% end %>

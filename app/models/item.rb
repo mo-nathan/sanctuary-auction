@@ -12,6 +12,7 @@ class Item < ApplicationRecord
   scope :raffle_items, -> { where(auction: false) }
   scope :auction_items, -> { where(auction: true) }
   scope :rankable_items, -> { raffle_items.where(cost: nil) }
+  scope :unlimited_items, -> { where.not(cost: nil) }
 
   def total
     result = 0

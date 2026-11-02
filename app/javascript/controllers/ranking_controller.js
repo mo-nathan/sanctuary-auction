@@ -1,7 +1,8 @@
 import { Controller } from "@hotwired/stimulus"
+import { Modal } from "bootstrap"
 
 export default class extends Controller {
-  static targets = ["ranked", "unranked"]
+  static targets = ["ranked", "unranked", "modal", "modalTitle", "modalBody", "modalAdd", "modalClose"]
 
   connect() {
     this.refresh()
@@ -41,6 +42,22 @@ export default class extends Controller {
   bottom(event) {
     this.rankedTarget.append(this.itemFor(event))
     this.refresh()
+  }
+
+  details(event) {
+    this.detailsItem = this.itemFor(event)
+    const unranked = this.detailsItem.parentElement === this.unrankedTarget
+    this.modalTitleTarget.textContent = this.detailsItem.dataset.title
+    this.modalBodyTarget.replaceChildren(this.detailsItem.querySelector("template").content.cloneNode(true))
+    this.modalAddTarget.hidden = !unranked
+    this.modalCloseTarget.textContent = unranked ? "Cancel" : "Close"
+    Modal.getOrCreateInstance(this.modalTarget).show()
+  }
+
+  addFromDetails() {
+    this.rankedTarget.append(this.detailsItem)
+    this.refresh()
+    Modal.getOrCreateInstance(this.modalTarget).hide()
   }
 
   itemFor(event) {

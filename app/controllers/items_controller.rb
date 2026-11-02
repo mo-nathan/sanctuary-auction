@@ -60,16 +60,16 @@ class ItemsController < ApplicationController
   end
 
   def select_items
-    @items = if @type == 'Auction'
-               Item.where(auction: true)
-             else
-               Item.where(auction: false)
+    @items = case @type
+             when 'Auction' then Item.auction_items
+             when 'Unlimited' then Item.unlimited_items
+             else Item.rankable_items
              end
     # add_type_tag
     return if blank_params?
 
-    @items = Item.joins(:tags).group('items.id').having('COUNT(tags.id) = ?',
-                                                        params[:tag_ids].size).where(tags: { id: params[:tag_ids] })
+    @items = @items.joins(:tags).group('items.id').having('COUNT(tags.id) = ?',
+                                                          params[:tag_ids].size).where(tags: { id: params[:tag_ids] })
   end
 
   def blank_params?

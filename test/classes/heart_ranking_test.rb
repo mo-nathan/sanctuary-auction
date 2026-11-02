@@ -79,22 +79,38 @@ class HeartRankingTest < ActiveSupport::TestCase
     assert_equal(0, @user.balance)
   end
 
-  test 'save gives the last item whatever hearts are left' do
+  test 'save starts lower for a user with fewer hearts' do
     @user.update!(balance: 40)
     list = raffle_items(3)
     save(list)
 
-    assert_equal([30, 10, 0], amounts(list))
+    assert_equal([7, 6, 5], amounts(list))
+    assert_equal(22, @user.balance)
+  end
+
+  test 'save runs out one heart at a time' do
+    @user.update!(balance: 10)
+    list = raffle_items(9)
+    save(list)
+
+    assert_equal([3, 2, 1, 1, 1, 1, 1, 0, 0], amounts(list))
     assert_equal(0, @user.balance)
+  end
+
+  test 'top amount counts down to one heart with some to spare' do
+    assert_equal(30, HeartRanking.top_amount(500))
+    assert_equal(29, HeartRanking.top_amount(475))
+    assert_equal(1, HeartRanking.top_amount(1))
+    assert_equal(1, HeartRanking.top_amount(-5))
   end
 
   test 'save replaces raffle bids and returns their hearts' do
     user = users(:user_two)
     HeartRanking.new(user).save([items(:item_three).id.to_s])
 
-    assert_equal(30, user.bids.sole.amount)
+    assert_equal(31, user.bids.sole.amount)
     assert_equal(items(:item_three), user.bids.sole.item)
-    assert_equal(490, user.balance)
+    assert_equal(489, user.balance)
   end
 
   test 'save with no items removes raffle bids' do

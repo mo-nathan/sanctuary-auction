@@ -5,6 +5,12 @@
     <%= link_to "Home", root_path,
       tab == 'home' ? active : inactive %>
   </li>
+  <% if unlimited_items? %>
+    <li class="nav-item">
+      <%= link_to "Unlimited", items_path(type: 'Unlimited'),
+        tab == 'Unlimited' ? active : inactive %>
+    </li>
+  <% end %>
   <li class="nav-item">
     <%= link_to "Raffle Items", items_path,
       tab == 'raffle' ? active : inactive %>

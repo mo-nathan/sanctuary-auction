@@ -19,7 +19,7 @@
       <% if @item.number %>
         Quantity: <%= @item.number %>
       <% else %>
-         <%= @item.cost %> Heart Each
+        <%= pluralize(@item.cost, "Heart") %> Each
       <% end %>
     </p>
     <% if @item.tags.present? %>

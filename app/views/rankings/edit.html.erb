@@ -13,8 +13,6 @@
   everything that you have any interest in.
 </p>
 
-<%= render "key" %>
-
 <%= form_with url: ranking_path, method: :patch, data: { turbo: false, controller: "ranking" } do |form| %>
   <%= form.hidden_field :code, value: @user.code %>
 
@@ -31,4 +29,24 @@
   <ul class="list-group" data-ranking-target="unranked">
     <%= render partial: "item", collection: @ranking.unranked_items, locals: { ranked: false } %>
   </ul>
+
+  <div class="modal fade" tabindex="-1" aria-labelledby="item-details-title" aria-hidden="true"
+       data-ranking-target="modal">
+    <div class="modal-dialog modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="item-details-title" data-ranking-target="modalTitle"></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" data-ranking-target="modalBody"></div>
+        <div class="modal-footer">
+          <span data-ranking-target="modalAdd">
+            <%= ranking_button(RankingsHelper::ADD_HEART, nil, RankingsHelper::ADD_LABEL, "ranking#addFromDetails") %>
+          </span>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                  data-ranking-target="modalClose">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
 <% end %>

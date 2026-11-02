@@ -2,11 +2,18 @@
 
 module RankingsHelper
   RANKING_MOVES = [
-    { action: 'top', heart: '❤️', help: 'My True Love', label: 'Move to top', meaning: 'Move to the top' },
-    { action: 'up', heart: '💗', help: '+1 Heart', label: 'Move up', meaning: 'Move up one, or add to your list' },
-    { action: 'down', heart: '🧡', help: '-1 Heart', label: 'Move down', meaning: 'Move down one' },
-    { action: 'bottom', heart: '💛', help: "Let's be friends...", label: 'Move to bottom',
-      meaning: 'Move to the bottom' },
-    { action: 'remove', heart: '💔', help: 'Maybe not', label: 'Remove', meaning: 'Remove from your list' }
+    { action: 'top', heart: '❤️', symbol: '▲▲', label: 'Move to Top' },
+    { action: 'up', heart: '💗', symbol: '▲', label: 'Move Up One' },
+    { action: 'down', heart: '🧡', symbol: '▼', label: 'Move Down One' },
+    { action: 'bottom', heart: '💛', symbol: '▼▼', label: 'Move to Bottom' },
+    { action: 'remove', heart: '💔', symbol: '▬', label: 'Remove from Your List' }
   ].freeze
+  ADD_HEART = '💗'
+  ADD_LABEL = 'Add to Your List'
+
+  def ranking_button(heart, symbol, label, action, move: nil)
+    button_tag(safe_join([tag.span(heart, class: 'fs-5'), symbol].compact, ' '),
+               type: 'button', class: 'btn btn-sm btn-outline-secondary', 'aria-label': label,
+               data: { action:, move: }.compact)
+  end
 end
