@@ -53,6 +53,12 @@ class SiteDisabledControllerTest < ActionDispatch::IntegrationTest
     assert_select '.alert-info', count: 0
   end
 
+  test 'index hides the tabs' do
+    @site_setting.update(site_enabled: false)
+    get site_disabled_path
+    assert_select '.nav-tabs', count: 0
+  end
+
   test 'index shows admin sign in link' do
     @site_setting.update(site_enabled: false)
     get site_disabled_path
