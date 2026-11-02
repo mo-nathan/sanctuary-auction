@@ -27,6 +27,12 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
     assert_select 'span', text: items(:item_three).title
   end
 
+  test 'index hides duplicate picture links from screen readers' do
+    items(:item_two).update!(image_url: 'https://example.com/two.jpg')
+    get(items_path)
+    assert_select 'a[aria-hidden=true][tabindex="-1"] img[alt=""]'
+  end
+
   test 'unlimited index lists only unlimited items' do
     get(items_path(type: 'Unlimited'))
     assert_response :success

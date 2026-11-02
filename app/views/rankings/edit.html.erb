@@ -15,6 +15,7 @@
 
 <%= form_with url: ranking_path, method: :patch, data: { turbo: false, controller: "ranking" } do |form| %>
   <%= form.hidden_field :code, value: @user.code %>
+  <div class="visually-hidden" aria-live="polite" data-ranking-target="status"></div>
 
   <h2>Your Ranking</h2>
   <ol class="list-group list-group-numbered mb-3" data-ranking-target="ranked">
@@ -41,7 +42,7 @@
         <div class="modal-body" data-ranking-target="modalBody"></div>
         <div class="modal-footer">
           <span data-ranking-target="modalAdd">
-            <%= ranking_button(RankingsHelper::ADD_HEART, nil, RankingsHelper::ADD_LABEL, "ranking#addFromDetails") %>
+            <%= ranking_button(RankingsHelper::ADD_MOVE, action: "ranking#addFromDetails") %>
           </span>
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
                   data-ranking-target="modalClose">Cancel</button>
