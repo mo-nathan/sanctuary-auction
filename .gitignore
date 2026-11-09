@@ -79,3 +79,6 @@ yarn-debug.log*
 
 # Files from previous auctions
 /2025/
+
+# Stamped by bin/deploy to tell bin/hotfix which commit the image was built from.
+/REVISION

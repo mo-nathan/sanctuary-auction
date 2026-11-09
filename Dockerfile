@@ -43,6 +43,12 @@ RUN bundle install && \
     rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git && \
     bundle exec bootsnap precompile --gemfile
 
+# Install JavaScript packages. Keeping this ahead of the application code means
+# a code change does not re-resolve them, and the asset build below can skip
+# the install that jsbundling and cssbundling would otherwise each run.
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile
+
 # Copy application code
 COPY . .
 
@@ -50,7 +56,7 @@ COPY . .
 RUN bundle exec bootsnap precompile app/ lib/
 
 # Precompiling assets for production without requiring secret RAILS_MASTER_KEY
-RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile && \
+RUN SECRET_KEY_BASE_DUMMY=1 SKIP_YARN_INSTALL=1 ./bin/rails assets:precompile && \
     rm -rf node_modules
 
 # Puma writes its pidfile to tmp/pids, which .dockerignore leaves out
