@@ -9,6 +9,11 @@ cd "$(dirname "$0")/.."
 # Build: get the latest code and build a new web image. This is the slow part,
 # and the site keeps running on the current container the whole time.
 git pull
+
+# Record what this image holds, so bin/hotfix can tell what a running container
+# is missing. It reaches the image through the COPY in the Dockerfile.
+git rev-parse HEAD > REVISION
+
 docker compose build
 
 # Switch: replace the running web container with one from the new image. The
