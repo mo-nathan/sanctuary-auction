@@ -79,17 +79,14 @@ class WelcomeControllerTest < ActionDispatch::IntegrationTest
     assert_not_includes(response.body, 'Get One')
   end
 
-  test 'announces the fairy helper as new, in its own paragraph' do
+  test 'announces the fairy helper as new, in the section after the items' do
     get welcome_index_url
-    assert_includes(response.body, 'New this year is the')
-    assert_includes(response.body, 'tool for spending your hearts rather than another kind of item')
-    assert_includes(response.body, 'Even if you know the rest of the site from past years')
-    assert_operator(response.body.index('Raffle Items:</a>'), :<,
-                    response.body.index('New this year is the'))
+    assert_includes(response.body, 'New this year, this tab is a tool for spending your hearts')
+    assert_operator(response.body.index('Auction:</a>'), :<,
+                    response.body.index('New this year'))
     intro = response.body[%r{As a participant.*?</p>}m]
     assert_not_includes(intro, 'Fairy')
-    assert_select 'p', text: /\ANew this year is the Fairy Helper, a tool/
-    assert_select 'p a[href=?]', ranking_path, text: 'Fairy Helper'
+    assert_select 'p a[href=?]', ranking_path, { count: 1, text: 'Fairy Helper:' }
   end
 
   test 'leaves the fairy helper out of the intro when bidding is closed' do

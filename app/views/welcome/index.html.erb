@@ -60,15 +60,6 @@
   <% end %>
 </p>
 
-<% if admin_signed_in? || limited_bidding_allowed? %>
-  <p>
-    New this year is the <%= link_to "Fairy Helper", ranking_path %>, a
-    tool for spending your hearts rather than another kind of item.
-    Even if you know the rest of the site from past years, this part
-    will be new to you.
-  </p>
-<% end %>
-
 <% if auction_items? %>
   <p>
     <b><%= link_to "Auction:", items_path(type: 'Auction') %></b>
@@ -80,6 +71,8 @@
 <% if admin_signed_in? || limited_bidding_allowed? %>
   <p>
     <b><%= link_to "Fairy Helper:", ranking_path %></b>
+    New this year, this tab is a tool for spending your hearts rather
+    than another kind of item.
     Rather than deciding how many hearts to put on each raffle item,
     you can put the raffle items in the order you want them and let the
     Auction Fairy spread your hearts across the list, with the most
