@@ -81,7 +81,8 @@ class WelcomeControllerTest < ActionDispatch::IntegrationTest
 
   test 'announces the fairy helper as new, in the section after the items' do
     get welcome_index_url
-    assert_select 'p', text: /\A\s*New this year, the Fairy Helper is a\s+tool for spending your hearts/
+    assert_select 'p',
+                  text: /\A\s*New this year, the Fairy Helper\s+helps you figure out how many hearts/
     assert_operator(response.body.index('Auction:</a>'), :<,
                     response.body.index('New this year'))
     intro = response.body[%r{As a participant.*?</p>}m]
