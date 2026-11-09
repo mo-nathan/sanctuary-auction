@@ -79,3 +79,7 @@ yarn-debug.log*
 
 # Files from previous auctions
 /2025/
+
+
+# Written by Bid.report, which lists participant names and codes.
+/bids.csv
