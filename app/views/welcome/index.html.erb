@@ -29,20 +29,6 @@
   <% end %>
 </p>
 
-<p>
-  <b><%= link_to "Raffle Items:", items_path %></b>
-  Choose how many hearts you would like to enter for each item. Many
-  items have multiple winners. Raffle winners will be drawn after the
-  event has concluded and notified via email. The
-  <% if admin_signed_in? || limited_bidding_allowed? %>
-    Fairy Helper (below) is the easiest way to spread your hearts over
-    these items.
-  <% else %>
-    Raffle Drawing Strategy section below explains how the hearts you
-    enter turn into winners.
-  <% end %>
-</p>
-
 <% if unlimited_items? %>
   <% costs = Item.unlimited_costs %>
   <p>
@@ -59,6 +45,20 @@
     at the event for you and a plus one, or you and your family.
   </p>
 <% end %>
+
+<p>
+  <b><%= link_to "Raffle Items:", items_path %></b>
+  Choose how many hearts you would like to enter for each item. Many
+  items have multiple winners. Raffle winners will be drawn after the
+  event has concluded and notified via email. The
+  <% if admin_signed_in? || limited_bidding_allowed? %>
+    Fairy Helper (below) is the easiest way to spread your hearts over
+    these items.
+  <% else %>
+    Raffle Drawing Strategy section below explains how the hearts you
+    enter turn into winners.
+  <% end %>
+</p>
 
 <% if auction_items? %>
   <p>

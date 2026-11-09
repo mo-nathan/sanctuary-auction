@@ -46,6 +46,14 @@ class WelcomeControllerTest < ActionDispatch::IntegrationTest
     assert_includes(response.body, 'check the "Get One" box')
   end
 
+  test 'orders the item sections like the tabs' do
+    get welcome_index_url
+    assert_equal(['Home', 'Unlimited', 'Raffle Items', 'Auction', 'Fairy Helper', 'Users'],
+                 css_select('a.nav-link').map(&:text))
+    assert_operator(response.body.index('Unlimited Items:'), :<,
+                    response.body.index('Raffle Items:</a>'))
+  end
+
   test 'states the unlimited cost when every unlimited item costs the same' do
     Item.unlimited_items.each { |item| item.update!(cost: 25) }
     get welcome_index_url
