@@ -40,7 +40,7 @@ class WelcomeControllerTest < ActionDispatch::IntegrationTest
 
   test 'describes the unlimited tab when there are unlimited items' do
     get welcome_index_url
-    assert_select 'a.nav-link', text: 'Unlimited'
+    assert_select 'a.nav-link', text: 'Unlimited Items'
     assert_select 'a[href=?]', '/items?type=Unlimited', text: 'Unlimited Items:'
     assert_includes(response.body, 'no participation limit')
     assert_includes(response.body, 'check the "Get One" box')
@@ -48,7 +48,7 @@ class WelcomeControllerTest < ActionDispatch::IntegrationTest
 
   test 'orders the item sections like the tabs' do
     get welcome_index_url
-    assert_equal(['Home', 'Unlimited', 'Raffle Items', 'Auction', 'Fairy Helper', 'Users'],
+    assert_equal(['Home', 'Unlimited Items', 'Raffle Items', 'Auction', 'Fairy Helper', 'Users'],
                  css_select('a.nav-link').map(&:text))
     assert_operator(response.body.index('Unlimited Items:'), :<,
                     response.body.index('Raffle Items:</a>'))
@@ -73,7 +73,7 @@ class WelcomeControllerTest < ActionDispatch::IntegrationTest
   test 'hides unlimited text when there are no unlimited items' do
     Item.unlimited_items.destroy_all
     get welcome_index_url
-    assert_select 'a.nav-link', text: 'Unlimited', count: 0
+    assert_select 'a.nav-link', text: 'Unlimited Items', count: 0
     assert_select 'a[href=?]', '/items?type=Unlimited', count: 0
     assert_not_includes(response.body, 'unlimited items')
     assert_not_includes(response.body, 'Get One')
@@ -83,7 +83,9 @@ class WelcomeControllerTest < ActionDispatch::IntegrationTest
     get welcome_index_url
     assert_includes(response.body, 'New this year is the')
     assert_includes(response.body, 'tool for spending your hearts rather than another kind of item')
-    assert_includes(response.body, 'did not exist in past years')
+    assert_includes(response.body, 'Even if you know the rest of the site from past years')
+    assert_operator(response.body.index('Raffle Items:</a>'), :<,
+                    response.body.index('New this year is the'))
     intro = response.body[%r{As a participant.*?</p>}m]
     assert_not_includes(intro, 'Fairy')
     assert_select 'p', text: /\ANew this year is the Fairy Helper, a tool/

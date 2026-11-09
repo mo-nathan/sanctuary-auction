@@ -59,20 +59,20 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
     get(items_path(type: 'Unlimited'))
     assert_response :success
     assert_select 'h1', text: 'Unlimited Items'
-    assert_select 'a.nav-link.active', text: 'Unlimited'
+    assert_select 'a.nav-link.active', text: 'Unlimited Items'
     assert_select 'h2', text: items(:item_one).title
     assert_select 'h2', text: items(:item_two).title, count: 0
   end
 
   test 'unlimited tab sits between home and raffle items' do
     get(items_path)
-    assert_equal(['Home', 'Unlimited', 'Raffle Items'], css_select('a.nav-link').map(&:text).first(3))
+    assert_equal(['Home', 'Unlimited Items', 'Raffle Items'], css_select('a.nav-link').map(&:text).first(3))
   end
 
   test 'hides unlimited tab when there are no unlimited items' do
     Item.unlimited_items.destroy_all
     get(items_path)
-    assert_select 'a.nav-link', text: 'Unlimited', count: 0
+    assert_select 'a.nav-link', text: 'Unlimited Items', count: 0
   end
 
   test 'auction index' do

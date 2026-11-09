@@ -29,15 +29,6 @@
   <% end %>
 </p>
 
-<% if admin_signed_in? || limited_bidding_allowed? %>
-  <p>
-    New this year is the <%= link_to "Fairy Helper", ranking_path %>, a
-    tool for spending your hearts rather than another kind of item. It
-    did not exist in past years, so if you have taken part before, its
-    section below is worth a read.
-  </p>
-<% end %>
-
 <% if unlimited_items? %>
   <% costs = Item.unlimited_costs %>
   <p>
@@ -68,6 +59,15 @@
     enter turn into winners.
   <% end %>
 </p>
+
+<% if admin_signed_in? || limited_bidding_allowed? %>
+  <p>
+    New this year is the <%= link_to "Fairy Helper", ranking_path %>, a
+    tool for spending your hearts rather than another kind of item.
+    Even if you know the rest of the site from past years, this part
+    will be new to you.
+  </p>
+<% end %>
 
 <% if auction_items? %>
   <p>
