@@ -19,7 +19,7 @@ class WelcomeControllerTest < ActionDispatch::IntegrationTest
     assert_select 'a.nav-link', text: 'Auction'
     assert_select 'h2', text: 'Auction:'
     assert_select 'a[href=?]', '/items?type=Auction', text: 'Auction:'
-    assert_includes(response.body, 'across the kinds of items below')
+    assert_includes(response.body, 'The kinds of items below each work a little')
   end
 
   test 'hides auction tab and text when there are no auction items' do
@@ -40,7 +40,7 @@ class WelcomeControllerTest < ActionDispatch::IntegrationTest
 
   test 'describes the unlimited tab when there are unlimited items' do
     get welcome_index_url
-    assert_select 'a.nav-link', text: 'Unlimited'
+    assert_select 'a.nav-link', text: 'Unlimited Items'
     assert_select 'a[href=?]', '/items?type=Unlimited', text: 'Unlimited Items:'
     assert_includes(response.body, 'no participation limit')
     assert_includes(response.body, 'check the "Get One" box')
@@ -48,7 +48,7 @@ class WelcomeControllerTest < ActionDispatch::IntegrationTest
 
   test 'orders the item sections like the tabs' do
     get welcome_index_url
-    assert_equal(['Home', 'Unlimited', 'Raffle Items', 'Auction', 'Fairy Helper', 'Users'],
+    assert_equal(['Home', 'Unlimited Items', 'Raffle Items', 'Auction', 'Fairy Helper', 'Users'],
                  css_select('a.nav-link').map(&:text))
     assert_operator(response.body.index('Unlimited Items:'), :<,
                     response.body.index('Raffle Items:</a>'))
@@ -73,15 +73,34 @@ class WelcomeControllerTest < ActionDispatch::IntegrationTest
   test 'hides unlimited text when there are no unlimited items' do
     Item.unlimited_items.destroy_all
     get welcome_index_url
-    assert_select 'a.nav-link', text: 'Unlimited', count: 0
+    assert_select 'a.nav-link', text: 'Unlimited Items', count: 0
     assert_select 'a[href=?]', '/items?type=Unlimited', count: 0
     assert_not_includes(response.body, 'unlimited items')
     assert_not_includes(response.body, 'Get One')
   end
 
+  test 'announces the fairy helper as new, in the section after the items' do
+    get welcome_index_url
+    assert_select 'p',
+                  text: /\A\s*New this year, the Fairy Helper\s+helps you figure out how many hearts/
+    assert_operator(response.body.index('Auction:</a>'), :<,
+                    response.body.index('New this year'))
+    intro = response.body[%r{As a participant.*?</p>}m]
+    assert_not_includes(intro, 'Fairy')
+    assert_select 'p a[href=?]', ranking_path, { count: 1, text: 'Fairy Helper' }
+    assert_select 'p b a[href=?]', ranking_path, count: 0
+  end
+
+  test 'leaves the fairy helper out of the intro when bidding is closed' do
+    SiteSetting.instance.update!(limited_bidding_enabled: false)
+    get welcome_index_url
+    assert_includes(response.body, 'The kinds of items below each work a little')
+    assert_not_includes(response.body, 'New this year')
+  end
+
   test 'describes the fairy helper while bidding is open' do
     get welcome_index_url
-    assert_select 'a[href=?]', ranking_path, text: 'Fairy Helper:'
+    assert_select 'p a[href=?]', ranking_path, text: 'Fairy Helper'
     assert_includes(response.body, 'Auction Fairy spread your hearts')
     assert_includes(response.body, 'hearts are spread across your list')
   end

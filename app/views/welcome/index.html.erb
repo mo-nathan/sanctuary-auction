@@ -21,11 +21,11 @@
 <br/>
 
 <p>
-  As a participant in the event, you have 500 hearts to use
+  As a participant in the event, you have 500 hearts to spend.
   <% if auction_items? || unlimited_items? %>
-    across the kinds of items below. Each kind works a little differently:
+    The kinds of items below each work a little differently.
   <% else %>
-    on raffle items.
+    You spend them on raffle items.
   <% end %>
 </p>
 
@@ -70,11 +70,11 @@
 
 <% if admin_signed_in? || limited_bidding_allowed? %>
   <p>
-    <b><%= link_to "Fairy Helper:", ranking_path %></b>
-    Rather than deciding how many hearts to put on each raffle item,
-    you can put the raffle items in the order you want them and let the
-    Auction Fairy spread your hearts across the list, with the most
-    hearts on your top choice.
+    New this year, the <%= link_to "Fairy Helper", ranking_path %>
+    helps you figure out how many hearts to put on each raffle item.
+    You put the raffle items in the order you want them and let
+    the Auction Fairy spread your hearts across the list, with the
+    most hearts on your top choice.
   </p>
 <% end %>
 
