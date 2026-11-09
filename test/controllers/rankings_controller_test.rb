@@ -88,11 +88,11 @@ class RankingsControllerTest < ActionDispatch::IntegrationTest
   test 'closed bidding hides the tab from everyone but admins' do
     SiteSetting.instance.update!(limited_bidding_enabled: false)
     get root_path
-    assert_select 'a', { text: 'Fairy Helper', count: 0 }
+    assert_select 'nav a.nav-link', { text: 'Fairy Helper', count: 0 }
 
     sign_in admins(:admin_one)
     get root_path
-    assert_select 'a', { text: 'Fairy Helper', count: 1 }
+    assert_select 'nav a.nav-link', { text: 'Fairy Helper', count: 1 }
   end
 
   test 'admins can rank while bidding is closed' do

@@ -79,18 +79,22 @@ class WelcomeControllerTest < ActionDispatch::IntegrationTest
     assert_not_includes(response.body, 'Get One')
   end
 
-  test 'introduces the fairy helper as a tool rather than a kind of item' do
+  test 'announces the fairy helper as new, in its own paragraph' do
     get welcome_index_url
-    assert_includes(response.body, 'a tool for spending them rather than something')
+    assert_includes(response.body, 'New this year is the')
+    assert_includes(response.body, 'tool for spending your hearts rather than another kind of item')
+    assert_includes(response.body, 'did not exist in past years')
     intro = response.body[%r{As a participant.*?</p>}m]
-    assert_not_includes(intro, 'kinds of items below, the Fairy')
+    assert_not_includes(intro, 'Fairy')
+    assert_select 'p', text: /\ANew this year is the Fairy Helper, a tool/
+    assert_select 'p a[href=?]', ranking_path, text: 'Fairy Helper'
   end
 
   test 'leaves the fairy helper out of the intro when bidding is closed' do
     SiteSetting.instance.update!(limited_bidding_enabled: false)
     get welcome_index_url
     assert_includes(response.body, 'The kinds of items below each work a little')
-    assert_not_includes(response.body, 'a tool for spending them')
+    assert_not_includes(response.body, 'New this year')
   end
 
   test 'describes the fairy helper while bidding is open' do

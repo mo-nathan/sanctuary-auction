@@ -27,11 +27,16 @@
   <% else %>
     You spend them on raffle items.
   <% end %>
-  <% if admin_signed_in? || limited_bidding_allowed? %>
-    The Fairy Helper is a tool for spending them rather than something
-    to spend them on.
-  <% end %>
 </p>
+
+<% if admin_signed_in? || limited_bidding_allowed? %>
+  <p>
+    New this year is the <%= link_to "Fairy Helper", ranking_path %>, a
+    tool for spending your hearts rather than another kind of item. It
+    did not exist in past years, so if you have taken part before, its
+    section below is worth a read.
+  </p>
+<% end %>
 
 <% if unlimited_items? %>
   <% costs = Item.unlimited_costs %>
