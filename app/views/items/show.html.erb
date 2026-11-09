@@ -73,7 +73,8 @@
     <% end %>
   <% end %>
 <% else %>
-  <% if admin_signed_in? || limited_bidding_allowed? %>
+  <%# Unlimited items stay open while the site is up, like BidsController allows %>
+  <% if admin_signed_in? || limited_bidding_allowed? || @item.cost.present? %>
     <%= form_with model: [ @item, @item.bids.build ] do |form| %>
       <div class="row align-items-center m-2">
         <div class="col-sm m-2">

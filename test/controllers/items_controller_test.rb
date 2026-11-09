@@ -231,6 +231,16 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
     assert_select '.alert-info p', text: /Bidding will start: #{Regexp.escape(formatted_time)}/
   end
 
+  test 'show keeps the Get One form for unlimited items when bidding is disabled' do
+    SiteSetting.instance.update!(limited_bidding_enabled: false,
+                                 limited_bidding_enable_time: 2.hours.from_now)
+
+    get item_path(items(:item_one))
+    assert_response :success
+    assert_select 'label[for=?]', 'bid_join', text: 'Get One'
+    assert_select '.alert-info', count: 0
+  end
+
   test 'show pluralizes the hearts for unlimited items' do
     get item_path(items(:item_one))
     assert_includes(response.body, '10 Hearts Each')

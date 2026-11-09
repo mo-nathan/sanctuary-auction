@@ -52,6 +52,19 @@ class SiteSetting < ApplicationRecord
     settings.limited_bidding_enabled
   end
 
+  # The last moment Hearts can be entered on limited (raffle and auction) items.
+  # The site closing shuts bidding down too, so the earlier scheduled time wins.
+  def self.limited_bidding_end_time
+    settings = instance
+    [settings.limited_bidding_disable_time, settings.site_disable_time].compact.min
+  end
+
+  # The last moment participants can reach the site, which is when Unlimited
+  # items stop being available.
+  def self.site_end_time
+    instance.site_disable_time
+  end
+
   # Get the next time the site will be enabled (for display)
   def self.next_site_enable_time
     settings = instance
