@@ -1,0 +1,106 @@
+#!/usr/bin/bash
+set -euo pipefail
+
+# Copy new code into the running web container and restart it, instead of
+# building a new image. Run it on the server from any directory, before pulling:
+# it pulls, works out what the container is missing, and copies that in. A typo
+# fix takes seconds this way, where bin/deploy takes minutes.
+#
+# Only files the container reads as they are can travel this way. Gems, CSS and
+# JavaScript have to be built, so changes to those stop the script and need
+# bin/deploy.
+#
+# Afterward the container is a step ahead of the image it was started from,
+# which lasts until something recreates it. The code is in git either way, so
+# the next ordinary bin/deploy makes it permanent.
+cd "$(dirname "$0")/.."
+
+if [ -z "$(docker compose ps --quiet web)" ]; then
+  echo "bin/hotfix: no web container is running, so there is nothing to patch." >&2
+  echo "Start the site with bin/deploy first." >&2
+  exit 1
+fi
+
+# Pull: get the latest code, keeping the old commit in case the container
+# cannot say which one it was built from.
+previous=$(git rev-parse HEAD)
+git pull
+
+# Compare: bin/deploy writes the commit it built into REVISION, so repeated
+# hotfixes all measure against the image rather than against each other.
+base=$(docker compose exec -T web cat REVISION 2>/dev/null | tr -d '[:space:]' || true)
+if [ -n "$base" ] && git cat-file -e "${base}^{commit}" 2> /dev/null; then
+  echo "Container was built from $(git rev-parse --short "$base")."
+else
+  base=$previous
+  echo "Container does not name the commit it was built from, so going by what"
+  echo "this pull brought in. Deploys from now on will stamp it."
+fi
+
+copy=()
+remove=()
+blocked=()
+while IFS=$'\t' read -r status path; do
+  [ -n "${path:-}" ] || continue
+  case "$path" in
+    Gemfile | Gemfile.lock | .ruby-version | package.json | yarn.lock | \
+      Dockerfile | .dockerignore | docker-compose.yml | Caddyfile | \
+      bin/docker-entrypoint | app/assets/* | app/javascript/*)
+      blocked+=("$path")
+      ;;
+    *)
+      if [ "$status" = "D" ]; then
+        remove+=("$path")
+      else
+        copy+=("$path")
+      fi
+      ;;
+  esac
+done <<< "$(git diff --name-status --no-renames "$base" HEAD)"
+
+if [ "${#blocked[@]}" -gt 0 ]; then
+  echo "bin/hotfix: these changes have to be built into a new image:" >&2
+  printf '  %s\n' "${blocked[@]}" >&2
+  echo "Run bin/deploy instead." >&2
+  exit 1
+fi
+
+if [ "${#copy[@]}" -eq 0 ] && [ "${#remove[@]}" -eq 0 ]; then
+  echo "Nothing to patch: the container already has this code."
+  exit 0
+fi
+
+# Copy: put the new files in place. The site keeps serving the old code until
+# the restart below.
+if [ "${#copy[@]}" -gt 0 ]; then
+  for path in "${copy[@]}"; do
+    dir=$(dirname "$path")
+    [ "$dir" = "." ] || docker compose exec -T web mkdir -p "$dir"
+    docker compose cp "$path" "web:/rails/$path"
+    echo "  + $path"
+  done
+fi
+
+if [ "${#remove[@]}" -gt 0 ]; then
+  docker compose exec -T web rm -f "${remove[@]}"
+  printf '  - %s\n' "${remove[@]}"
+fi
+
+# Switch: restart the server so it loads the new code. Pending migrations run
+# first, the same as they do on a deploy.
+docker compose restart web
+
+# Check: wait for the new process to answer, so the script does not hand back
+# the prompt on a site that failed to boot.
+for _ in $(seq 30); do
+  if docker compose exec -T web curl -fsS localhost:3000/up > /dev/null 2>&1; then
+    echo "Live: $(git rev-parse --short HEAD) patched onto the $(git rev-parse --short "$base") image."
+    echo "Run bin/deploy when convenient to fold it into a new image."
+    exit 0
+  fi
+  sleep 1
+done
+
+echo "bin/hotfix: the site did not answer /up within 30 seconds." >&2
+echo "Check it with: docker compose logs --tail 50 web" >&2
+exit 1
