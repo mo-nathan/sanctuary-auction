@@ -22,32 +22,59 @@
 
 <p>
   As a participant in the event, you have 500 hearts to use
-  <% if auction_items? %>
-    between raffle and auction items. Each type of item works differently:
+  <% if auction_items? || unlimited_items? %>
+    across the kinds of items below. Each kind works a little differently:
   <% else %>
     on raffle items.
   <% end %>
 </p>
 
 <p>
-  <b><a href="/items?type=Raffle">Raffle Items:</a></b>
+  <b><%= link_to "Raffle Items:", items_path %></b>
   Choose how many hearts you would like to enter for each item. Many
   items have multiple winners. Raffle winners will be drawn after the
-  event has concluded and notified via email.
+  event has concluded and notified via email. The
+  <% if admin_signed_in? || limited_bidding_allowed? %>
+    Fairy Helper (below) is the easiest way to spread your hearts over
+    these items.
+  <% else %>
+    Raffle Drawing Strategy section below explains how the hearts you
+    enter turn into winners.
+  <% end %>
 </p>
 
-<p>
-  Note: Some raffle items are "unlimited." This means that they cost 1
-  heart and have no participation limit. If you enter a heart for
-  one of these items, you are guaranteed a spot at the event for you
-  and a plus one, or you and your family.
-</p>
+<% if unlimited_items? %>
+  <% costs = Item.unlimited_costs %>
+  <p>
+    <b><%= link_to "Unlimited Items:", items_path(type: 'Unlimited') %></b>
+    These items have their own tab and no participation limit, so
+    everyone who signs up gets one.
+    <% if costs.one? %>
+      Each one costs <%= pluralize(costs.first, "heart") %>.
+    <% else %>
+      They cost between <%= costs.first %> and
+      <%= pluralize(costs.last, "heart") %>, as shown on each listing.
+    <% end %>
+    If you sign up for one of these items, you are guaranteed a spot
+    at the event for you and a plus one, or you and your family.
+  </p>
+<% end %>
 
 <% if auction_items? %>
   <p>
-    <b><a href="/items?type=Auction">Auction:</a></b>
+    <b><%= link_to "Auction:", items_path(type: 'Auction') %></b>
     These items will be auctioned live during the event (see details
     below). You can view the item listings before the auction starts.
+  </p>
+<% end %>
+
+<% if admin_signed_in? || limited_bidding_allowed? %>
+  <p>
+    <b><%= link_to "Fairy Helper:", ranking_path %></b>
+    Rather than deciding how many hearts to put on each raffle item,
+    you can put the raffle items in the order you want them and let the
+    Auction Fairy spread your hearts across the list, with the most
+    hearts on your top choice.
   </p>
 <% end %>
 
@@ -57,7 +84,7 @@
 
 <p>
   <b>To view items</b>, select the corresponding tab at the top of the
-  page. For raffle items, click Filter by Tag to see only items
+  page. On the Raffle Items tab, click Filter by Tag to see only items
   falling into a particular category.
 </p>
 
@@ -67,26 +94,44 @@
   button to the right of an item.
 </p>
 
+<% if admin_signed_in? || limited_bidding_allowed? %>
+  <p>
+    <b>To enter hearts with the Fairy Helper</b>, select the Fairy
+    Helper tab, type in <b>your unique code</b>, and click Continue.
+    Use the heart buttons to add every raffle item you have any
+    interest in to your list, then move your favorites toward the top.
+    Click an item's name to see its details. When you click Save, your
+    hearts are spread across your list, with the most hearts on the
+    item at the top, and you are told how many hearts are left
+    over. You can come back and rearrange your list as often as you
+    like while raffle entries are open. Saving replaces any hearts you
+    had entered on raffle items<% if unlimited_items? %>, but it
+    leaves your unlimited items alone<% end %>.
+  </p>
+<% end %>
+
 <p>
-  <b>To enter hearts</b>, write in <b>your unique code</b> and
-  the number of hearts you want to enter. This number will be
-  deducted from your total. <b>To change the number of hearts</b> you
-  want for a certain item, type in your code and the <b>total number
-  of hearts</b> you want, then click the "Update Hearts"
-  button. (For example, if you have already entered 10 hearts, and
-  you want to add 5 more, type in 15 total. If you type in 5, you will
-  only enter 5.)  If you want to remove all of your hearts from an
-  item, type in your code, enter 0 hearts, and click "Update
+  <b>To enter hearts on a single item</b>, open the item and write in
+  <b>your unique code</b> and the number of hearts you want to enter.
+  This number will be deducted from your total. <b>To change the
+  number of hearts</b> you want for a certain item, type in your code
+  and the <b>total number of hearts</b> you want, then click the
+  "Update Hearts" button. (For example, if you have already entered 10
+  hearts, and you want to add 5 more, type in 15 total. If you type in
+  5, you will only enter 5.)  If you want to remove all of your hearts
+  from an item, type in your code, enter 0 hearts, and click "Update
   Hearts."
 </p>
 
-<p>
-  Note: For <b>raffle items that are unlimited</b>, type in your code,
-  check the "Get One" box, and click "Update Hearts." Each unlimited
-  item costs 1 heart. This number will be deducted from your
-  total. To remove yourself from an unlimited item, type in your code,
-  un-check the "Get One" box, and click "Update Hearts."
-</p>
+<% if unlimited_items? %>
+  <p>
+    Note: For items on the <b>Unlimited</b> tab, type in your code,
+    check the "Get One" box, and click "Update Hearts." The cost shown
+    on the item will be deducted from your total. To remove yourself
+    from an unlimited item, type in your code, un-check the "Get One"
+    box, and click "Update Hearts."
+  </p>
+<% end %>
 
 <p>
   <b>To view your heart balance</b>, select the Users tab and find
@@ -107,10 +152,32 @@
   </p>
 <% end %>
 
+<% hearts_end = SiteSetting.limited_bidding_end_time %>
+<% site_end = SiteSetting.site_end_time %>
+
+<h2 class="h4">Deadlines:</h2>
+
 <p>
-  After the event, there will be a chance to enter any hearts not
-  used in the event on UNLIMITED raffle items. Most of the raffle
-  items will be unavailable for bidding after 3 pm.
+  <% if !limited_bidding_allowed? %>
+    Raffle items are no longer available for entering hearts.
+  <% elsif hearts_end %>
+    Raffle items will be unavailable for entering hearts after
+    <b><%= event_time(hearts_end) %></b>.
+  <% else %>
+    Raffle items will be unavailable for entering hearts once the
+    event is over.
+  <% end %>
+  <% if unlimited_items? %>
+    <% if site_end && (hearts_end.nil? || site_end > hearts_end || !limited_bidding_allowed?) %>
+      Items on the <b>Unlimited</b> tab stay open until
+      <b><%= event_time(site_end) %></b>, so you can still enter any
+      hearts you have left over there.
+    <% else %>
+      Items on the <b>Unlimited</b> tab stay open for as long as the
+      site is up, so you can still enter any hearts you have left
+      over there.
+    <% end %>
+  <% end %>
 </p>
 
 <p>
@@ -143,10 +210,22 @@
 </ul>
 
 <p>
-  One way to do this is to start by going through the list of raffle
-  items and adding 1 heart to every item you are interested in. Then,
-  look at the list of items you have put hearts on, and add more to
-  your favorites until all your remaining hearts are distributed.
+  <% if admin_signed_in? || limited_bidding_allowed? %>
+    The Fairy Helper does this for you: everything on your list gets at
+    least 1 heart, and the hearts count down from your top choice.
+    Items near the bottom of your list do not take anything away from
+    the ones above them, so add everything you have any interest in.
+    If you would rather do it by hand, start by going through the list
+    of raffle items and adding 1 heart to every item you are interested
+    in. Then, look at the list of items you have put hearts on, and add
+    more to your favorites until all your remaining hearts are
+    distributed.
+  <% else %>
+    One way to do this is to start by going through the list of raffle
+    items and adding 1 heart to every item you are interested in. Then,
+    look at the list of items you have put hearts on, and add more to
+    your favorites until all your remaining hearts are distributed.
+  <% end %>
 </p>
 
 <h3 class="h4">The Algorithm</h3>

@@ -14,6 +14,11 @@ class Item < ApplicationRecord
   scope :rankable_items, -> { raffle_items.where(cost: nil) }
   scope :unlimited_items, -> { where.not(cost: nil) }
 
+  # The distinct Heart costs of Unlimited items, lowest first
+  def self.unlimited_costs
+    unlimited_items.reorder(nil).distinct.pluck(:cost).sort
+  end
+
   def total
     result = 0
     bids.each do |bid|
