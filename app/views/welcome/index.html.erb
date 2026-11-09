@@ -152,30 +152,40 @@
   </p>
 <% end %>
 
+<% hearts_start = SiteSetting.next_limited_bidding_enable_time %>
 <% hearts_end = SiteSetting.limited_bidding_end_time %>
 <% site_end = SiteSetting.site_end_time %>
 
 <h2 class="h4">Deadlines:</h2>
 
 <p>
-  <% if !limited_bidding_allowed? %>
-    Raffle items are no longer available for entering hearts.
-  <% elsif hearts_end %>
-    Raffle items will be unavailable for entering hearts after
+  <% if hearts_start %>
+    Entering hearts on raffle items opens
+    <b><%= event_time(hearts_start) %></b><% if hearts_end && hearts_end > hearts_start %>
+      and closes <b><%= event_time(hearts_end) %></b><% end %>.
+  <% elsif limited_bidding_allowed? && hearts_end %>
+    Raffle items are available for entering hearts until
+    <b><%= event_time(hearts_end) %></b>.
+  <% elsif limited_bidding_allowed? %>
+    Raffle items are available for entering hearts until the event is
+    over.
+  <% elsif hearts_end && hearts_end <= Time.current %>
+    Raffle items closed for entering hearts on
     <b><%= event_time(hearts_end) %></b>.
   <% else %>
-    Raffle items will be unavailable for entering hearts once the
-    event is over.
+    Raffle items are not currently available for entering hearts.
   <% end %>
   <% if unlimited_items? %>
-    <% if site_end && (hearts_end.nil? || site_end > hearts_end || !limited_bidding_allowed?) %>
+    <% if site_end && hearts_end && site_end > hearts_end %>
       Items on the <b>Unlimited</b> tab stay open until
-      <b><%= event_time(site_end) %></b>, so you can still enter any
-      hearts you have left over there.
+      <b><%= event_time(site_end) %></b>, so any hearts left over when
+      the raffle items close can still go there.
+    <% elsif site_end %>
+      Items on the <b>Unlimited</b> tab stay open until
+      <b><%= event_time(site_end) %></b>.
     <% else %>
       Items on the <b>Unlimited</b> tab stay open for as long as the
-      site is up, so you can still enter any hearts you have left
-      over there.
+      site is up.
     <% end %>
   <% end %>
 </p>

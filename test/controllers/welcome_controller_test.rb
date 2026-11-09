@@ -84,7 +84,7 @@ class WelcomeControllerTest < ActionDispatch::IntegrationTest
     assert_select 'a[href=?]', ranking_path, count: 0
     assert_not_includes(response.body, 'Fairy Helper')
     assert_includes(response.body, 'One way to do this is to start by going through')
-    assert_includes(response.body, 'Raffle items are no longer available for entering hearts.')
+    assert_includes(response.body, 'Raffle items are not currently available for entering hearts.')
   end
 
   test 'shows the earlier of the bidding and site disable times as the raffle deadline' do
@@ -92,7 +92,7 @@ class WelcomeControllerTest < ActionDispatch::IntegrationTest
       SiteSetting.instance.update!(site_disable_time: Time.zone.parse('2026-11-15 23:59'),
                                    limited_bidding_disable_time: Time.zone.parse('2026-11-15 15:00'))
       get welcome_index_url
-      assert_includes(response.body, 'Raffle items will be unavailable for entering hearts after')
+      assert_includes(response.body, 'Raffle items are available for entering hearts until')
       assert_select 'p b', text: 'Sunday, November 15 at 3:00 PM EST'
       assert_includes(response.body, 'tab stay open until')
       assert_select 'p b', text: 'Sunday, November 15 at 11:59 PM EST'
@@ -104,9 +104,25 @@ class WelcomeControllerTest < ActionDispatch::IntegrationTest
       SiteSetting.instance.update!(site_disable_time: Time.zone.parse('2026-11-15 23:59'),
                                    limited_bidding_disable_time: Time.zone.parse('2026-11-16 15:00'))
       get welcome_index_url
-      assert_select 'p b', text: 'Sunday, November 15 at 11:59 PM EST'
+      assert_select 'p b', { text: 'Sunday, November 15 at 11:59 PM EST', count: 2 }
       assert_select 'p b', { text: 'Monday, November 16 at 3:00 PM EST', count: 0 }
-      assert_includes(response.body, 'tab stay open for as long as the')
+      assert_includes(response.body, 'tab stay open until')
+      assert_not_includes(response.body, 'can still go there')
+    end
+  end
+
+  test 'announces when entering hearts opens while it is still scheduled' do
+    travel_to Time.zone.parse('2026-11-08 19:00') do
+      SiteSetting.instance.update!(limited_bidding_enabled: false,
+                                   limited_bidding_enable_time: Time.zone.parse('2026-11-10 09:00'),
+                                   limited_bidding_disable_time: Time.zone.parse('2026-11-15 23:59'),
+                                   site_disable_time: Time.zone.parse('2026-11-15 23:59'))
+      get welcome_index_url
+      assert_includes(response.body, 'Entering hearts on raffle items opens')
+      assert_select 'p b', text: 'Tuesday, November 10 at 9:00 AM EST'
+      assert_includes(response.body, 'and closes')
+      assert_select 'p b', { text: 'Sunday, November 15 at 11:59 PM EST', count: 2 }
+      assert_not_includes(response.body, 'not currently available')
     end
   end
 
@@ -115,15 +131,29 @@ class WelcomeControllerTest < ActionDispatch::IntegrationTest
       SiteSetting.instance.update!(limited_bidding_enabled: false,
                                    site_disable_time: Time.zone.parse('2026-11-15 23:59'))
       get welcome_index_url
-      assert_includes(response.body, 'Raffle items are no longer available for entering hearts.')
+      assert_includes(response.body, 'Raffle items are not currently available for entering hearts.')
       assert_includes(response.body, 'tab stay open until')
       assert_select 'p b', text: 'Sunday, November 15 at 11:59 PM EST'
+      assert_not_includes(response.body, 'Entering hearts on raffle items opens')
+    end
+  end
+
+  test 'names the time raffle entries closed once it has passed' do
+    travel_to Time.zone.parse('2026-11-15 20:00') do
+      SiteSetting.instance.update!(limited_bidding_disable_time: Time.zone.parse('2026-11-15 15:00'),
+                                   site_disable_time: Time.zone.parse('2026-11-15 23:59'))
+      get welcome_index_url
+      assert_includes(response.body, 'Raffle items closed for entering hearts on')
+      assert_select 'p b', text: 'Sunday, November 15 at 3:00 PM EST'
+      assert_select 'p b', text: 'Sunday, November 15 at 11:59 PM EST'
+      assert_includes(response.body, 'can still go there')
+      assert_not_includes(response.body, 'not currently available')
     end
   end
 
   test 'describes the deadlines generically when nothing is scheduled' do
     get welcome_index_url
-    assert_includes(response.body, 'unavailable for entering hearts once the')
+    assert_includes(response.body, 'entering hearts until the event is')
     assert_includes(response.body, 'tab stay open for as long as the')
   end
 
@@ -132,7 +162,7 @@ class WelcomeControllerTest < ActionDispatch::IntegrationTest
     get welcome_index_url
     assert_includes(response.body, 'As a participant in the event')
     assert_includes(response.body, 'will be drawn after the')
-    assert_includes(response.body, 'unavailable for entering hearts')
+    assert_includes(response.body, 'for entering hearts until')
   end
 
   test 'layout has landmarks, a page title, and a top heading' do
