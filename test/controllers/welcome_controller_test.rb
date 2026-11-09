@@ -19,7 +19,7 @@ class WelcomeControllerTest < ActionDispatch::IntegrationTest
     assert_select 'a.nav-link', text: 'Auction'
     assert_select 'h2', text: 'Auction:'
     assert_select 'a[href=?]', '/items?type=Auction', text: 'Auction:'
-    assert_includes(response.body, 'across the kinds of items below')
+    assert_includes(response.body, 'The kinds of items below each work a little')
   end
 
   test 'hides auction tab and text when there are no auction items' do
@@ -77,6 +77,20 @@ class WelcomeControllerTest < ActionDispatch::IntegrationTest
     assert_select 'a[href=?]', '/items?type=Unlimited', count: 0
     assert_not_includes(response.body, 'unlimited items')
     assert_not_includes(response.body, 'Get One')
+  end
+
+  test 'introduces the fairy helper as a tool rather than a kind of item' do
+    get welcome_index_url
+    assert_includes(response.body, 'a tool for spending them rather than something')
+    intro = response.body[%r{As a participant.*?</p>}m]
+    assert_not_includes(intro, 'kinds of items below, the Fairy')
+  end
+
+  test 'leaves the fairy helper out of the intro when bidding is closed' do
+    SiteSetting.instance.update!(limited_bidding_enabled: false)
+    get welcome_index_url
+    assert_includes(response.body, 'The kinds of items below each work a little')
+    assert_not_includes(response.body, 'a tool for spending them')
   end
 
   test 'describes the fairy helper while bidding is open' do
