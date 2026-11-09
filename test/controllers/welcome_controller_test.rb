@@ -81,12 +81,13 @@ class WelcomeControllerTest < ActionDispatch::IntegrationTest
 
   test 'announces the fairy helper as new, in the section after the items' do
     get welcome_index_url
-    assert_includes(response.body, 'New this year, this tab is a tool for spending your hearts')
+    assert_select 'p', text: /\A\s*New this year, the Fairy Helper is a\s+tool for spending your hearts/
     assert_operator(response.body.index('Auction:</a>'), :<,
                     response.body.index('New this year'))
     intro = response.body[%r{As a participant.*?</p>}m]
     assert_not_includes(intro, 'Fairy')
-    assert_select 'p a[href=?]', ranking_path, { count: 1, text: 'Fairy Helper:' }
+    assert_select 'p a[href=?]', ranking_path, { count: 1, text: 'Fairy Helper' }
+    assert_select 'p b a[href=?]', ranking_path, count: 0
   end
 
   test 'leaves the fairy helper out of the intro when bidding is closed' do
@@ -98,7 +99,7 @@ class WelcomeControllerTest < ActionDispatch::IntegrationTest
 
   test 'describes the fairy helper while bidding is open' do
     get welcome_index_url
-    assert_select 'a[href=?]', ranking_path, text: 'Fairy Helper:'
+    assert_select 'p a[href=?]', ranking_path, text: 'Fairy Helper'
     assert_includes(response.body, 'Auction Fairy spread your hearts')
     assert_includes(response.body, 'hearts are spread across your list')
   end
